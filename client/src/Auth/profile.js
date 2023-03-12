@@ -31,7 +31,7 @@ const Profile = () => {
     }
     useEffect(() => {
         fetchisloggedUser()
-    }, [])
+    }, [fetchisloggedUser])
 
     return (
         <div style={{height: '80vh'}}>
