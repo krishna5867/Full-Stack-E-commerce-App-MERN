@@ -1,6 +1,5 @@
 import './App.css';
-import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 // Component
 import Spinner from './Component/Loading';
@@ -11,8 +10,6 @@ import Cart from './Component/Cart';
 import PageNotFound from './Component/PageNotFound';
 import SearchProducts from './Component/SearchProducts';
 
-// Content
-import { Auth } from './Context/isloggedin';
 // Protected Route
 import PrivateRoute from './Component/PrivateRoute';
 // User 

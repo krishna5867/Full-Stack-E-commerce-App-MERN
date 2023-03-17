@@ -5,7 +5,7 @@ import { Container, Card, CardBody } from 'reactstrap';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { isLoggedIn, login, logout, selectAuth } from '../Redux/authSlice';
+import { logout } from '../Redux/authSlice';
 
 const Profile = () => {
     const dispatch = useDispatch();

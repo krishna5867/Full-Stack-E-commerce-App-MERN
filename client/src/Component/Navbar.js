@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { selectAuth, loggedInUser, logout } from '../Redux/authSlice';
+import { loggedInUser, logout } from '../Redux/authSlice';
 
 const Navbar = () => {
     const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const Navbar = () => {
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
-                        {isLoggedIn === true ? (
+                        {isLoggedIn ? (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link active" aria-current="page" to="/profile">

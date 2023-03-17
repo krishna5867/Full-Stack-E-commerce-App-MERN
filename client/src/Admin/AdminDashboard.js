@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Container, Card, Button, Row} from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { Auth } from '../Context/isloggedin'
 import Login from '../Auth/login'
 
 const AdminDashboard = () => {
-    const {isloggedIn} = useContext(Auth);
+    const { isloggedIn } = useSelector((state) => state.auth);
     return (
         <>
         {
