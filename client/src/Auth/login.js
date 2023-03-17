@@ -1,36 +1,33 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { login } from '../Redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap'
+import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
-import { Auth } from '../Context/isloggedin';
 
 const Login = () => {
-    const { isloggedIn, setIsloggedIn } = useContext(Auth);
-    console.log(isloggedIn);
-
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("admin@admin.com");
     const [password, setPassword] = useState("password");
-
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            const res = await axios.post('/login', {
-                email, password
-            })
-            if (res.status === 200) {
-                setIsloggedIn(res.data)
-                localStorage.setItem("usertoken", res.data.token);
-                navigate("/");
-                alert("Login Success")
-                // window.location.reload();
-            }
+            const res = await axios.post('/login', { email, password });
+            console.log(`resLogin ${res}`);
+            // const user = res.data.user;
+            dispatch(login(res.data));
+            localStorage.setItem("usertoken", res.data.token);
+            navigate("/");
+            toast.success("Login Success");
         } catch (error) {
-            toast.error("Invalid credentials")
+            console.error(error);
+            toast.error("Invalid credentials");
         }
-    }
+    };
+
     return (
         <>
             <ToastContainer />
@@ -47,11 +44,10 @@ const Login = () => {
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             </div>
-                            <Button className='bg-primary mt-4 mb-3 w-100'>Login</Button>
+                            <Button className='bg-primary mt-4 mb-3 w-100' type="submit">Login</Button>
                             <p>Don't have Account <a href="signup">Create New Account</a></p>
                             <p><a href='/forgetPassword'>Forget Password </a></p>
                         </Form>
-
                     </CardBody>
                 </Card>
             </Container>

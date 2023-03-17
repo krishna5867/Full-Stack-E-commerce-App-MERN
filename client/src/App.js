@@ -33,23 +33,12 @@ import Orders from './Admin/Order'
 
 function App() {
     const [showspin, setShowSpin] = useState(false);
-    const { setIsloggedIn } = useContext(Auth);
-    
-    // eslint-disable-next-line
-    const fetchisloggedUser = async () => {
-        localStorage.getItem("usertoken");
 
-        const res = await axios.get('/isloggedin');
-        if (res.status === 200) {
-            setIsloggedIn(res.data);
-        }
-    }
     useEffect(() => {
         setTimeout(() => {
-        fetchisloggedUser()
             setShowSpin(true)
         }, 500)
-    },[fetchisloggedUser])
+    },[])
 
     return (
         <div className="App">

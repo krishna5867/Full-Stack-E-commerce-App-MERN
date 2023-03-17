@@ -15,11 +15,9 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={Store}>
-        <ContextProvider>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
-        </ContextProvider>
     </Provider>
 
 );

@@ -7,7 +7,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Row, Input } from 'reactstrap';
 import Footer from '../Component/Footer';
 
-
 const Product = () => {
     const dispatch = useDispatch();
     const [products, setProducts] = useState("");
@@ -54,7 +53,7 @@ const Product = () => {
         setSelectedOption(event.target.value);
     }
 
-    const handleFilter = async ()=> {
+    const handleFilter = async () => {
         // const res = await axios.get(`/filterProduct`);
         // if(res.status === 200){
         //     console.log(res.data);
@@ -98,11 +97,11 @@ const Product = () => {
                                     <div><h4>$0-20</h4></div>
                                 </div>
                                 <div className='d-flex'>
-                                <div className='mt-2 mx-4'><input type="radio" name="option" value="option2" checked={selectedOption === "option2"} onChange={handleOptionChange} style={{ width: '20px', height: '20px' }} /></div>
+                                    <div className='mt-2 mx-4'><input type="radio" name="option" value="option2" checked={selectedOption === "option2"} onChange={handleOptionChange} style={{ width: '20px', height: '20px' }} /></div>
                                     <div><h4>$21-30</h4></div>
                                 </div>
                                 <div className='d-flex'>
-                                <div className='mt-2 mx-4'><input type="radio" name="option" value="option3" checked={selectedOption === "option3"} onChange={handleOptionChange} style={{ width: '20px', height: '20px' }} /></div>
+                                    <div className='mt-2 mx-4'><input type="radio" name="option" value="option3" checked={selectedOption === "option3"} onChange={handleOptionChange} style={{ width: '20px', height: '20px' }} /></div>
                                     <div><h4>$31-40</h4></div>
                                 </div>
                             </div>
