@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card, CardBody } from 'reactstrap';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { logout } from '../Redux/authSlice';
 
 const Profile = () => {

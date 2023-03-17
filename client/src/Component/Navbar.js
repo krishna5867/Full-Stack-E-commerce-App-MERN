@@ -11,7 +11,7 @@ const Navbar = () => {
     console.log(`isLoggedIn-> ${isLoggedIn}`);
     console.log(`user-> ${user}`);
     const cartItems = useSelector((state) => state.cart.items);
-
+    // eslint-disable-next-line
     const fetchLoggedInUser = async () => {
         try {
             const res = await axios.get('/isloggedIn');
@@ -31,7 +31,7 @@ const Navbar = () => {
 
     useEffect(() => {
         fetchLoggedInUser();
-    }, []);
+    }, [fetchLoggedInUser]);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4">
