@@ -16,8 +16,6 @@ const Login = () => {
         e.preventDefault();
         try {
             const res = await axios.post('/login', { email, password });
-            console.log(`resLogin ${res}`);
-            // const user = res.data.user;
             dispatch(login(res.data));
             localStorage.setItem("usertoken", res.data.token);
             navigate("/");

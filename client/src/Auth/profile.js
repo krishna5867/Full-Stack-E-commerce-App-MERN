@@ -10,8 +10,8 @@ import { logout } from '../Redux/authSlice';
 const Profile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loggedInUser } = useSelector((state) => state.auth);
-    console.log(`loggedInUser ${loggedInUser}`);
+    const { isLoggedIn, user } = useSelector((state) => state.auth);
+    // console.log(`isLoggedIn-> ${isLoggedIn}`);
 
     const handleSignout = async () => {
         try {
@@ -28,14 +28,12 @@ const Profile = () => {
             console.log(error.message);
         }
     };
-
-
     return (
         <div style={{ height: '80vh' }}>
             <ToastContainer />
             <Container className='mt-5' style={{ width: '30rem' }}>
                 <Card className='border border-2 border-warning'>
-                    {loggedInUser ? (
+                    {isLoggedIn ? (
                         <>
                             <CardBody className='m-4'>
                                 <div className='d-flex'>
@@ -43,7 +41,7 @@ const Profile = () => {
                                         <h3>Name:- &nbsp; </h3>
                                     </div>
                                     <div>
-                                        <h3 className='text-uppercase'>{loggedInUser.name}</h3>
+                                        <h3 className='text-uppercase'>{user.name}</h3>
                                     </div>
                                 </div>
                                 <div className='d-flex'>
@@ -51,7 +49,7 @@ const Profile = () => {
                                         <h3>Email:- &nbsp; </h3>
                                     </div>
                                     <div>
-                                        <h3>{loggedInUser.email}</h3>
+                                        <h3>{user.email}</h3>
                                     </div>
                                 </div>
                                 <div className='d-flex'>
@@ -59,7 +57,7 @@ const Profile = () => {
                                         <h3>Role:- &nbsp; </h3>
                                     </div>
                                     <div>
-                                        <h3>{loggedInUser.role}</h3>
+                                        <h3>{user.role}</h3>
                                     </div>
                                 </div>
                                 <div className='d-flex'>
@@ -68,7 +66,7 @@ const Profile = () => {
                                     </div>
                                     <div>
                                         <h4>
-                                            {moment(loggedInUser.createdAt).format('DD-MM-YYYY')}
+                                            {moment(user.createdAt).format('DD-MM-YYYY')}
                                         </h4>
                                     </div>
                                 </div>

@@ -1,37 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-import { loggedInUser, logout } from '../Redux/authSlice';
 
 const Navbar = () => {
-    const dispatch = useDispatch();
     const { isLoggedIn, user } = useSelector((state) => state.auth);
     console.log(`isLoggedIn-> ${isLoggedIn}`);
-    console.log(`user-> ${user}`);
     const cartItems = useSelector((state) => state.cart.items);
-    // eslint-disable-next-line
-    const fetchLoggedInUser = async () => {
-        try {
-            const res = await axios.get('/isloggedIn');
-            if (res.status === 200) {
-                dispatch(
-                    loggedInUser({
-                        isLoggedIn: true,
-                        user: res.data,
-                    })
-                );
-
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
-
-    useEffect(() => {
-        fetchLoggedInUser();
-    }, [fetchLoggedInUser]);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4">
@@ -64,15 +39,8 @@ const Navbar = () => {
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link active" aria-current="page" to="/profile">
-                                        <span>{user.email}</span>
+                                        <span>{user.name}</span>
                                         {user ? <i className="fa fa-angle-down" aria-hidden="true"></i> : ''}
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link active" aria-current="page" to="/">
-                                        <button className="btn btn-light text-dark rounded mx-2" onClick={() => dispatch(logout())}>
-                                            <b>Logout</b>
-                                        </button>
                                     </Link>
                                 </li>
                             </>

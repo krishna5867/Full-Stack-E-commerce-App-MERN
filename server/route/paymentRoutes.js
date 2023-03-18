@@ -5,8 +5,8 @@ const { order, verify } = require('../controllers/paymentController');
 
 const router = express.Router();
 
-router.get("/order", order);
-router.get("/verify", verify);
+router.post("/order", order);
+router.post("/verify", verify);
 
 
 module.exports = router;

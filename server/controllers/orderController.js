@@ -18,7 +18,7 @@ exports.placeOrder = async (req, res) => {
                 shippingAddress,
                 itemprice,
                 Shipping,
-            isDelivered,
+                isDelivered,
                 user: req.user.id
             })
             res.status(200).json({
