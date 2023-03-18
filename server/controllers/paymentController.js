@@ -12,7 +12,6 @@ exports.order = async (req, res) => {
         var options = {
             amount: amount * 100,
             currency: "INR",
-            // receipt: "order_rcptid_11"
             receipt: crypto.randomBytes(10).toString("hex")
         };
 
@@ -33,9 +32,7 @@ exports.order = async (req, res) => {
 
 exports.verify = async (req, res) => {
     try {
-        const { razorpay_order_id,
-            razorpay_payment_id,
-            razorpay_signature } = req.body;
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
         const sign = razorpay_order_id + "|" + razorpay_payment_id;
         const expectedSign = crypto
             .createHmac("sha256", process.env.KEY_SECRET)

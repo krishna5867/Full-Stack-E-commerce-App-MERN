@@ -30,7 +30,6 @@ const Cart = () => {
         try {
             const res = await axios.post("/order", { amount });
             const orderId = res.data.data.id;
-            console.log("orderId:", orderId);
             setOrderId(orderId);
 
             const options = {
@@ -40,9 +39,13 @@ const Cart = () => {
                 name: "T-Shirt Store",
                 description: "Payment for your shopping.",
                 order_id: orderId,
-                handler: async () => {
+                handler: async (orderId, paymentId, signature) => {
                     try {
-                        const orderVerify = await axios.post('/verify');
+                        const orderVerify = await axios.post('/verify', {
+                            razorpay_order_id: orderId,
+                            razorpay_payment_id: paymentId,
+                            razorpay_signature: signature,
+                        });
                         console.log(orderVerify);
                     } catch (error) {
                         console.log(error);
@@ -54,7 +57,7 @@ const Cart = () => {
                     contact: "+917677263000",
                 },
                 notes: {
-                    address: "Razorpay Corporate Office",
+                    address: "Dhnabad Jharkhand",
                 },
                 theme: {
                     color: "#61dafb",
@@ -62,27 +65,22 @@ const Cart = () => {
             };
             console.log(options);
 
-            const rzp = new window.Razorpay(options);
-            rzp.open();
-
-            // function waitForRazorpay(callback) {
-            //     console.log('Waiting for Razorpay...');
-            //     if (window.Razorpay) {
-            //         console.log('Razorpay loaded!');
-
-            //         callback();
-            //     } else {
-            //         setTimeout(function () {
-            //             waitForRazorpay(callback);
-            //         }, 100);
-            //     }
-            // }
-            // waitForRazorpay(function () {
-            //     const rzp = new window.Razorpay(options);
-            //     console.log(rzp);
-            //     rzp.open();
-            // });
-
+            function waitForRazorpay(callback) {
+                console.log('Waiting for Razorpay...');
+                if (window.Razorpay) {
+                    console.log('Razorpay loaded!');
+                    callback();
+                } else {
+                    setTimeout(function () {
+                        waitForRazorpay(callback);
+                    }, 100);
+                }
+            }
+            waitForRazorpay(function () {
+                const rzp = new window.Razorpay(options);
+                console.log(rzp);
+                rzp.open();
+            });
         } catch (error) {
             console.log(`error in razorpay popup ${error}`);
         }
