@@ -27,7 +27,6 @@ const Cart = () => {
     };
 
     const handleOpenRazorpay = (data) => {
-
         const options = {
             key: 'rzp_test_hBcE1HSEv7PAgW',
             amount: Number(data.amount),
@@ -38,12 +37,11 @@ const Cart = () => {
             handler: function (response) {
                 axios.post('/verify', {
                     response: response,
-                    orderId: response.razorpay__order_id,
-                    PaymentId: response.razorpay_payment_id,
-                    signature: response.razorpay_signature,
                 })
                     .then((res) => {
+                        console.log(res);
                         const orderId = res.data.orderId;
+                        console.log(orderId);
                         navigate(`/verify?orderId=${orderId}`);
                     })
                     .catch((err) => {

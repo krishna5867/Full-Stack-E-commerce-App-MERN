@@ -7,9 +7,9 @@ function Verify() {
 
     return (
         <div>
-            <h1>Order Verification Page</h1>
-            <p>Order ID: {orderId}</p>
-            <p>Signature ID: {signature}</p>
+            <h1 className='mb-5'>Order Verification Page</h1>
+            <h5>Order ID: {orderId}</h5>
+            <h5>Signature ID: {signature}</h5>
         </div>
     );
 }
