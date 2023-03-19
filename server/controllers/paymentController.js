@@ -15,14 +15,14 @@ exports.order = async (req, res) => {
             receipt: crypto.randomBytes(10).toString("hex")
         };
 
-        instance.orders.create(options, (err, order) => {
+        instance.orders.create(options, function (err, order){
             if (err) {
                 console.log(err);
-                res.status(500).json({
+                return res.status(500).json({
                     message: "Something went wrong."
                 })
             }
-            res.status(200).json({ data: order })
+            return res.status(200).json({ data: order })
             // console.log(order);
         });
     } catch (error) {
@@ -32,23 +32,21 @@ exports.order = async (req, res) => {
 
 exports.verify = async (req, res) => {
     try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-        const sign = razorpay_order_id + "|" + razorpay_payment_id;
-        const expectedSign = crypto
-            .createHmac("sha256", process.env.KEY_SECRET)
-            .update(sign.toString())
-            .digest("hex");
+        let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
 
-        if (razorpay_signature === expectedSign) {
-            return res.status(200).json({
-                message: "Payment Verifyied Successfulluy"
-            })
+        var expectedSignature = crypto.createHmac('sha256', process.env.KEY_SECRET)
+            .update(body.toString())
+            .digest('hex');
+    
+        if (expectedSignature === req.body.response.razorpay_signature) {
+            res.send({ code: 200, message: 'Sign Valid' });
         } else {
-            return res.status(400).json({
-                message: "Invalid Payment Signture sent"
-            })
+    
+            res.send({ code: 500, message: 'Sign Invalid' });
         }
     } catch (error) {
         console.log(error);
     }
 }
+
+

@@ -25,7 +25,8 @@ import AddProducts from './Admin/AddProducts';
 import EditProducts from './Admin/EditProduct';
 import AllUsers from './Admin/AllUsers';
 import AllProducts from './Admin/AllProducts';
-import Orders from './Admin/Order'
+import Orders from './Admin/Order';
+import Verify from './Component/Verify';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
                             <Route path="/passwordReset/:token" element={<PasswordReset />} />
                             <Route path="/changepassword" element={<ChangePassword />} />
                             <Route path="*" element={<PageNotFound />} />
+                            <Route path="/verify" element={<Verify />} />
                             <Route path="/search" element={<SearchProducts />} />
                         </Routes>
                     </>
