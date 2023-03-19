@@ -1,6 +1,7 @@
 import React from 'react'
 import Product from '../Admin/ProductList'
-import { Container } from 'reactstrap'
+import { Container } from 'reactstrap';
+
 const Products = () => {
     return (
         <div>

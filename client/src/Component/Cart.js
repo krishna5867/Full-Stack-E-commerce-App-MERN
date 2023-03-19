@@ -34,24 +34,32 @@ const Cart = () => {
             order_id: data.id,
             name: 'T-Shirt Store',
             description: 'XYZ',
+            image: "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg",
             handler: function (response) {
                 axios.post('/verify', {
                     response: response,
+                    orderId: response.razorpay_order_id,
+                    paymentId: response.razorpay_payment_id,
+                    signature: response.razorpay_signature,
                 })
                     .then((res) => {
-                        console.log(res);
-                        const orderId = res.data.orderId;
-                        console.log(orderId);
+                        console.log(res.adapter, '46');
+                        const orderId = res.config?.data.razorpay_order_id;
+                        console.log(orderId, "48");
                         navigate(`/verify?orderId=${orderId}`);
                     })
                     .catch((err) => {
                         console.log(err);
                     });
+                // console.log(response, "53");
+                // OUTPUT: razorpay_order_id:"order_LTKSGPNdfUtYBY"
+                // razorpay_payment_id: "pay_LTKSoYG8LZdCVm"
+                // razorpay_signature: "895917367193a7c6c25650aa38cd93d2363ab021f430c138adb07eaac172ef01"
             },
             prefill: {
                 name: "Krishna Kumar",
                 email: "krishnakmr@968.com",
-                contact: "+917677263000",
+                contact: "+917677263045",
             },
             notes: {
                 address: "Dhanbad Jharkhand",
@@ -62,14 +70,13 @@ const Cart = () => {
         }
         const rzp = new window.Razorpay(options)
         rzp.open()
-
     }
 
     const handleCheckout = (amount) => {
         const _data = { amount: amount }
         axios.post('/order', _data)
             .then(res => {
-                // console.log(res.data, "68")
+                // console.log(res.data, "79")
                 handleOpenRazorpay(res.data.data)
             })
             .catch(err => {
