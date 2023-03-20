@@ -30,23 +30,32 @@ exports.order = async (req, res) => {
     }
 }
 
+
 exports.verify = async (req, res) => {
     try {
-        let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
-
-        var expectedSignature = crypto.createHmac('sha256', process.env.KEY_SECRET)
-            .update(body.toString())
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body.response;
+        const body = `${razorpay_order_id}|${razorpay_payment_id}`;
+        const expectedSignature = crypto
+            .createHmac('sha256', process.env.KEY_SECRET)
+            .update(body)
             .digest('hex');
     
-        if (expectedSignature === req.body.response.razorpay_signature) {
-            res.send({ code: 200, message: 'Sign Valid' });
+        if (expectedSignature === razorpay_signature) {
+            res.status(200).json({
+                message: 'Sign Valid',
+                // expectedSignature,
+                // body,
+                razorpay_order_id,
+                razorpay_payment_id,
+                razorpay_signature
+            });
         } else {
-    
-            res.send({ code: 500, message: 'Sign Invalid' });
+            res.status(500).json({message: 'Sign Invalid' });
         }
     } catch (error) {
         console.log(error);
     }
-}
+};
+
 
 

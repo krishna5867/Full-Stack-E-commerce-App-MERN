@@ -43,18 +43,17 @@ const Cart = () => {
                     signature: response.razorpay_signature,
                 })
                     .then((res) => {
-                        console.log(res.adapter, '46');
-                        const orderId = res.config?.data.razorpay_order_id;
+                        // cartItems("")
+                        // console.log(res, '46');
+                        const orderId = res.data.razorpay_order_id;
+                        const PaymentId = res.data.razorpay_payment_id;
+                        const signature = res.data.razorpay_signature;
                         console.log(orderId, "48");
-                        navigate(`/verify?orderId=${orderId}`);
+                        navigate(`/order/${orderId}/${PaymentId}/${signature}`);
                     })
                     .catch((err) => {
-                        console.log(err);
+                        console.log(err.message);
                     });
-                // console.log(response, "53");
-                // OUTPUT: razorpay_order_id:"order_LTKSGPNdfUtYBY"
-                // razorpay_payment_id: "pay_LTKSoYG8LZdCVm"
-                // razorpay_signature: "895917367193a7c6c25650aa38cd93d2363ab021f430c138adb07eaac172ef01"
             },
             prefill: {
                 name: "Krishna Kumar",
@@ -76,7 +75,6 @@ const Cart = () => {
         const _data = { amount: amount }
         axios.post('/order', _data)
             .then(res => {
-                // console.log(res.data, "79")
                 handleOpenRazorpay(res.data.data)
             })
             .catch(err => {
