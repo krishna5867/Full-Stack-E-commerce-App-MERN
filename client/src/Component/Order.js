@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardBody, CardTitle, CardText } from "reactstrap";
+import { Link } from 'react-router-dom';
 // http://localhost:3000/order/order_LTgUK0KZ81F3U5/pay_LTgUaeIU0fmg6Y/46f211ca7ca15b9a2a010c169a640d270200ed540d05497f8d78b471607a8b76
 function Order() {
     const { orderId, paymentId } = useParams();
@@ -21,7 +22,8 @@ function Order() {
                         <br />
                         <span className='fs-5'>Payment ID: {paymentId} </span>
                     </CardText>
-                    <button className=' mt-3 btn btn-warning text-black btn-lg' href="/">Continue Shopping</button>
+                    <button className='mt-3 btn btn-warning text-black btn-lg'> <Link to="/" className="text-black text-decoration-none">Continue Shopping</Link>
+                    </button>
                 </CardBody>
             </Card>
         </div>

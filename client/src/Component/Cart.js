@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardBody, Row, Container } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, increaseQuantity, decreaseQuantity } from "../Redux/cartSlice";
+import { removeFromCart, increaseQuantity, decreaseQuantity, removeAllItems } from "../Redux/cartSlice";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -25,6 +25,9 @@ const Cart = () => {
         dispatch(decreaseQuantity(productId));
 
     };
+    const handleRemoveAllItems = (items) => {
+        dispatch(removeAllItems(items))
+    }
 
     const handleOpenRazorpay = (data) => {
         const options = {
@@ -43,13 +46,13 @@ const Cart = () => {
                     signature: response.razorpay_signature,
                 })
                     .then((res) => {
-                        // cartItems("")
                         // console.log(res, '46');
                         const orderId = res.data.razorpay_order_id;
                         const PaymentId = res.data.razorpay_payment_id;
                         const signature = res.data.razorpay_signature;
                         console.log(orderId, "48");
                         navigate(`/order/${orderId}/${PaymentId}/${signature}`);
+                        handleRemoveAllItems();
                     })
                     .catch((err) => {
                         console.log(err.message);
@@ -76,6 +79,7 @@ const Cart = () => {
         axios.post('/order', _data)
             .then(res => {
                 handleOpenRazorpay(res.data.data)
+                
             })
             .catch(err => {
                 console.log(err)

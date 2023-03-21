@@ -30,7 +30,7 @@ const Login = () => {
         <>
             <ToastContainer />
             <Container className='mt-5' style={{ width: '30rem' }}>
-                <Card className="border border-2 border-warning">
+                <Card className="border m-2 p-4 shadow-lg bg-white rounded">
                     <CardBody>
                         <h2>Login Form</h2>
                         <Form onSubmit={handleLogin} className='mt-5'>

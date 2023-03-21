@@ -18,7 +18,7 @@ router.get("/", home);
 router.get("/getProducts", getProducts);
 router.get("/getproduct/:id", getProduct);
 router.get("/search", searchProduct);
-router.get("/filterProduct", filterProducts);
+router.get("/filter", filterProducts);
 
 
 //admin routes

@@ -27,6 +27,7 @@ import AllUsers from './Admin/AllUsers';
 import AllProducts from './Admin/AllProducts';
 import Orders from './Admin/Order';
 import Order from './Component/Order';
+import ExploreProducts from './Component/AllProducts';
 
 
 function App() {
@@ -61,7 +62,9 @@ function App() {
                             <Route path="/changepassword" element={<ChangePassword />} />
                             <Route path="*" element={<PageNotFound />} />
                             <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
-                            <Route path="/search" element={<SearchProducts />} />
+                            <Route path="/search/:search" element={<SearchProducts />} />
+                            <Route path="/exploreProducts" element={<ExploreProducts />} />
+
                         </Routes>
                     </>
                     : <Spinner /> 
