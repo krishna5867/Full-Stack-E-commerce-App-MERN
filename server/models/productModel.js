@@ -10,16 +10,20 @@ const productSchema = new mongoose.Schema({
     price: Number,
     stock: Number,
     description: String,
-    categories : String,
-    image:{
-        public_id:{
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Category",
+    },
+    image: {
+        public_id: {
             type: String
         },
-        url:{
+        url: {
             type: String
         }
     },
-    
+
     createdAt: {
         type: Date,
         default: Date(),

@@ -9,6 +9,9 @@ import SingleProduct from './Component/SingleProduct';
 import Cart from './Component/Cart';
 import PageNotFound from './Component/PageNotFound';
 import SearchProducts from './Component/SearchProducts';
+import Order from './Component/Order';
+import ExploreProducts from './Component/AllProducts';
+import RelatedProducts from './Component/RelatedProducts';
 
 // Protected Route
 import PrivateRoute from './Component/PrivateRoute';
@@ -26,8 +29,7 @@ import EditProducts from './Admin/EditProduct';
 import AllUsers from './Admin/AllUsers';
 import AllProducts from './Admin/AllProducts';
 import Orders from './Admin/Order';
-import Order from './Component/Order';
-import ExploreProducts from './Component/AllProducts';
+
 
 
 function App() {
@@ -64,6 +66,7 @@ function App() {
                             <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
                             <Route path="/search/:search" element={<SearchProducts />} />
                             <Route path="/exploreProducts" element={<ExploreProducts />} />
+                            <Route path="/relatedProducts" element={<RelatedProducts />} />
 
                         </Routes>
                     </>

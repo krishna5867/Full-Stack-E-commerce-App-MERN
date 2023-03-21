@@ -9,7 +9,8 @@ const {
     adminEditProduct,
     adminDeleteProduct,
     searchProduct,
-    filterProducts
+    filterProducts,
+    getRelatedProducts
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.get("/getProducts", getProducts);
 router.get("/getproduct/:id", getProduct);
 router.get("/search", searchProduct);
 router.get("/filter", filterProducts);
+router.get("/relatedProducts", getRelatedProducts);
 
 
 //admin routes

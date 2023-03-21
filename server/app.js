@@ -9,6 +9,7 @@ const userRoutes = require("./route/userRoutes");
 const productRoutes = require("./route/productRoutes");
 const orderRoutes = require("./route/orderRoutes");
 const paymentRoutes = require("./route/paymentRoutes");
+const categoryRoutes = require("./route/categoryRoutes");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/", userRoutes);
 app.use("/", productRoutes);
 app.use("/", orderRoutes);
 app.use("/", paymentRoutes);
+app.use("/", categoryRoutes);
 
 module.exports = app;
 

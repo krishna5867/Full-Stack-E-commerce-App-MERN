@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const Category = require("../models/categoryModel");
 const cloudinary = require('../utils/cloudinary');
 const util = require('util');
 const upload = util.promisify(cloudinary.uploader.upload);
@@ -39,12 +40,17 @@ exports.getProduct = async (req, res) => {
         console.log(error);
     }
 }
-//create Product
+//create/Add Product
 exports.adminAddProduct = async (req, res) => {
     try {
         const user = await User.findOne(req.user);
 
-        const { name, description, price, stock, categories } = req.body;
+        // const categoryDoc = await Category.findOne({ name: category });
+        // if (!categoryDoc) {
+        //     throw new Error("Invalid category");
+        // }
+
+        const { name, description, price, stock, category } = req.body;
         if (!name) {
             throw new Error("All field must be Required");
         }
@@ -57,13 +63,15 @@ exports.adminAddProduct = async (req, res) => {
             if (!file) {
                 throw new Error("A photo is required");
             }
+
             const result = await upload(file.tempFilePath);
             const product = await Product.create({
                 name,
                 description,
                 price,
                 stock,
-                categories,
+                category,
+                // category: categoryDoc._id,
                 image: {
                     public_id: result.public_id,
                     url: result.secure_url
@@ -155,13 +163,13 @@ exports.adminDeleteProduct = async (req, res) => {
 exports.searchProduct = async (req, res) => {
     const search = req.query.search;
     const query = {
-            $or: [
-                { name: { $regex: search, $options: "i" } },
-                { categories: { $regex: search, $options: "i" } },
-                { description: { $regex: search, $options: "i" } }
+        $or: [
+            { name: { $regex: search, $options: "i" } },
+            { categories: { $regex: search, $options: "i" } },
+            { description: { $regex: search, $options: "i" } }
 
-            ],
-        };
+        ],
+    };
     try {
         const product = await Product.find(query);
         res.status(200).json({
@@ -173,13 +181,13 @@ exports.searchProduct = async (req, res) => {
         console.log(error.message);
         res.status(400).json({
             success: false,
-            message : error.message
+            message: error.message
         })
-        
-    }    
+
+    }
 }
 
-exports.filterProducts = async (req, res)=>{
+exports.filterProducts = async (req, res) => {
     const checked = req.query.checked;
     const query = {
         checked: { $in: checked },
@@ -195,9 +203,27 @@ exports.filterProducts = async (req, res)=>{
         console.log(error.message);
         res.status(400).json({
             success: false,
-            message : error.message
+            message: error.message
         })
-        
+
+    }
+}
+
+exports.getRelatedProducts = async (req, res) => {
+    try {
+        // const {categories} = req.body;
+        const product = await Product.find({ categories: "women" })
+        res.status(200).json({
+            success: true,
+            message: "successfull",
+            product
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "not found",
+        })
     }
 }
 
