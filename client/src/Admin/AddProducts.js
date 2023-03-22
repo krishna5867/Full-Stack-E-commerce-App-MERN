@@ -70,6 +70,7 @@ const AddProducts = () => {
                     <Button className='w-100 mt-3'><h3><Link to="/admindashboard/allusers" className='text-decoration-none text-white'>All Users</Link></h3></Button>
                     <Button className='w-100 mt-3'><h3><Link to="/admindashboard/allproducts" className='text-decoration-none text-white'>All Products</Link></h3></Button>
                     <Button className='w-100 mt-3'><h3><Link to="/admindashboard/addproducts" className='text-decoration-none text-white'>Add Products</Link></h3></Button>
+                    <Button className='w-100 mt-3'><h3><Link to="/createcategories" className='text-decoration-none text-white'>Create Category</Link></h3></Button>
                 </Container>
                 <Container className='col-lg-9' style={{ height: '88vh' }}>
                     <h1>Add Products</h1>
@@ -88,10 +89,8 @@ const AddProducts = () => {
                                                 <Input type="text" placeholder="Description" className="mt-4" value={description} onChange={(e) => setDescription(e.target.value)} />
                                                 {/* categories */}
                                                 <select
-                                                    // bordered={false}
                                                     placeholder="Select a category"
                                                     size="large"
-                                                    // showSearch
                                                     className="form-select mt-4"
                                                     onChange={(e) => {setCategory(e.target.value)}}
                                                     >

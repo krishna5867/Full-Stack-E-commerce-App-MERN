@@ -6,17 +6,18 @@ import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { addToCart } from '../Redux/cartSlice';
 import Spinner from './Loading';
-import RelatedProducts from './RelatedProducts';
+// import RelatedProducts from './RelatedProducts';
 
 const SearchProducts = () => {
     const dispatch = useDispatch();
     const { search } = useParams();
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState();
     const [loading, setLoading] = useState(true)
+    console.log(products, "16");
 
-
-    const fetchSerchProducts = async () => {
-        const res = await axios.get(`/search?search=${search}`);
+    const fetchSearchProducts = async () => {
+        const res = await axios.get(`/search/${search}`);
+        console.log(res.data,"20");
         if (res.status === 200) {
             setProducts(res.data.product)
             setLoading(false)
@@ -33,7 +34,7 @@ const SearchProducts = () => {
 
     useEffect(() => {
         setLoading(true)
-        fetchSerchProducts();
+        fetchSearchProducts();
     }, [])
 
     return (
@@ -44,7 +45,7 @@ const SearchProducts = () => {
                         <h3>Search Match&nbsp;
                             <span>({products.length})</span></h3>
                         <div className='d-flex justify-content-center flex-wrap'>
-                            {products && products.map((product) =>
+                            {products.map((product) =>
                                 <>
                                     <ToastContainer autoClose={2000} />
                                     <div className='d-flex m-3'>
@@ -65,9 +66,9 @@ const SearchProducts = () => {
                         </div>
                     </>
                 )}
-                <div>
-                <RelatedProducts />
-                </div>
+            <div>
+                {/* <RelatedProducts /> */}
+            </div>
         </>
     )
 }

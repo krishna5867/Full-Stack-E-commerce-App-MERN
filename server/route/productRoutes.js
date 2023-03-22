@@ -10,7 +10,9 @@ const {
     adminDeleteProduct,
     searchProduct,
     filterProducts,
-    getRelatedProducts
+    getRelatedProducts,
+    getProductByCategory,
+    totalProducts
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -18,9 +20,11 @@ const router = express.Router();
 router.get("/", home);
 router.get("/getProducts", getProducts);
 router.get("/getproduct/:id", getProduct);
-router.get("/search", searchProduct);
+router.get("/search/:search", searchProduct);
 router.get("/filter", filterProducts);
 router.get("/relatedProducts", getRelatedProducts);
+router.get("/getProductByCategory", getProductByCategory);
+router.get("/totalProducts", totalProducts);
 
 
 //admin routes

@@ -10,7 +10,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const {id} = useParams();
   const [product, setProduct] = useState("");
-
+  // console.log(product);
   const getOneProduct = async () => {
     const res = await axios.get(`/getproduct/${id}`);
     if(res.status === 200){
@@ -50,7 +50,8 @@ const SingleProduct = () => {
         <div className='card p-5 border border-warning border-2'>
       <h3><b>Product Name</b> - {product.name}</h3>
       <h3><b>Product Description</b> - {product.description}</h3>
-      <h3><b>Categories</b> - {product.categories}</h3>
+      <h3><b>Category</b> - {product.categories}</h3>
+      <h3><b>Category</b> - {product.category}</h3>
       <h3><b>Price</b> - ${product.price}</h3>
       <div className='flex'>
       <Button className='bg-primary m-3 px-3' onClick={()=> handleAddToCart(product)}><b>Add cart</b></Button>

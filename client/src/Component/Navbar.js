@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Input } from 'reactstrap';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+    const navigate = useNavigate();
+    const [search, setSearch] = useState("");
     const { isLoggedIn, user } = useSelector((state) => state.auth);
-    console.log(`isLoggedIn-> ${isLoggedIn}`);
     const cartItems = useSelector((state) => state.cart.items);
+    // console.log(`isLoggedIn-> ${isLoggedIn}`);
+
+    const handleSearch = async (e) => {
+        if ((e.key === "Enter") && search?.length > 0) {
+            navigate(`/search/${search}`)
+            // navigate(`/search?search=${search}`)
+        }
+    }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 md:height-3">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-2 md:height-3">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
                     <h3>
@@ -18,6 +29,7 @@ const Navbar = () => {
                         </b>
                     </h3>
                 </Link>
+            <Input type="text" className='w-50 mt-1 mx-auto' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{ height: '40px' }} />
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -32,6 +44,8 @@ const Navbar = () => {
             </div>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
+
+
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}

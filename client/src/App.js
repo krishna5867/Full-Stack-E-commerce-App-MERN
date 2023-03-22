@@ -12,6 +12,7 @@ import SearchProducts from './Component/SearchProducts';
 import Order from './Component/Order';
 import ExploreProducts from './Component/AllProducts';
 import RelatedProducts from './Component/RelatedProducts';
+import CategoryProduct from './Component/CategoryProduct';
 
 // Protected Route
 import PrivateRoute from './Component/PrivateRoute';
@@ -29,6 +30,8 @@ import EditProducts from './Admin/EditProduct';
 import AllUsers from './Admin/AllUsers';
 import AllProducts from './Admin/AllProducts';
 import Orders from './Admin/Order';
+import Categories from './Admin/Categories';
+
 
 
 
@@ -67,7 +70,9 @@ function App() {
                             <Route path="/search/:search" element={<SearchProducts />} />
                             <Route path="/exploreProducts" element={<ExploreProducts />} />
                             <Route path="/relatedProducts" element={<RelatedProducts />} />
-
+                            <Route path="/createcategories" element={<Categories />} />
+                            <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
+                            <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
                         </Routes>
                     </>
                     : <Spinner /> 

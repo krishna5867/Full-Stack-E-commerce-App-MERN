@@ -11,7 +11,14 @@ exports.home = (req, res) => {
 //getAllProducts
 exports.getProducts = async (req, res) => {
     try {
-        const product = await Product.find().populate("user", "name")
+        // const product = await Product.find().populate("user", "name")
+        const product = await Product.find().populate({
+            path: "category",
+            select: "name"
+        }).populate({
+            path: "user",
+            select: "name"
+        });
         res.status(200).json({
             success: true,
             message: "successfull",
@@ -44,12 +51,6 @@ exports.getProduct = async (req, res) => {
 exports.adminAddProduct = async (req, res) => {
     try {
         const user = await User.findOne(req.user);
-
-        // const categoryDoc = await Category.findOne({ name: category });
-        // if (!categoryDoc) {
-        //     throw new Error("Invalid category");
-        // }
-
         const { name, description, price, stock, category } = req.body;
         if (!name) {
             throw new Error("All field must be Required");
@@ -71,7 +72,6 @@ exports.adminAddProduct = async (req, res) => {
                 price,
                 stock,
                 category,
-                // category: categoryDoc._id,
                 image: {
                     public_id: result.public_id,
                     url: result.secure_url
@@ -161,7 +161,7 @@ exports.adminDeleteProduct = async (req, res) => {
 };
 
 exports.searchProduct = async (req, res) => {
-    const search = req.query.search;
+    const search = req.params.search;
     const query = {
         $or: [
             { name: { $regex: search, $options: "i" } },
@@ -179,29 +179,7 @@ exports.searchProduct = async (req, res) => {
         })
     } catch (error) {
         console.log(error.message);
-        res.status(400).json({
-            success: false,
-            message: error.message
-        })
-
-    }
-}
-
-exports.filterProducts = async (req, res) => {
-    const checked = req.query.checked;
-    const query = {
-        checked: { $in: checked },
-    };
-    try {
-        const product = await Product.find(query);
-        res.status(200).json({
-            success: true,
-            message: "filter Product Found",
-            product,
-        })
-    } catch (error) {
-        console.log(error.message);
-        res.status(400).json({
+        res.status(401).json({
             success: false,
             message: error.message
         })
@@ -226,6 +204,40 @@ exports.getRelatedProducts = async (req, res) => {
         })
     }
 }
+
+exports.getProductByCategory = async (req, res) => {
+    try {
+        const selectCategory = req.params.selectedCategory;
+        const category = await Category.findOne({ name: selectCategory });
+        const products = await Product.find({ category: category._id }).populate('category');
+        res.status(200).json({
+            success: true,
+            message: 'Success',
+            products,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error in getting category',
+        });
+    }
+};
+
+// exports.totalProducts = async (req, res) => {
+//     try {
+//         const totalProduct = await Product.find({}).estimatedDocumentCount();
+//         res.status(200).json({
+//             success: true,
+//             message: "Total no of products found",
+//             totalProduct,
+//         });
+//     } catch (error) {
+//         res.status(400).json({
+//             success: false,
+//             message: error.message,
+//         });
+//     }
+// };
 
 
 

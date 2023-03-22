@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from '../Redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
-import { Row, Input } from 'reactstrap';
+import { Row } from 'reactstrap';
 import Footer from '../Component/Footer';
 import Image from '../Images/image1.png'
 import Category1 from '../Images/category-1.jpg'
@@ -19,10 +19,8 @@ import logo5 from '../Images/logo-philips.png'
 
 
 const Product = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [products, setProducts] = useState("");
-    const [search, setSearch] = useState("");
 
     const fetchProducts = async () => {
         const res = await axios.get('/getProducts');
@@ -30,13 +28,6 @@ const Product = () => {
             setProducts(res.data.product);
         }
     }
-
-    const handleSearch = async (e) => {
-        if ((e.key === "Enter") && search?.length > 0) {
-            navigate(`/search/${search}`)
-        }
-    }
-
 
     const handleAddToCart = (product) => {
         toast.success("Added Successfully")
@@ -47,16 +38,12 @@ const Product = () => {
         }));
     };
 
-
-
-
     useEffect(() => {
         fetchProducts();
     }, [products])
 
     return (
         <>
-            <Input type="text" className='mt-4 w-50 mt-1 mx-auto' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{ height: '40px' }} />
             <Row className='mt-4'>
                 <div className='row'>
                     <div className='col-md-4 px-6 col-12 d-flex flex-row justify-content-center align-items-center'>

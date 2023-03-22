@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from '../Redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,9 +8,20 @@ import Spinner from './Loading';
 
 
 const AllProducts = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [products, setProducts] = useState("");
     const [loading, setLoading] = useState(true)
+    const [categories, setCategories] = useState([]);
+    // const [category, setCategory] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    const fetchCategory = async () => {
+        const res = await axios.get('/getAllCategory');
+        if (res.status === 200) {
+            setCategories(res.data.category)
+        }
+    }
 
     const fetchProducts = async () => {
         const res = await axios.get('/getProducts');
@@ -20,6 +31,13 @@ const AllProducts = () => {
         }
     }
 
+    const fetchTotalProductsCount = async () => {
+        const res = await axios.get("/totalProducts");
+        console.log(res.data);
+        if(res.status === 200){
+            console.log(res.data);
+        }
+    }
     const handleAddToCart = (product) => {
         toast.success("Added Successfully")
         dispatch(addToCart({
@@ -29,9 +47,12 @@ const AllProducts = () => {
         }));
     };
 
+
     useEffect(() => {
         setLoading(true)
         fetchProducts();
+        fetchCategory();
+        fetchTotalProductsCount()
     }, [])
 
 
@@ -43,13 +64,17 @@ const AllProducts = () => {
                         <div className='mt-5 d-flex justify-content-between align-items-center px-5'>
                             <div className='px-md-4'><h2>All Products</h2></div>
                             <div className='px-md-5'>
-                                <select name="" id="">
-                                    <option value="New">Default</option>
-                                    <option value="New">Lower to higher </option>
-                                    <option value="New">Higher to lower</option>
-                                    <option value="New">Popular</option>
-                                    <option value="New">Demanding</option>
-                                    <option value="New">New</option>
+                                <select placeholder="Select a category" size="large" className="form-select"
+                                    onChange={(e) => {
+                                        const categoryId = e.target.value;
+                                        setSelectedCategory(categoryId);
+                                        navigate(`/category/${categoryId}`);
+                                    }}>
+                                    {categories?.map((c) => (
+                                        <option key={c._id} value={c.name}>
+                                            {c.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
