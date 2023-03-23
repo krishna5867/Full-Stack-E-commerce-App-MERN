@@ -50,7 +50,7 @@ const Product = () => {
                         <div className='text-md-start px-5'>
                             <h2 className='px-md-5'>Give Your Workout a New Style!</h2>
                             <button className="ms-md-5 mt-3 btn btn-warning rounded-4xl">
-                                <Link to="/exploreProducts" className='text-decoration-none text-black fs-5'>Explore More</Link>
+                                <Link to={"/products"} className='text-decoration-none text-black fs-5'>Explore More</Link>
                             </button>
                         </div>
                     </div>
@@ -66,9 +66,9 @@ const Product = () => {
                     <div className='col-md-4 col-6'><img src={Category2} alt="" className='card-img-top mt-3 w-75 rounded' /></div>
                     <div className='col-md-4 col-6'><img src={Category3} alt="" className='card-img-top mt-3 w-75 rounded' /></div>
                 </Row>
-
+                <h2 className='mt-5 text-center'><b>Featured Products</b></h2>
                 {/* All Products */}
-                <div className='d-flex justify-content-center flex-wrap'>
+                <div className='mt-2 d-flex justify-content-center flex-wrap '>
                     {products && products.map((product) =>
                         <>
                             <ToastContainer autoClose={2000} />

@@ -8,21 +8,26 @@ const upload = util.promisify(cloudinary.uploader.upload);
 exports.home = (req, res) => {
     res.send("Hello #Product");
 }
+
 //getAllProducts
 exports.getProducts = async (req, res) => {
     try {
-        // const product = await Product.find().populate("user", "name")
-        const product = await Product.find().populate({
-            path: "category",
-            select: "name"
-        }).populate({
-            path: "user",
-            select: "name"
-        });
+        const perPage = 5;
+        const page = req.query.page || 1;
+        const product = await Product.find({})
+            .limit(perPage)
+            .skip((page -1) * perPage)
+            .populate({
+                path: "category",
+                select: "name"
+            }).populate({
+                path: "user",
+                select: "name"
+            });
         res.status(200).json({
             success: true,
             message: "successfull",
-            product
+            product,
         })
     }
     catch (err) {
@@ -140,7 +145,6 @@ exports.adminEditProduct = async (req, res) => {
     }
 };
 
-
 //delete Product
 exports.adminDeleteProduct = async (req, res) => {
     try {
@@ -160,6 +164,7 @@ exports.adminDeleteProduct = async (req, res) => {
     }
 };
 
+// Search
 exports.searchProduct = async (req, res) => {
     const search = req.params.search;
     const query = {
@@ -186,7 +191,7 @@ exports.searchProduct = async (req, res) => {
 
     }
 }
-
+// Related Products
 exports.getRelatedProducts = async (req, res) => {
     try {
         // const {categories} = req.body;
@@ -205,6 +210,7 @@ exports.getRelatedProducts = async (req, res) => {
     }
 }
 
+// Filter based on categories 
 exports.getProductByCategory = async (req, res) => {
     try {
         const selectCategory = req.params.selectedCategory;
@@ -223,21 +229,24 @@ exports.getProductByCategory = async (req, res) => {
     }
 };
 
-// exports.totalProducts = async (req, res) => {
-//     try {
-//         const totalProduct = await Product.find({}).estimatedDocumentCount();
-//         res.status(200).json({
-//             success: true,
-//             message: "Total no of products found",
-//             totalProduct,
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             success: false,
-//             message: error.message,
-//         });
-//     }
-// };
+// Pagination
+exports.productCount = async (req, res) => {
+    try {
+        const totalCount = await Product.find({}).estimatedDocumentCount();
+        res.status(200).json({
+            success: true,
+            message: "Total no of products found",
+            totalCount,
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+// 
 
 
 

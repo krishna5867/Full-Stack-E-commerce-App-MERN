@@ -6,25 +6,25 @@ import { addToCart } from '../Redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import Spinner from './Loading';
 
-
 const AllProducts = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [products, setProducts] = useState("");
     const [loading, setLoading] = useState(true)
+    const [products, setProducts] = useState("");
     const [categories, setCategories] = useState([]);
-    // const [category, setCategory] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [currentPage, setCurrentPage] = useState(2);
+    const [totalPages, setTotalPages] = useState(0);
 
     const fetchCategory = async () => {
-        const res = await axios.get('/getAllCategory');
+        const res = await axios.get(`/getAllCategory?page=${currentPage}`);
         if (res.status === 200) {
             setCategories(res.data.category)
         }
     }
 
     const fetchProducts = async () => {
-        const res = await axios.get('/getProducts');
+        const res = await axios.get(`/getProducts?page=${currentPage}`);
         if (res.status === 200) {
             setProducts(res.data.product);
             setLoading(false)
@@ -32,12 +32,12 @@ const AllProducts = () => {
     }
 
     const fetchTotalProductsCount = async () => {
-        const res = await axios.get("/totalProducts");
-        console.log(res.data);
-        if(res.status === 200){
-            console.log(res.data);
+        const res = await axios.get("/productCount");
+        if (res.status === 200) {
+            setTotalPages(Math.ceil((res.data.totalCount) / 5));
         }
     }
+
     const handleAddToCart = (product) => {
         toast.success("Added Successfully")
         dispatch(addToCart({
@@ -47,13 +47,25 @@ const AllProducts = () => {
         }));
     };
 
+    const handleNext = () => {
+        if(currentPage === totalPages) return;
+        else{
+        setCurrentPage(currentPage + 1)
+        }
+    }
+    const handlePrev = () => {
+        if(currentPage === 1) return;
+        else{
+        setCurrentPage(currentPage - 1)
+        }
+    }
 
     useEffect(() => {
         setLoading(true)
         fetchProducts();
         fetchCategory();
         fetchTotalProductsCount()
-    }, [])
+    }, [currentPage])
 
 
     return (
@@ -61,7 +73,7 @@ const AllProducts = () => {
             {
                 loading ? (<Spinner />) : (
                     <>
-                        <div className='mt-5 d-flex justify-content-between align-items-center px-5'>
+                        <div className='mt-2 d-flex justify-content-between align-items-center px-5'>
                             <div className='px-md-4'><h2>All Products</h2></div>
                             <div className='px-md-5'>
                                 <select placeholder="Select a category" size="large" className="form-select"
@@ -100,6 +112,17 @@ const AllProducts = () => {
                         </div>
                     </>
                 )}
+                {products && totalPages && (
+                    <>
+                        <button className="btn btn-warning" onClick={handlePrev}>
+                        {loading ? "Loading ..." : "Prev"}
+                        </button> &nbsp; {currentPage} &nbsp;
+                        <button className="ms-2 btn btn-warning" onClick={handleNext}>
+                            {loading ? "Loading ..." : "Next"}
+                        </button>
+                    </>
+                )} <br />
+            {/* Total No of Pages: {totalPages} */}
         </>
 
     )
