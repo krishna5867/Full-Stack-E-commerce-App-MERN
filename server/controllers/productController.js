@@ -210,14 +210,14 @@ exports.productCount = async (req, res) => {
 exports.getProductByCategory = async (req, res) => {
     try {
         const selectedCategory = req.params.selectedCategory;
-        const category = await Category.findOne({name:selectedCategory});
+        const category = await Category.findOne({ name: selectedCategory });
         if (!category) {
             return res.status(404).json({
                 success: false,
                 message: 'Category not found',
             });
         }
-        const product = await Product.find({category: category._id}).populate('category');
+        const product = await Product.find({ category: category._id }).populate('category');
         res.status(200).json({
             success: true,
             message: 'Success',
@@ -235,12 +235,17 @@ exports.getProductByCategory = async (req, res) => {
 // Related Products
 exports.getRelatedProducts = async (req, res) => {
     try {
-        // const {categories} = req.body;
-        const product = await Product.find({ name: "mens" })
+        const product = await Product.findById(req.params.id);
+        const relatedProducts = await Product.find({
+            _id: { $ne: product._id },
+            category: product.category,
+        }).limit(4);
+        // const product = await Product.findById(productId);
+        // const relatedProducts = await Product.find({ description: { $regex: product.description, $options: 'i' } });
         res.status(200).json({
             success: true,
             message: "successfull",
-            product
+            relatedProducts
         })
     }
     catch (err) {

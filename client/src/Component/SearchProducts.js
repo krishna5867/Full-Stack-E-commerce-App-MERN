@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { addToCart } from '../Redux/cartSlice';
 import Spinner from './Loading';
-// import RelatedProducts from './RelatedProducts';
 
 const SearchProducts = () => {
     const dispatch = useDispatch();
@@ -22,6 +21,7 @@ const SearchProducts = () => {
             setLoading(false)
         }
     }
+
     const handleAddToCart = (product) => {
         toast.success("Added Successfully")
         dispatch(addToCart({
@@ -72,9 +72,6 @@ const SearchProducts = () => {
                         }
                     </>
                 )}
-            <div>
-                {/* <RelatedProducts /> */}
-            </div>
         </>
     )
 }

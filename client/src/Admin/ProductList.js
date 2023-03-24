@@ -16,16 +16,19 @@ import logo2 from '../Images/logo-oppo.png'
 import logo3 from '../Images/logo-coca-cola.png'
 import logo4 from '../Images/logo-paypal.png'
 import logo5 from '../Images/logo-philips.png'
+import Spinner from '../Component/Loading';
 
 
 const Product = () => {
     const dispatch = useDispatch();
     const [products, setProducts] = useState("");
+    const [loading, setLoading] = useState(true)
 
     const fetchProducts = async () => {
         const res = await axios.get('/getProducts');
         if (res.status === 200) {
             setProducts(res.data.product);
+            setLoading(false)
         }
     }
 
@@ -39,11 +42,14 @@ const Product = () => {
     };
 
     useEffect(() => {
+        setLoading(true)
         fetchProducts();
-    }, [products])
+    }, [])
 
     return (
         <>
+        {loading ? <Spinner /> : (
+            <>
             <Row className='mt-4'>
                 <div className='row'>
                     <div className='col-md-4 px-6 col-12 d-flex flex-row justify-content-center align-items-center'>
@@ -67,44 +73,6 @@ const Product = () => {
                     <div className='col-md-4 col-6'><img src={Category3} alt="" className='card-img-top mt-3 w-75 rounded' /></div>
                 </Row>
                 <h2 className='mt-5 text-center'><b>Featured Products</b></h2>
-                {/* Carosal */}
-                {/* <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <div className='mt-2 d-flex justify-content-center '>
-                                {products && products.map((product) =>
-                                    <>
-                                        <ToastContainer autoClose={2000} />
-                                        <div className=''>
-                                            <div className="shadow-lg m-4 mb-5 bg-white rounded card-img-top" key={product._id}>
-                                                <Link to={`/product/${product._id}`} className='text-decoration-none text-white'>
-                                                    <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem', width: '15rem' }} />
-                                                </Link>
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{product.name.toUpperCase()}</h5>
-                                                    <p className="card-text">{product.description}</p>
-                                                    <p className="card-text"><h3>${product.price}</h3></p>
-                                                    <button className='btn btn-primary mb-3' onClick={() => handleAddToCart(product)}><b>Add To Cart</b></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-
-                    </div>
-                    <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
-                </div> */}
-
-
                 {/* All Products */}
                 <div className='mt-2 d-flex justify-content-center flex-wrap '>
                     {products && products.map((product) =>
@@ -152,6 +120,9 @@ const Product = () => {
                 </div>
             </Row>
             <Footer />
+            </>
+        )}
+            
         </>
     );
 }

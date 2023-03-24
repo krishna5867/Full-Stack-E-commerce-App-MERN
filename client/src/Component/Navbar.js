@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
-    const { isLoggedIn, user } = useSelector((state) => state.auth);
+    // const { user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
 
     const handleSearch = async (e) => {
@@ -16,6 +16,10 @@ const Navbar = () => {
             navigate(`/search/${searchQuery}`)
         }
     }
+    const user = JSON.parse(localStorage.getItem('user'));
+    const isAdmin = user && user.role === 'admin';
+    const isLoggedIn = !!user;
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 md:height-3">
             <div className="container-fluid">
@@ -42,17 +46,14 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
 
-
-
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
                         {isLoggedIn ? (
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to="/profile">
                                     <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
-                                        <b>{user.name.substring(0, 2).toUpperCase()}</b>
+                                    {user.name && <b>{user.name.substring(0, 2).toUpperCase()}</b>}
                                     </div>
-                                    {/* {user ? <i className="fa fa-angle-down" aria-hidden="true"></i> : ''} */}
                                 </Link>
                             </li>
                         ) : (
@@ -66,7 +67,7 @@ const Navbar = () => {
                         )}
 
                         {/* check if user */}
-                        {user && user.role === 'admin' ? (
+                        {isAdmin && (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link active" aria-current="page" to="/admindashboard/allusers">
@@ -76,8 +77,6 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                             </>
-                        ) : (
-                            ''
                         )}
                         {/* Cart Icon */}
                         <li className="nav-item position-relative">

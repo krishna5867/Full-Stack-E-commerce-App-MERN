@@ -5,7 +5,7 @@ function PrivateRoute({ Component }) {
     const navigate = useNavigate();
     
     useEffect(() => {
-        let loggedIn = localStorage.getItem('usertoken')
+        let loggedIn = localStorage.getItem('user')
         if (!loggedIn) {
             navigate('/login')
         }

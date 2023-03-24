@@ -3,15 +3,15 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card, CardBody } from 'reactstrap';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { logout } from '../Redux/authSlice';
+// import { logout } from '../Redux/authSlice';
 
 const Profile = () => {
     const [order, setOrder] = useState([]);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoggedIn, user } = useSelector((state) => state.auth);
+    // const { isLoggedIn, user } = useSelector((state) => state.auth);
     // console.log(`isLoggedIn-> ${isLoggedIn}`);
     const fetchOrder = async () => {
         const res = await axios.get("/myOrder");
@@ -23,19 +23,21 @@ const Profile = () => {
 
     const handleSignout = async () => {
         try {
-            localStorage.removeItem("usertoken");
+            localStorage.removeItem("user");
         } catch (error) {
             console.log("Error removing item from localStorage: ", error.message);
         }
 
         try {
             await axios.get('/signout');
-            dispatch(logout());
+            // dispatch(logout());
             navigate('/login');
         } catch (error) {
             console.log(error.message);
         }
     };
+
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         fetchOrder()
@@ -45,7 +47,7 @@ const Profile = () => {
             <ToastContainer />
             <Container className='mt-5' style={{ width: '30rem' }}>
                 <Card className='border m-2 p-4 shadow-lg bg-white rounded'>
-                    {isLoggedIn ? (
+                    {user ? (
                         <>
                             <CardBody className='m-4'>
                                 <div className='d-flex'>

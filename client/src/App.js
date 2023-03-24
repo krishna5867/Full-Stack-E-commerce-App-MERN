@@ -10,7 +10,6 @@ import PageNotFound from './Component/PageNotFound';
 import SearchProducts from './Component/SearchProducts';
 import Order from './Component/Order';
 import ExploreProducts from './Component/AllProducts';
-import RelatedProducts from './Component/RelatedProducts';
 import CategoryProduct from './Component/CategoryProduct';
 
 // Protected Route
@@ -58,7 +57,6 @@ function App() {
                     <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
                     <Route path="/search/:search" element={<SearchProducts />} />
                     <Route path="/products/" element={<ExploreProducts />} />
-                    <Route path="/relatedProducts" element={<RelatedProducts />} />
                     <Route path="/createcategories" element={<Categories />} />
                     <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
                     <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />

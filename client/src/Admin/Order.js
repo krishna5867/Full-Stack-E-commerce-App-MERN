@@ -38,15 +38,17 @@ const Orders = () => {
                 <table class="table">
                   <thead>
                     <tr>
+                      <th scope="col">Sno</th>
                       <th scope="col">OrderId</th>
                       <th scope="col">Buyer Name</th>
                       <th scope="col">Created At</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
-                  {orderDetails && orderDetails.map((item) =>
+                  {orderDetails && orderDetails.map((item, index) =>
                     <tbody>
                       <tr key={item._id}>
+                      <td>{index + 1}</td>
                         <td><Link to={`/orderdetails/${item._id}`} className="text-decoration-none">{item._id}</Link></td>
                         <td><Link to={`/buyerDetails/${item?.user._id}`} className="text-decoration-none text-black">{item.user.name}</Link></td>
                         <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
