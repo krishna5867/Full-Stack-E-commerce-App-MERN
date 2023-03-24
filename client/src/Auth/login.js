@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -43,8 +44,8 @@ const Login = () => {
                                 <Input type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             </div>
                             <Button className='bg-primary mt-4 mb-3 w-100' type="submit">Login</Button>
-                            <p>Don't have Account <a href="signup">Create New Account</a></p>
-                            <p><a href='/forgetPassword'>Forget Password </a></p>
+                            <p>Don't have Account <Link to="/signup">Create New Account</Link></p>
+                            <p><Link to='/forgetPassword'>Forget Password </Link></p>
                         </Form>
                     </CardBody>
                 </Card>

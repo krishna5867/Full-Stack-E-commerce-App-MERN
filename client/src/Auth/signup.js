@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap'
 import { ToastContainer, toast} from 'react-toastify'
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
     const [name, setName] = useState("");
@@ -47,7 +48,7 @@ const Signup = () => {
                                 <Input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             </div>
                             <Button className='bg-primary mt-4 mb-3 w-100'>Signup</Button>
-                            <p>Already have account <a href="login">Login Here</a></p>
+                            <p>Already have account <Link to="/login">Login Here</Link></p>
                             <p><a href='/forgetPassword'>Forget Password </a></p>
                         </Form>
                     </CardBody>

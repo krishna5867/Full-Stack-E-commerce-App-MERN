@@ -13,8 +13,8 @@ const {
 const router = express.Router();
 
 router.post("/placeOrder",auth, placeOrder);
-router.get("/getOneOrder/:id", getOneOrder);
-router.get("/getLoggedInOrder", getLoggedInOrder);
+router.get("/getOneOrder/:id",auth, getOneOrder);
+router.get("/myOrder", getLoggedInOrder);
 
 //admin
 router.get("/admin/orders",auth, customizeRole('admin'), adminGetAllOrders);

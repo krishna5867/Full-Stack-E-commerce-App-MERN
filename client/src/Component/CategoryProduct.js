@@ -44,6 +44,8 @@ const CategoryProduct = () => {
             {
                 loading ? <Spinner /> :(
                     <>
+                    {products && products.length !== 0 ? 
+                        <>
                         <h3>CategoryProduct</h3>
 
                         <div className='d-flex justify-content-center flex-wrap'>
@@ -66,6 +68,11 @@ const CategoryProduct = () => {
                                 </>
                             )}
                         </div>
+                        </> : 
+                        <>
+                        <div className='mt-5'><h3>Does't Match any result !</h3></div>
+                        </>
+                        }
                     </>)
             }
         </>

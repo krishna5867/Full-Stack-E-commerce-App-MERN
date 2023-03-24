@@ -14,6 +14,7 @@ const AllProducts = () => {
     const [products, setProducts] = useState("");
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
+    console.log(selectedCategory);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 

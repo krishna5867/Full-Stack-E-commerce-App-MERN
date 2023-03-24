@@ -18,17 +18,17 @@ const orderSchema = mongoose.Schema(
                     type: Number,
                     required: true,
                 },
-                // image: {
-                //     type: String,
-                //     required: true,
-                // },
+                image: {
+                    type: String,
+                    required: true,
+                },
                 price: {
                     type: Number,
                     required: true,
                 },
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
-                    required: true,
+                    // required: true,
                     ref: "Product",
                 },
             },
@@ -57,8 +57,10 @@ const orderSchema = mongoose.Schema(
                 required: true,
             },
         },
-        itemprice: Number,
-        Shipping: Number,
+        total: Number,
+        shippingcharge: Number,
+        orderstatus: Boolean,
+        default: false,
         isDelivered: {
             Type: Boolean,
             default: false,

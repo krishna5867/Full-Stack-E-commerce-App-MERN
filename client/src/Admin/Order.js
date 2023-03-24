@@ -1,8 +1,22 @@
-import React from 'react'
-import {Row, Container, Button, Card, CardBody } from 'reactstrap'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Row, Container, Button, Card } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment'
 
 const Orders = () => {
+  const [orderDetails, setOrderDetails] = useState([]);
+
+  const fetchOrders = async () => {
+    const res = await axios.get("/admin/orders");
+    console.log(res.data, '11');
+    if (res.status === 200) {
+      setOrderDetails(res.data.order)
+    }
+  }
+  useEffect(() => {
+    fetchOrders()
+  }, [])
   return (
     <>
       <Row className='p-4'>
@@ -21,14 +35,31 @@ const Orders = () => {
             <Card style={{ height: '32rem' }}>
               <div className='mt-2' style={{ height: '300px' }}>
                 {/* Content */}
-                <Card className='w-50 mx-auto mt-5'>
-                  <CardBody>Order Not Available !</CardBody>
-                </Card>
-              </div>
-            </Card>
-          </Container>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">OrderId</th>
+                      <th scope="col">Buyer Name</th>
+                      <th scope="col">Created At</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  {orderDetails && orderDetails.map((item) =>
+                    <tbody>
+                      <tr key={item._id}>
+                        <td><Link to={`/orderdetails/${item._id}`} className="text-decoration-none">{item._id}</Link></td>
+                        <td><Link to={`/buyerDetails/${item?.user._id}`} className="text-decoration-none text-black">{item.user.name}</Link></td>
+                        <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
+                        <td> Process </td>
+                    </tr>
+                    </tbody>
+                  )}
+              </table>
+            </div>
+          </Card>
         </Container>
-      </Row>
+      </Container>
+    </Row>
 
     </>
   )

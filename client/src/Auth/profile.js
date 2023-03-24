@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Card, CardBody } from 'reactstrap';
@@ -8,10 +8,18 @@ import { ToastContainer } from 'react-toastify';
 import { logout } from '../Redux/authSlice';
 
 const Profile = () => {
+    const [order, setOrder] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isLoggedIn, user } = useSelector((state) => state.auth);
     // console.log(`isLoggedIn-> ${isLoggedIn}`);
+    const fetchOrder = async () => {
+        const res = await axios.get("/myOrder");
+        console.log(res);
+        if(res.status === 200){
+            setOrder(res.data.order)
+        }
+    }
 
     const handleSignout = async () => {
         try {
@@ -28,6 +36,10 @@ const Profile = () => {
             console.log(error.message);
         }
     };
+
+    useEffect(() => {
+        fetchOrder()
+    }, []);
     return (
         <div style={{ height: '80vh' }}>
             <ToastContainer />
@@ -62,6 +74,14 @@ const Profile = () => {
                                 </div>
                                 <div className='d-flex'>
                                     <div>
+                                        <h3>Order:- &nbsp; </h3>
+                                    </div>
+                                    <div>
+                                        <h3>{order}</h3>
+                                    </div>
+                                </div>
+                                <div className='d-flex'>
+                                    <div>
                                         <h4>Created:- &nbsp; </h4>
                                     </div>
                                     <div>
@@ -74,8 +94,7 @@ const Profile = () => {
                                     <button className='btn btn-dark mt-3'>
                                         <Link
                                             to={`/changepassword`}
-                                            className='text-decoration-none text-white'
-                                        >
+                                            className='text-decoration-none text-white'>
                                             Change Password
                                         </Link>
                                     </button>

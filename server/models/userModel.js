@@ -28,7 +28,11 @@ const userSchema = new mongoose.Schema({
   } ,
   forgotPasswordExpiry:{
     type: String 
-  }
+  },
+  order: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Order",
+},
 },
   {
     timestamps: true,

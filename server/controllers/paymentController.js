@@ -23,7 +23,6 @@ exports.order = async (req, res) => {
                 })
             }
             return res.status(200).json({ data: order })
-            // console.log(order);
         });
     } catch (error) {
         console.log(error);
@@ -42,9 +41,7 @@ exports.verify = async (req, res) => {
     
         if (expectedSignature === razorpay_signature) {
             res.status(200).json({
-                message: 'Sign Valid',
-                // expectedSignature,
-                // body,
+                message: 'Sign Validation Success',
                 razorpay_order_id,
                 razorpay_payment_id,
                 razorpay_signature

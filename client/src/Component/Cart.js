@@ -5,7 +5,6 @@ import { removeFromCart, increaseQuantity, decreaseQuantity, removeAllItems } fr
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -36,7 +35,7 @@ const Cart = () => {
             currency: data.currency,
             order_id: data.id,
             name: 'T-Shirt Store',
-            description: 'XYZ',
+            description: 'Premium T-shirt store, Dhanbad Jharkhand',
             image: "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg",
             handler: function (response) {
                 axios.post('/verify', {
@@ -77,43 +76,55 @@ const Cart = () => {
 
     const handleCheckout = (amount) => {
         const _data = { amount: amount }
-        // placeOrder()
+        placeOrder()
         axios.post('/order', _data)
             .then(res => {
                 handleOpenRazorpay(res.data.data)
-                
+
             })
             .catch(err => {
                 console.log(err)
             })
     }
 
-    // const placeOrder = async () => {
-    //     try {
-    //         const res = await axios.post("/placeOrder",{
-    //             orderItems:{
-    //             name: product.name,
-    //             "quantity": "5",
-    //             "price": "4000",
-    //             "product": "63d6f6fac3873ea0155ffe28"
-                
-    //             },
-    //             "shippingAddress":{
-    //                 "address": "laxmipur",
-    //                 "city": "jamui",
-    //                 "postalCode": "811312",
-    //                 "country": "india"
-    //             },
-    //             "itemprice": "3000",
-    //             "Shipping": "50"
-    //             })
-    //             if(res.status === 200){
-    //                 console.log(res.data);
-    //             }
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }
+
+    const placeOrder = async () => {
+        try {
+            const itemPrices = cartItems.map(item => item.price * item.quantity);
+            const itemPrice = itemPrices.reduce((acc, cur) => acc + cur, 0);
+            const orderItems = cartItems.map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                image: item.image,
+                price: item.price,
+                product: item._id
+            }));
+            const res = await axios.post("/placeOrder", {
+                orderItems: orderItems,
+                shippingAddress: {
+                    address: "jharia",
+                    city: "Dhanbad",
+                    postalCode: 121312,
+                    district: "Dhanbad",
+                    state: "Jharkhand",
+                    country: "India"
+                },
+                shippingcharge: 50,
+                total: itemPrice,
+                grandtotal: itemPrice + 50,
+                orderstatus: false,
+                isDelivered: false
+            });
+            if (res.status === 200) {
+                console.log(res.data, '145');
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+
+
 
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap'
+import { Link } from 'react-router-dom';
 
 
 const ForgetPassword = () => {
@@ -42,7 +43,7 @@ const ForgetPassword = () => {
                                 <Input type="text" placeholder="Email..." value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             <Button className='bg-primary mt-4 mb-3 w-100'><b>Send Link</b></Button> <br />
-                            <p><a href="/login">Back</a></p>
+                            <p><Link to="/login">Back</Link></p>
                         </Form>
                     </CardBody>
                 </Card>

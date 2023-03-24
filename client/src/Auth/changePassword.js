@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Form, Container, Card, CardBody, Button, Input} from 'reactstrap'
-
+import { Link } from 'react-router-dom';
 
 const ChangePassword = ()=> {
     const [message, setMessage] = useState(false);
@@ -37,7 +37,7 @@ return(
         <Input type="password" name='password' placeholder="Enter old password..." className="mt-4" value={password} onChange={(e)=> setOldPassword(e.target.value)} />
         <Input type="password" name='newpassword' placeholder="Enter new password..." className="mt-4" value={newpassword} onChange={(e)=> setNewPassword(e.target.value)} />
         <Button className='bg-primary mt-4 mb-3 w-100'><b>Update Password</b></Button> <br />
-        <p><a href="/profile">Back</a></p>
+        <p><Link to="/profile">Back</Link></p>
     </Form>
             </CardBody>
         </Card>

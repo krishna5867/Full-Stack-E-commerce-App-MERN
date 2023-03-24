@@ -30,6 +30,8 @@ import AllUsers from './Admin/AllUsers';
 import AllProducts from './Admin/AllProducts';
 import Orders from './Admin/Order';
 import Categories from './Admin/Categories';
+import OrderDetails from './Admin/OrderDetails';
+import BuyerDetails from './Admin/Buyer';
 
 function App() {
     return (
@@ -60,6 +62,8 @@ function App() {
                     <Route path="/createcategories" element={<Categories />} />
                     <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
                     <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
+                    <Route path="/orderDetails/:id" element={<OrderDetails />} />
+                    <Route path="/buyerDetails/:id" element={<BuyerDetails />} />
                 </Routes>
             </>
         </div>
