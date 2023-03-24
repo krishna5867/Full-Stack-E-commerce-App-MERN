@@ -1,6 +1,5 @@
 const Category = require("../models/categoryModel")
 
-// import slugify from "slugify";
 exports.createCategory = async (req, res) => {
     try {
         const { name } = req.body;
@@ -19,7 +18,6 @@ exports.createCategory = async (req, res) => {
         }
         const category = await new Category({
             name,
-            // slug: slugify(name),
         }).save();
         res.status(201).json({
             success: true,
@@ -35,31 +33,6 @@ exports.createCategory = async (req, res) => {
     }
 };
 
-//update category
-// export const updateCategoryController = async (req, res) => {
-//     try {
-//         const { name } = req.body;
-//         const { id } = req.params;
-//         const category = await categoryModel.findByIdAndUpdate(
-//             id,
-//             { name, slug: slugify(name) },
-//             { new: true }
-//         );
-//         res.status(200).send({
-//             success: true,
-//             messsage: "Category Updated Successfully",
-//             category,
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send({
-//             success: false,
-//             error,
-//             message: "Error while updating category",
-//         });
-//     }
-// };
-
 // get all categories
 exports.getAllCategory = async (req, res) => {
     try {
@@ -73,25 +46,6 @@ exports.getAllCategory = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Error while getting all categories",
-        });
-    }
-};
-
-// single category
-exports.singleCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const category = await Category.findOne({ id });
-        res.status(200).json({
-            success: true,
-            message: "Category Successful",
-            category,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: "Error in Single Category",
         });
     }
 };
@@ -130,3 +84,28 @@ exports.deleteCategory = async (req, res) => {
         });
     }
 };
+
+
+// exports.updateCategory = async (req, res) => {
+//     try {
+//         const { name } = req.body;
+//         const { id } = req.params;
+//         const category = await categoryModel.findByIdAndUpdate(
+//             id,
+//             { name, slug: slugify(name) },
+//             { new: true }
+//         );
+//         res.status(200).send({
+//             success: true,
+//             messsage: "Category Updated Successfully",
+//             category,
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send({
+//             success: false,
+//             error,
+//             message: "Error while updating category",
+//         });
+//     }
+// };

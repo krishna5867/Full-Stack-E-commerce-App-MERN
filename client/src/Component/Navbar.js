@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,18 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const [search, setSearch] = useState("");
+    const [searchQuery, setSearchQuery] = useState([]);
     const { isLoggedIn, user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
-    // console.log(`isLoggedIn-> ${isLoggedIn}`);
 
     const handleSearch = async (e) => {
-        if ((e.key === "Enter") && search?.length > 0) {
-            navigate(`/search/${search}`)
-            // navigate(`/search?search=${search}`)
+        if ((e.key === "Enter") && searchQuery?.length > 0) {
+            navigate(`/search/${searchQuery}`)
         }
     }
-
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-2 md:height-3">
             <div className="container-fluid">
@@ -29,7 +26,7 @@ const Navbar = () => {
                         </b>
                     </h3>
                 </Link>
-            <Input type="text" className='w-50 mt-1 mx-auto' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleSearch} style={{ height: '40px' }} />
+                <Input type="text" className='w-50 mt-1 mx-auto' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyUp={handleSearch} style={{ height: '40px' }} />
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -52,7 +49,7 @@ const Navbar = () => {
                         {isLoggedIn ? (
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to="/profile">
-                                    <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{width: '40px', height:' 40px'}}>
+                                    <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
                                         <b>{user.name.substring(0, 2).toUpperCase()}</b>
                                     </div>
                                     {/* {user ? <i className="fa fa-angle-down" aria-hidden="true"></i> : ''} */}

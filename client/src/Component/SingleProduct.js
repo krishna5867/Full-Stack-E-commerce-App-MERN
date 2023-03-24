@@ -35,7 +35,6 @@ const SingleProduct = () => {
     textAlign: 'left',
     height: '50vh',
     alignItems: 'center'
-
   }
 
   return (
@@ -49,9 +48,9 @@ const SingleProduct = () => {
       <div className="col-lg-8" style={styles}>
         <div className='card p-5 border border-warning border-2'>
       <h3><b>Product Name</b> - {product.name}</h3>
-      <h3><b>Product Description</b> - {product.description}</h3>
-      <h3><b>Category</b> - {product.categories}</h3>
-      <h3><b>Category</b> - {product.category}</h3>
+      <h3><b>Description</b> - {product.description}</h3>
+      {/* <h3><b>Category</b> - {product.categories}</h3> */}
+      {/* <h3><b>Category</b> - {product.category}</h3> */}
       <h3><b>Price</b> - ${product.price}</h3>
       <div className='flex'>
       <Button className='bg-primary m-3 px-3' onClick={()=> handleAddToCart(product)}><b>Add cart</b></Button>

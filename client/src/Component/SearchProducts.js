@@ -13,11 +13,10 @@ const SearchProducts = () => {
     const { search } = useParams();
     const [products, setProducts] = useState();
     const [loading, setLoading] = useState(true)
-    console.log(products, "16");
 
     const fetchSearchProducts = async () => {
         const res = await axios.get(`/search/${search}`);
-        console.log(res.data,"20");
+        // console.log(res.data,"20");
         if (res.status === 200) {
             setProducts(res.data.product)
             setLoading(false)
@@ -35,14 +34,16 @@ const SearchProducts = () => {
     useEffect(() => {
         setLoading(true)
         fetchSearchProducts();
-    }, [])
+    }, [search])
 
     return (
         <>
             {
                 loading ? (<Spinner />) : (
                     <>
-                        <h3>Search Match&nbsp;
+                        {products && products.length !== 0 ? 
+                        <>
+                        <h3>Product Match&nbsp;
                             <span>({products.length})</span></h3>
                         <div className='d-flex justify-content-center flex-wrap'>
                             {products.map((product) =>
@@ -64,6 +65,11 @@ const SearchProducts = () => {
                                 </>
                             )}
                         </div>
+                        </> : 
+                        <>
+                        <div className='mt-5'><h3>Does't Match any result !</h3></div>
+                        </>
+                        }
                     </>
                 )}
             <div>

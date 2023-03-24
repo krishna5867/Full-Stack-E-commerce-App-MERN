@@ -16,7 +16,7 @@ exports.getProducts = async (req, res) => {
         const page = req.query.page || 1;
         const product = await Product.find({})
             .limit(perPage)
-            .skip((page -1) * perPage)
+            .skip((page - 1) * perPage)
             .populate({
                 path: "category",
                 select: "name"
@@ -37,7 +37,6 @@ exports.getProducts = async (req, res) => {
         })
     }
 }
-
 //get Single Product
 exports.getProduct = async (req, res) => {
     try {
@@ -166,17 +165,13 @@ exports.adminDeleteProduct = async (req, res) => {
 
 // Search
 exports.searchProduct = async (req, res) => {
-    const search = req.params.search;
-    const query = {
-        $or: [
-            { name: { $regex: search, $options: "i" } },
-            { categories: { $regex: search, $options: "i" } },
-            { description: { $regex: search, $options: "i" } }
-
-        ],
-    };
     try {
-        const product = await Product.find(query);
+        const search = req.params.search;
+        const product = await Product.find({
+            $or: [
+                { name: { $regex: search, $options: "i" } }
+            ]
+        });
         res.status(200).json({
             success: true,
             message: "Search Product Found",
@@ -191,43 +186,6 @@ exports.searchProduct = async (req, res) => {
 
     }
 }
-// Related Products
-exports.getRelatedProducts = async (req, res) => {
-    try {
-        // const {categories} = req.body;
-        const product = await Product.find({ categories: "women" })
-        res.status(200).json({
-            success: true,
-            message: "successfull",
-            product
-        })
-    }
-    catch (err) {
-        res.status(500).json({
-            success: false,
-            message: "not found",
-        })
-    }
-}
-
-// Filter based on categories 
-exports.getProductByCategory = async (req, res) => {
-    try {
-        const selectCategory = req.params.selectedCategory;
-        const category = await Category.findOne({ name: selectCategory });
-        const products = await Product.find({ category: category._id }).populate('category');
-        res.status(200).json({
-            success: true,
-            message: 'Success',
-            products,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error in getting category',
-        });
-    }
-};
 
 // Pagination
 exports.productCount = async (req, res) => {
@@ -246,9 +204,52 @@ exports.productCount = async (req, res) => {
     }
 };
 
-// 
 
 
+// Filter based on categories 
+exports.getProductByCategory = async (req, res) => {
+    try {
+        const selectedCategory = req.params.selectedCategory;
+        const category = await Category.findOne({name:selectedCategory});
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: 'Category not found',
+            });
+        }
+        const product = await Product.find({category: category._id}).populate('category');
+        res.status(200).json({
+            success: true,
+            message: 'Success',
+            product,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error in getting category',
+        });
+    }
+};
+
+
+// Related Products
+exports.getRelatedProducts = async (req, res) => {
+    try {
+        // const {categories} = req.body;
+        const product = await Product.find({ name: "mens" })
+        res.status(200).json({
+            success: true,
+            message: "successfull",
+            product
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "not found",
+        })
+    }
+}
 
 
 

@@ -21,7 +21,7 @@ router.get("/getProducts", getProducts);
 router.get("/getproduct/:id", getProduct);
 router.get("/search/:search", searchProduct);
 router.get("/relatedProducts", getRelatedProducts);
-router.get("/getProductByCategory", getProductByCategory);
+router.get("/category/:selectedCategory", getProductByCategory);
 router.get("/productCount", productCount);
 
 

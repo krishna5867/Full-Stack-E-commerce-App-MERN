@@ -46,6 +46,12 @@ const orderSchema = mongoose.Schema(
                 type: String,
                 required: true,
             },
+            district: {
+                type: String,
+            },
+            state: {
+                type: String,
+            },
             country: {
                 type: String,
                 required: true,

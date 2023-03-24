@@ -50,7 +50,7 @@ const Cart = () => {
                         const orderId = res.data.razorpay_order_id;
                         const PaymentId = res.data.razorpay_payment_id;
                         const signature = res.data.razorpay_signature;
-                        console.log(orderId, "48");
+                        // console.log(orderId, "48");
                         navigate(`/order/${orderId}/${PaymentId}/${signature}`);
                         handleRemoveAllItems();
                     })
@@ -74,8 +74,10 @@ const Cart = () => {
         rzp.open()
     }
 
+
     const handleCheckout = (amount) => {
         const _data = { amount: amount }
+        // placeOrder()
         axios.post('/order', _data)
             .then(res => {
                 handleOpenRazorpay(res.data.data)
@@ -85,6 +87,33 @@ const Cart = () => {
                 console.log(err)
             })
     }
+
+    // const placeOrder = async () => {
+    //     try {
+    //         const res = await axios.post("/placeOrder",{
+    //             orderItems:{
+    //             name: product.name,
+    //             "quantity": "5",
+    //             "price": "4000",
+    //             "product": "63d6f6fac3873ea0155ffe28"
+                
+    //             },
+    //             "shippingAddress":{
+    //                 "address": "laxmipur",
+    //                 "city": "jamui",
+    //                 "postalCode": "811312",
+    //                 "country": "india"
+    //             },
+    //             "itemprice": "3000",
+    //             "Shipping": "50"
+    //             })
+    //             if(res.status === 200){
+    //                 console.log(res.data);
+    //             }
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // }
 
 
     return (

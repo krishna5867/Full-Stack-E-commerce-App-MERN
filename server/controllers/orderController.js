@@ -5,7 +5,7 @@ exports.placeOrder = async (req, res) => {
         const {
             orderItems,
             shippingAddress,
-            itemprice,
+            itemprice, //amount
             Shipping,
             isDelivered
         } = req.body;

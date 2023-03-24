@@ -1,28 +1,52 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { addToCart } from '../Redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
+import Spinner from './Loading';
+
 
 const CategoryProduct = () => {
-    const {selectedCategory} = useParams();
+    const dispatch = useDispatch();
+    const { selectedCategory } = useParams();
     const [products, setProducts] = useState([]);
-    console.log(products,"9");
+    const [loading, setLoading] = useState(true)
 
-    const fetchSelectedCategoryProduct = async () => {
-        const res = await axios.get(`/getProductByCategory/${selectedCategory}`);
-        if(res.status === 200) {
-            setProducts(res.data.products)
+
+    const fetchCategory = async () => {
+        try {
+            const res = await axios.get(`/category/${selectedCategory}`);
+            if (res.status === 200) {
+                setProducts(res.data.product)
+                setLoading(false)
+
+            }
+        } catch (error) {
+            console.log(error.message);
         }
     }
-    useEffect(()=>{
-        fetchSelectedCategoryProduct()
-    },[products])
+    const handleAddToCart = (product) => {
+        toast.success("Added Successfully")
+        dispatch(addToCart({
+            name: product.name,
+            price: product.price,
+            image: product.image?.url
+        }));
+    };
+    useEffect(() => {
+        setLoading(true)
+        fetchCategory()
+    }, [])
 
     return (
         <>
-        <h1>CategoryProduct</h1>
+            {
+                loading ? <Spinner /> :(
+                    <>
+                        <h3>CategoryProduct</h3>
 
-        <div className='d-flex justify-content-center flex-wrap'>
+                        <div className='d-flex justify-content-center flex-wrap'>
                             {products && products.map((product) =>
                                 <>
                                     <ToastContainer autoClose={2000} />
@@ -35,13 +59,15 @@ const CategoryProduct = () => {
                                                 <h5 className="card-title">{product.name.toUpperCase()}</h5>
                                                 <p className="card-text">{product.description}</p>
                                                 <p className="card-text"><h3>${product.price}</h3></p>
-                                                {/* <button className='btn btn-primary mb-3' onClick={() => handleAddToCart(product)}><b>Add To Cart</b></button> */}
+                                                <button className='btn btn-primary mb-3' onClick={() => handleAddToCart(product)}><b>Add To Cart</b></button>
                                             </div>
                                         </div>
                                     </div>
                                 </>
                             )}
                         </div>
+                    </>)
+            }
         </>
     )
 }

@@ -67,15 +67,53 @@ const Product = () => {
                     <div className='col-md-4 col-6'><img src={Category3} alt="" className='card-img-top mt-3 w-75 rounded' /></div>
                 </Row>
                 <h2 className='mt-5 text-center'><b>Featured Products</b></h2>
+                {/* Carosal */}
+                {/* <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <div className='mt-2 d-flex justify-content-center '>
+                                {products && products.map((product) =>
+                                    <>
+                                        <ToastContainer autoClose={2000} />
+                                        <div className=''>
+                                            <div className="shadow-lg m-4 mb-5 bg-white rounded card-img-top" key={product._id}>
+                                                <Link to={`/product/${product._id}`} className='text-decoration-none text-white'>
+                                                    <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem', width: '15rem' }} />
+                                                </Link>
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{product.name.toUpperCase()}</h5>
+                                                    <p className="card-text">{product.description}</p>
+                                                    <p className="card-text"><h3>${product.price}</h3></p>
+                                                    <button className='btn btn-primary mb-3' onClick={() => handleAddToCart(product)}><b>Add To Cart</b></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                    </div>
+                    <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
+                    </a>
+                </div> */}
+
+
                 {/* All Products */}
                 <div className='mt-2 d-flex justify-content-center flex-wrap '>
                     {products && products.map((product) =>
                         <>
                             <ToastContainer autoClose={2000} />
-                            <div className='d-flex m-4'>
-                                <div className="shadow-lg m-2 mb-5 bg-white rounded card-img-top" key={product._id}>
+                            <div className='d-flex'>
+                                <div className="shadow-lg m-4 mb-5 bg-white rounded card-img-top" key={product._id}>
                                     <Link to={`/product/${product._id}`} className='text-decoration-none text-white'>
-                                        <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem' }} />
+                                        <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem', width:'15rem' }} />
                                     </Link>
                                     <div className="card-body">
                                         <h5 className="card-title">{product.name.toUpperCase()}</h5>
@@ -91,9 +129,9 @@ const Product = () => {
 
             </Row>
             {/* Exclusive Products */}
-            <Row className='mt-5 shadow-lg bg-white rounded px-5 mx-5'>
+            <Row className='mt-5 shadow-lg bg-white rounded px-md-5 mx-5'>
                 <div className='col-md-6 col-12 d-flex justify-content-start align-items-center px-5'>
-                    <div className='text-start px-5'>
+                    <div className='text-start px-md-5'>
                         <p className='fs-4 pt-4'>Exclusively Available on RedStore</p>
                         <h1>Smart Band 4</h1>
                         <p>The Mi Smart Band 4 features a 39.9% larger (than Mi Band 3) AMOLED color fuli-touch display with adjustable brightness, so everything is clear as can be.</p>

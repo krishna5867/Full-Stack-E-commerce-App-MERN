@@ -9,11 +9,12 @@ import Spinner from './Loading';
 const AllProducts = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState("");
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [currentPage, setCurrentPage] = useState(2);
+    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCategory = async () => {
@@ -30,7 +31,7 @@ const AllProducts = () => {
             setLoading(false)
         }
     }
-
+    
     const fetchTotalProductsCount = async () => {
         const res = await axios.get("/productCount");
         if (res.status === 200) {
@@ -48,15 +49,15 @@ const AllProducts = () => {
     };
 
     const handleNext = () => {
-        if(currentPage === totalPages) return;
-        else{
-        setCurrentPage(currentPage + 1)
+        if (currentPage === totalPages) return;
+        else {
+            setCurrentPage(currentPage + 1)
         }
     }
     const handlePrev = () => {
-        if(currentPage === 1) return;
-        else{
-        setCurrentPage(currentPage - 1)
+        if (currentPage === 1) return;
+        else {
+            setCurrentPage(currentPage - 1)
         }
     }
 
@@ -73,6 +74,7 @@ const AllProducts = () => {
             {
                 loading ? (<Spinner />) : (
                     <>
+
                         <div className='mt-2 d-flex justify-content-between align-items-center px-5'>
                             <div className='px-md-4'><h2>All Products</h2></div>
                             <div className='px-md-5'>
@@ -97,7 +99,7 @@ const AllProducts = () => {
                                     <div className='d-flex m-3'>
                                         <div className="shadow-lg m-2 mb-5 bg-white rounded card-img-top" key={product._id}>
                                             <Link to={`/product/${product._id}`} className='text-decoration-none text-white'>
-                                                <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem' }} />
+                                                <img src={product.image?.url} className="w-full" alt="..." style={{ height: '18rem', width: '15rem' }} />
                                             </Link>
                                             <div className="card-body">
                                                 <h5 className="card-title">{product.name.toUpperCase()}</h5>
@@ -112,16 +114,16 @@ const AllProducts = () => {
                         </div>
                     </>
                 )}
-                {products && totalPages && (
-                    <>
-                        <button className="btn btn-warning" onClick={handlePrev}>
+            {products && totalPages && (
+                <>
+                    <button className="btn btn-warning" onClick={handlePrev}>
                         {loading ? "Loading ..." : "Prev"}
-                        </button> &nbsp; {currentPage} &nbsp;
-                        <button className="ms-2 btn btn-warning" onClick={handleNext}>
-                            {loading ? "Loading ..." : "Next"}
-                        </button>
-                    </>
-                )} <br />
+                    </button> &nbsp; {currentPage} &nbsp;
+                    <button className="ms-2 btn btn-warning" onClick={handleNext}>
+                        {loading ? "Loading ..." : "Next"}
+                    </button>
+                </>
+            )} <br />
             {/* Total No of Pages: {totalPages} */}
         </>
 
