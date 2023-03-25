@@ -13,7 +13,7 @@ exports.auth = async (req, res, next) => {
         // console.log(decode, "decode");
         req.user = {
             id: decode.user_id,
-            role: decode.user_role
+            role: decode.user_role,
         };
         next();
     } catch (error) {

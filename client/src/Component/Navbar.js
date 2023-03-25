@@ -4,18 +4,29 @@ import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
     // const { user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
+    const[userId, setUserId] = useState();
+
+    const validUser = async () => {
+        const res = await axios.get("/isloggedin");
+        setUserId(res.data.user._id)
+    }
+    useEffect(()=> {
+        validUser()
+    },[])
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {
             navigate(`/search/${searchQuery}`)
         }
     }
+    //Localdtorage
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.role === 'admin';
     const isLoggedIn = !!user;
@@ -50,7 +61,7 @@ const Navbar = () => {
                         {/* loggedin user name*/}
                         {isLoggedIn ? (
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/profile">
+                                <Link className="nav-link active" aria-current="page" to={`/profile/${userId}`}>
                                     <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
                                     {user.name && <b>{user.name.substring(0, 2).toUpperCase()}</b>}
                                     </div>

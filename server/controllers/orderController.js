@@ -33,11 +33,11 @@ exports.placeOrder = async (req, res) => {
         console.log(error);
     }
 }
-
+//single order
 exports.getOneOrder = async (req, res) => {
     try {
         const orderId = req.params.id;
-        const order = await Order.findById(orderId).populate("user","name email");
+        const order = await Order.findById(orderId).populate("user", "name email");
         res.status(200).json({
             success: true,
             message: "Order details",
@@ -48,25 +48,22 @@ exports.getOneOrder = async (req, res) => {
     }
 }
 
+//loggedinuser order
 exports.getLoggedInOrder = async (req, res) => {
     try {
-        const orderId = req.user_id
-        const order = await Order.findById(orderId).populate("user", "name");
-        if (!order) {
-            return res.status(404).json({
-                message: "Order not found"
-            });
-        }
+        const userId = req.params.id;
+        const order = await Order.find({ user: userId }).populate("orderItems");
         res.status(200).json({
-            order
+            order,
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: "Error getting the order"
+            message: "Error getting the orders",
         });
     }
 };
+
 
 
 exports.adminGetAllOrders = async (req, res) => {

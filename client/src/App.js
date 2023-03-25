@@ -14,13 +14,15 @@ import CategoryProduct from './Component/CategoryProduct';
 
 // Protected Route
 import PrivateRoute from './Component/PrivateRoute';
-// User 
+// Auth
 import Login from './Auth/login';
 import Signup from './Auth/signup';
 import Profile from './Auth/profile';
 import ForgetPassword from './Auth/forgetPassword';
 import ChangePassword from './Auth/changePassword';
 import PasswordReset from './Auth/passwordReset';
+import MyOrder from './Auth/myOrder';
+
 // Admin
 import AdminDashboard from './Admin/AdminDashboard';
 import AddProducts from './Admin/AddProducts';
@@ -39,7 +41,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<Product />}></Route>
-                    <Route path="/profile" element={<PrivateRoute Component={Profile} />} />
+                    <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />
                     <Route path="/admindashboard" element={<PrivateRoute Component={AdminDashboard} />} />
                     <Route path="/admindashboard/allproducts" element={<PrivateRoute Component={AllProducts} />} />
                     <Route path="/admindashboard/allusers" element={<PrivateRoute Component={AllUsers} />} />
@@ -62,6 +64,7 @@ function App() {
                     <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
                     <Route path="/orderDetails/:id" element={<OrderDetails />} />
                     <Route path="/buyerDetails/:id" element={<BuyerDetails />} />
+                    <Route path="/myOrder/:id" element={<MyOrder />} />
                 </Routes>
             </>
         </div>

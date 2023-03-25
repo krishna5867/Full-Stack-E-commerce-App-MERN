@@ -115,11 +115,10 @@ exports.getUser = async (req, res) => {
                 message: "You are not logged in"
             });
         }
-        const loggedInUser = await User.findOne({ _id: req.user.id });
-        console.log(loggedInUser, "Loggedinuser");
+        const user = await User.findOne({ _id: req.user.id });
         res.status(200).json({
             success: true,
-            loggedInUser
+            user
         });
     } catch (error) {
         console.log(error);
@@ -129,7 +128,6 @@ exports.getUser = async (req, res) => {
         });
     }
 };
-
 
   //signout
   exports.signout = async (req, res, next) => {

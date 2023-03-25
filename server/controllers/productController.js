@@ -204,8 +204,6 @@ exports.productCount = async (req, res) => {
     }
 };
 
-
-
 // Filter based on categories 
 exports.getProductByCategory = async (req, res) => {
     try {
@@ -231,7 +229,6 @@ exports.getProductByCategory = async (req, res) => {
     }
 };
 
-
 // Related Products
 exports.getRelatedProducts = async (req, res) => {
     try {
@@ -239,9 +236,7 @@ exports.getRelatedProducts = async (req, res) => {
         const relatedProducts = await Product.find({
             _id: { $ne: product._id },
             category: product.category,
-        }).limit(4);
-        // const product = await Product.findById(productId);
-        // const relatedProducts = await Product.find({ description: { $regex: product.description, $options: 'i' } });
+        });
         res.status(200).json({
             success: true,
             message: "successfull",
