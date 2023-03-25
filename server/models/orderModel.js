@@ -59,7 +59,12 @@ const orderSchema = mongoose.Schema(
         },
         total: Number,
         shippingcharge: Number,
-        orderstatus: Boolean,
+        // orderstatus: Boolean,
+        orderStatus: {
+            type: String,
+            default: 'Not Process',
+            enum : ["Processing", "Shipped", "Delivered", "Cancel", "Not Process"]
+        },
         default: false,
         isDelivered: {
             Type: Boolean,

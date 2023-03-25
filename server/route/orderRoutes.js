@@ -6,8 +6,7 @@ const {
     getOneOrder,
     getLoggedInOrder,
     adminGetAllOrders,
-    adminEditOrder,
-    adminDeleteOrder,
+    adminUpdateOrder,
 } = require("../controllers/orderController");
 
 const router = express.Router();
@@ -18,8 +17,7 @@ router.get("/myOrder/:id", getLoggedInOrder);
 
 //admin
 router.get("/admin/orders",auth, customizeRole('admin'), adminGetAllOrders);
-router.put("/admin/edit/order/:id",auth, customizeRole('admin'), adminEditOrder);
-router.delete("/admin/delete/order/:id",auth, customizeRole('admin'), adminDeleteOrder);
+router.post("/admin/updateorder/:id",auth, customizeRole('admin'), adminUpdateOrder);
 
 
 module.exports = router;

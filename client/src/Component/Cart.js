@@ -112,7 +112,7 @@ const Cart = () => {
                 shippingcharge: 50,
                 total: itemPrice,
                 grandtotal: itemPrice + 50,
-                orderstatus: false,
+                orderStatus: 'Processing',
                 isDelivered: false
             });
             if (res.status === 200) {

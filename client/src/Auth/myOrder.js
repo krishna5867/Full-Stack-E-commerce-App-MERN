@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Row, Container, Card, Button } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
+import moment from 'moment'
 
 const MyOrder = () => {
     const { id } = useParams();
@@ -40,60 +41,29 @@ const MyOrder = () => {
                                         <table className="table">
                                             <thead>
                                                 <tr>
+                                                    <th scope="col">Sno</th>
                                                     <th scope="col">Id</th>
-                                                    <th scope="col">Price</th>
                                                     <th scope="col">Quantity</th>
-                                                    <th scope="col">Shipping Address</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr key={order[0]._id}>
-                                                    <td>{order[0]._id}</td>
-                                                    <td>{order[0].total}</td>
-                                                    <td>{order[0].orderItems.reduce((acc, item) => acc + item.quantity, 0)}</td>
-                                                    <td>
-                                                        <p>{order[0].shippingAddress.address}</p>
-                                                        <p>{order[0].shippingAddress.city}, {order[0].shippingAddress.state} - {order[0].shippingAddress.postalCode}</p>
-                                                    </td>
-                                                </tr>
+                                                {order && order.length > 0 &&
+                                                    order.map((orderItem ,index) => (
+                                                        <tr key={orderItem._id}>
+                                                            <td>{index + 1}</td>
+                                                            <td><Link to={`/orderdetails/${orderItem._id}`} className="text-decoration-none">{orderItem._id}</Link></td>
+                                                            <td>({orderItem.orderItems.reduce((acc, item) => acc + item.quantity, 0)})</td>
+                                                            <td>{orderItem.total}</td>
+                                                            <td>{moment(orderItem.createdAt).format("DD-MM-YYYY")}</td>
+                                                            <td>{orderItem.orderStatus}</td>
+                                                        </tr>
+                                                    ))
+                                                }
                                             </tbody>
-                                        </table>
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Photo</th>
-                                                    <th scope="col">Product Name</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {order[0].orderItems.map((item) => (
-                                                    <tr key={item._id}>
-                                                        <td><img src={item.image} alt={item.name} className="rounded" style={{ width: '10rem' }} /></td>
-                                                        <td className='fs-4'>{item.name}</td>
-                                                        <td className='fs-4'>({item.quantity})</td>
-                                                        <td className='fs-4'>${item.price}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colSpan="2"></td>
-                                                    <td className='fs-4'>Shipping Charge</td>
-                                                    <td className='fs-3'>${order[0].shippingcharge}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan="2"></td>
-                                                    <td className='fs-4'>Sub Total</td>
-                                                    <td className='fs-2'>${order[0].total}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan="2"></td>
-                                                    <td className='fs-4'>Total</td>
-                                                    <td className='fs-1'>$ {order[0].total + 50}</td>
-                                                </tr>
-                                            </tfoot>
+
                                         </table>
                                     </>
                                 ) : (

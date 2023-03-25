@@ -206,7 +206,7 @@ exports.getUser = async (req, res) => {
       await user.save();
       // console.log(`resetToken ${resetToken}`);
 
-      const myUrl = `${process.env.FRONTEND_PORT}/passwordReset/${resetToken}`;
+      const myUrl = `http://localhost:${process.env.FRONTEND_PORT}/passwordReset/${resetToken}`;
       const message = `Paste This link in your browser to reset password\n\n ${myUrl}`;
 
       await mailHelper({

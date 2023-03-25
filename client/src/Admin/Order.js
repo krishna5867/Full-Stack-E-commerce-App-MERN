@@ -9,13 +9,16 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     const res = await axios.get("/admin/orders");
+    console.log(res.data);
     if (res.status === 200) {
       setOrderDetails(res.data.order)
     }
   }
+
   useEffect(() => {
     fetchOrders()
   }, [])
+
   return (
     <>
       <Row className='p-4'>
@@ -47,20 +50,20 @@ const Orders = () => {
                   {orderDetails && orderDetails.map((item, index) =>
                     <tbody>
                       <tr key={item._id}>
-                      <td>{index + 1}</td>
+                        <td>{index + 1}</td>
                         <td><Link to={`/orderdetails/${item._id}`} className="text-decoration-none">{item._id}</Link></td>
                         <td><Link to={`/buyerDetails/${item?.user._id}`} className="text-decoration-none text-black">{item.user.name}</Link></td>
                         <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
-                        <td> Process </td>
-                    </tr>
+                        <td>{item?.orderStatus}</td>
+                      </tr>
                     </tbody>
                   )}
-              </table>
-            </div>
-          </Card>
+                </table>
+              </div>
+            </Card>
+          </Container>
         </Container>
-      </Container>
-    </Row>
+      </Row>
 
     </>
   )

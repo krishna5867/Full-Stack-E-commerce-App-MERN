@@ -64,8 +64,6 @@ exports.getLoggedInOrder = async (req, res) => {
     }
 };
 
-
-
 exports.adminGetAllOrders = async (req, res) => {
     try {
         const order = await Order.find().populate("user", "name");
@@ -77,17 +75,16 @@ exports.adminGetAllOrders = async (req, res) => {
     }
 }
 
-
-exports.adminEditOrder = async (req, res) => {
+//updateOrderStatus
+exports.adminUpdateOrder = async (req, res) => {
     try {
-        const order = await Order.findByIdAndUpdate(req.params.id);
-        console.log(order.quantity);
-        order.orderItems = req.body;
-        await order.save();
-
+        const orderId = req.params.orderId;
+        const {orderStatus} = req.body;
+        const order = await Order.findByIdAndUpdate(orderId, {orderStatus}, {new: true});
+        console.log(order);
         res.status(200).json({
             success: true,
-            message: "Order updated",
+            message: "Order updated successfully",
             order
         })
     } catch (error) {
@@ -97,16 +94,3 @@ exports.adminEditOrder = async (req, res) => {
     }
 }
 
-exports.adminDeleteOrder = async (req, res) => {
-    try {
-        const orderId = req.params.id;
-        const order = await Order.findByIdAndDelete(orderId);
-        res.status(200).json({
-            success: true,
-            message: "Item Deleted Successfully",
-            order
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}

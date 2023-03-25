@@ -9,19 +9,37 @@ const OrderDetails = () => {
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState([]);
     const { id } = useParams();
+    const [orderStatus, setOrderStatus] = useState(["Not Process", "Processing", "Shipped", "Delivered", "Cancel"]);
+    const [changeOrderStatus, setChangeOrderStatus] = useState(null);
+    console.log(changeOrderStatus, 14);
+
 
     const fetchOrder = async () => {
         const res = await axios.get(`/getOneOrder/${id}`);
+        console.log(res.data);
         if (res.status === 200) {
             setOrder(res.data.order)
             setLoading(false)
 
         }
     }
+    const handleChangeStatus = async (val) => {
+        try {
+            const res = await axios.put(`/admin/updateorder/${order._id}`, { orderStatus: val });
+            console.log(res.data, 29);
+            if(res.status === 200){
+                setChangeOrderStatus(res.data.order);
+                fetchOrder();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     useEffect(() => {
         setLoading(true)
         fetchOrder()
-    }, [id])
+        handleChangeStatus()
+    }, [id, orderStatus])
 
     return (
         <>
@@ -34,9 +52,8 @@ const OrderDetails = () => {
                                     <th scope="col">Id</th>
                                     <th scope="col">Buyer Name</th>
                                     <th scope="col">Buyer Email</th>
-                                    {/* <th scope="col">Total Amount</th> */}
-                                    {/* <th scope="col">Shipping Charge</th> */}
                                     <th scope="col">Shipping Address</th>
+                                    <th scope="col">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,11 +62,25 @@ const OrderDetails = () => {
                                     <p>{order?.user?._id}</p>
                                     <td><p>{order?.user?.name}</p></td>
                                     <td>{order?.user?.email}</td>
-                                    {/* <td className='fs-4'>${order?.total}</td> */}
-                                    {/* <td className='fs-4'>${order.shippingcharge}</td> */}
                                     <td>
                                         <p>{order?.shippingAddress?.address}</p>
                                         <p>{order?.shippingAddress?.city}, {order?.shippingAddress?.state} - {order?.shippingAddress?.postalCode}</p>
+                                    </td>
+                                    <td>
+                                        <td>
+                                            <select className="form-select"
+                                                value={changeOrderStatus}
+                                                onChange={(val) => handleChangeStatus(order?._id, val)}
+                                                defaultValue={order?.orderStatus}>
+                                                {orderStatus.map((val, index) => 
+                                                    <>
+                                                    <option key={index} value={val}>
+                                                        {val}
+                                                    </option>
+                                                    </>
+                                                )}
+                                            </select>
+                                        </td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -77,9 +108,9 @@ const OrderDetails = () => {
                             </tbody>
 
                             <tbody>
-                                    <td colspan="2"></td>
-                                    <td className='fs-4'>Shipping Charge</td>
-                                    <td className='fs-3'>${order.shippingcharge}</td>
+                                <td colspan="2"></td>
+                                <td className='fs-4'>Shipping Charge</td>
+                                <td className='fs-3'>${order.shippingcharge}</td>
                             </tbody>
                             <tbody>
                                 <td colspan="2"></td>

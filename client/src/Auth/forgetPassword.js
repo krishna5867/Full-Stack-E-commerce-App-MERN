@@ -2,36 +2,35 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap'
 import { Link } from 'react-router-dom';
+import Spinner from '../Component/Loading';
 
 
 const ForgetPassword = () => {
 
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false)
+
 
     const handleForgetPassword = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true)
             const res = await axios.post(`/forgotPassword`, {
                 email,
             });
-
-            if (res.status === 200) {
-                setEmail("")
-                setMessage(res.data.message)
-            } else {
-                if (res.status === 400) {
-                    setMessage(res.data.message);
-                } else {
-                    alert("res.data.message");
-                }
-            }
+            setEmail("")
+            setMessage(res.data.message)
         } catch (error) {
-            alert(error)
+            setMessage(error.response.data.message);
+        } finally {
+            setLoading(false)
         }
     }
+    
     return (
         <>
+            {loading && <Spinner />}
             <Container className='mt-5' style={{ width: '30rem' }}>
                 <Card className="border m-2 p-4 shadow-lg bg-white rounded">
                     <CardBody>
