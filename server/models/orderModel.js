@@ -28,8 +28,6 @@ const orderSchema = mongoose.Schema(
                 },
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
-                    // required: true,
-                    ref: "Product",
                 },
             },
         ],
@@ -59,15 +57,13 @@ const orderSchema = mongoose.Schema(
         },
         total: Number,
         shippingcharge: Number,
-        // orderstatus: Boolean,
         orderStatus: {
             type: String,
             default: 'Not Process',
-            enum : ["Processing", "Shipped", "Delivered", "Cancel", "Not Process"]
+            enum : ["Not Process","Processing", "Shipped", "Delivered", "Cancel"]
         },
-        default: false,
         isDelivered: {
-            Type: Boolean,
+            type: Boolean,
             default: false,
         }
     },

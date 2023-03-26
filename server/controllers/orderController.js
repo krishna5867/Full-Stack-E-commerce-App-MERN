@@ -80,17 +80,16 @@ exports.adminUpdateOrder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
         const {orderStatus} = req.body;
-        const order = await Order.findByIdAndUpdate(orderId, {orderStatus}, {new: true});
-        console.log(order);
+        const order = await Order.findByIdAndUpdate({_id:orderId}, {orderStatus}, {new: true});
         res.status(200).json({
             success: true,
             message: "Order updated successfully",
             order
         })
     } catch (error) {
-        // console.log(error);
         console.log(error.message);
-        res.send(error);
     }
 }
+
+
 

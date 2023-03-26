@@ -19,7 +19,7 @@ const Navbar = () => {
     }
     useEffect(()=> {
         validUser()
-    },[])
+    },[userId])
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {

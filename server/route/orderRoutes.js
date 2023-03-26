@@ -17,7 +17,7 @@ router.get("/myOrder/:id", getLoggedInOrder);
 
 //admin
 router.get("/admin/orders",auth, customizeRole('admin'), adminGetAllOrders);
-router.post("/admin/updateorder/:id",auth, customizeRole('admin'), adminUpdateOrder);
+router.put("/admin/updateorder/:orderId",auth, customizeRole('admin'), adminUpdateOrder);
 
 
 module.exports = router;

@@ -11,7 +11,6 @@ const OrderDetails = () => {
     const { id } = useParams();
     const [orderStatus, setOrderStatus] = useState(["Not Process", "Processing", "Shipped", "Delivered", "Cancel"]);
     const [changeOrderStatus, setChangeOrderStatus] = useState(null);
-    console.log(changeOrderStatus, 14);
 
 
     const fetchOrder = async () => {
@@ -23,22 +22,22 @@ const OrderDetails = () => {
 
         }
     }
-    const handleChangeStatus = async (val) => {
+
+    const handleChangeStatus = async (orderId, val) => {
         try {
-            const res = await axios.put(`/admin/updateorder/${order._id}`, { orderStatus: val });
-            console.log(res.data, 29);
+            const res = await axios.put(`/admin/updateorder/${orderId}`, { orderStatus: val });
             if(res.status === 200){
-                setChangeOrderStatus(res.data.order);
+                setChangeOrderStatus(res.data.orderStatus);
                 fetchOrder();
             }
         } catch (error) {
             console.log(error);
         }
     }
+    
     useEffect(() => {
         setLoading(true)
         fetchOrder()
-        handleChangeStatus()
     }, [id, orderStatus])
 
     return (
@@ -58,7 +57,6 @@ const OrderDetails = () => {
                             </thead>
                             <tbody>
                                 <tr key={order._id}>
-                                    {/* <td>{order._id}</td> */}
                                     <p>{order?.user?._id}</p>
                                     <td><p>{order?.user?.name}</p></td>
                                     <td>{order?.user?.email}</td>
@@ -70,7 +68,7 @@ const OrderDetails = () => {
                                         <td>
                                             <select className="form-select"
                                                 value={changeOrderStatus}
-                                                onChange={(val) => handleChangeStatus(order?._id, val)}
+                                                onChange={(e) => handleChangeStatus(order?._id, e.target.value)}
                                                 defaultValue={order?.orderStatus}>
                                                 {orderStatus.map((val, index) => 
                                                     <>

@@ -48,7 +48,7 @@ const Product = () => {
 
     return (
         <>
-        {loading ? <Spinner /> : (
+        {loading ? <Spinner style={{height:'60vh'}}/> : (
             <>
             <Row className='mt-4'>
                 <div className='row'>

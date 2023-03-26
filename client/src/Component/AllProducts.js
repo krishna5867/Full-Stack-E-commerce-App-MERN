@@ -124,7 +124,7 @@ const AllProducts = () => {
                         {loading ? "Loading ..." : "Next"}
                     </button>
                 </>
-            )} <br />
+            )}
             {/* Total No of Pages: {totalPages} */}
         </>
 
