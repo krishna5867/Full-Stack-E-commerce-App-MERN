@@ -14,7 +14,6 @@ const AllProducts = () => {
     const [products, setProducts] = useState("");
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
-    console.log(selectedCategory);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -32,7 +31,7 @@ const AllProducts = () => {
             setLoading(false)
         }
     }
-    
+
     const fetchTotalProductsCount = async () => {
         const res = await axios.get("/productCount");
         if (res.status === 200) {
@@ -108,6 +107,7 @@ const AllProducts = () => {
                                                 <p className="card-text"><h3>${product.price}</h3></p>
                                                 <button className='btn btn-primary mb-3' onClick={() => handleAddToCart(product)}><b>Add To Cart</b></button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </>

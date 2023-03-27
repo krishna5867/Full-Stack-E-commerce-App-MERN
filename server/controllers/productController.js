@@ -251,6 +251,24 @@ exports.getRelatedProducts = async (req, res) => {
     }
 }
 
+// Comment 
+exports.postComment = async(req, res) => {
+    try {
+        const comment = {comment: req.body.comment, userId: req.user.id};
+        const product = await Product.findByIdAndUpdate({_id: req.product.id}, comment);
+        res.status(200).json({
+            success: true,
+            message: "Comments posted successfully",
+            product
+        })
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: "error in posting comments"
+        })
+        
+    }
+}
 
 
 

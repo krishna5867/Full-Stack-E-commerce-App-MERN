@@ -12,6 +12,7 @@ const {
     getRelatedProducts,
     getProductByCategory,
     productCount,
+    postComment
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.get("/search/:search", searchProduct);
 router.get("/relatedProducts/:id", getRelatedProducts);
 router.get("/category/:selectedCategory", getProductByCategory);
 router.get("/productCount", productCount);
+router.put("/comment",auth, postComment);
 
 
 //admin routes
