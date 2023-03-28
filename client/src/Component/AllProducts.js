@@ -17,18 +17,18 @@ const AllProducts = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
-    const fetchCategory = async () => {
-        const res = await axios.get(`/getAllCategory?page=${currentPage}`);
-        if (res.status === 200) {
-            setCategories(res.data.category)
-        }
-    }
-
     const fetchProducts = async () => {
         const res = await axios.get(`/getProducts?page=${currentPage}`);
         if (res.status === 200) {
             setProducts(res.data.product);
             setLoading(false)
+        }
+    }
+
+    const fetchCategory = async () => {
+        const res = await axios.get(`/getAllCategory?page=${currentPage}`);
+        if (res.status === 200) {
+            setCategories(res.data.category)
         }
     }
 
@@ -74,7 +74,7 @@ const AllProducts = () => {
             {
                 loading ? (<Spinner />) : (
                     <>
-
+                    {/* Category Section */}
                         <div className='mt-2 d-flex justify-content-between align-items-center px-5'>
                             <div className='px-md-4'><h2>All Products</h2></div>
                             <div className='px-md-5'>

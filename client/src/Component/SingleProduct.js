@@ -63,7 +63,7 @@ const SingleProduct = () => {
     setLoading(true)
     getOneProduct()
     fetchRelatedProducts()
-  }, [id,product.comment])
+  }, [id, product.comment])
 
   const styles = {
     display: 'flex',
@@ -85,8 +85,7 @@ const SingleProduct = () => {
                 <img src={product.image?.url} alt="" style={{ width: '25rem' }} className="rounded" />
               </div>
               <div className="col-lg-8" style={styles}>
-                {/* <div className='card p-5 border border-warning border-2'> */}
-                <div className='mt-'>
+                <div>
                   <h3><b>Product Name</b> - {product.name}</h3>
                   <h3><b>Description</b> - {product.description}</h3>
                   {/* <h3><b>Category</b> - {product.categories}</h3> */}
@@ -104,25 +103,22 @@ const SingleProduct = () => {
                     <button className='btn btn-success mt-2 w-100'>Post</button>
                   </form>
                   <b>review &nbsp;({product.comments.length})</b>
-                  <div className='border overflow-y-scroll' style={{height: '150px'}}>
-                  {
-                    product.comments.map((item) =>
-                    <div key={item.id}>
-                        {item.user?.name}
-                        {item._id} <br />
-                        {item.comment}
-                      </div>
-                    )
-                  }
+                  <div className='overflow-y-scroll' style={{ height: '150px' }}>
+                    {
+                      product.comments.map((item) =>
+                        <div key={item.id}>
+                          {item.user?.name}
+                          {item._id} <br />
+                          {item.comment}
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
               </div>
             </Row>
           </>
         )}
-
-
-
 
       {relatedProduct.length > 0 ?
         <>
@@ -157,4 +153,3 @@ const SingleProduct = () => {
 
 export default SingleProduct;
 
-// https://github.com/mukeshphulwani66/Instagram-clone-MERN-Stack/blob/master/client/src/components/screens/Home.js
