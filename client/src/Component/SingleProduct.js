@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Row, Button } from 'reactstrap';
+import { Row, Button, Input } from 'reactstrap';
 import { useDispatch } from "react-redux";
 import { addToCart } from '../Redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,12 +10,11 @@ import { useParams, Link } from "react-router-dom";
 const SingleProduct = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState('');
   const [relatedProduct, setRelatedProduct] = useState("");
   const [loading, setLoading] = useState(true)
-  const [comment, setcomment] = useState("");
-  const [comments, setcomments] = useState(['Krisna-very good, produc', 'paisa wasool', 'Quality is top notch'])
-console.log(comment);
+  console.log(product);
+
   const fetchRelatedProducts = async () => {
     const res = await axios.get(`/relatedProducts/${id}`);
     if (res.status === 200) {
@@ -27,9 +26,9 @@ console.log(comment);
     if (res.status === 200) {
       setProduct(res.data.product)
       setLoading(false)
-
     }
   }
+
   const handleAddToCart = (product) => {
     toast.success("Added Successfully")
     dispatch(addToCart({
@@ -39,25 +38,38 @@ console.log(comment);
     }));
   };
 
-  const handlePostComment = async (productId) => {
-    const res = await axios.put("/comment", comment);
-    if(res.status === 200){
-      setcomment(res.data.product)
+  const handlePostComment = async (comment, id) => {
+    const res = await axios.put("/comment", { id, comment });
+    if (res.status === 200) {
+      setProduct((prevComments) => {
+        if (Array.isArray(prevComments)) {
+          return prevComments.map((item) => {
+            if (item._id === res.data._id) {
+              return res.data;
+            } else {
+              return item;
+            }
+          });
+        } else {
+          return prevComments;
+        }
+      });
     }
-  }
+  };
+
 
 
   useEffect(() => {
     setLoading(true)
     getOneProduct()
     fetchRelatedProducts()
-  }, [id])
+  }, [id,product.comment])
 
   const styles = {
     display: 'flex',
     justifyContent: 'center',
     textAlign: 'left',
-    height: '50vh',
+    height: '60vh',
     alignItems: 'center'
   }
 
@@ -73,7 +85,8 @@ console.log(comment);
                 <img src={product.image?.url} alt="" style={{ width: '25rem' }} className="rounded" />
               </div>
               <div className="col-lg-8" style={styles}>
-                <div className='card p-5 border border-warning border-2'>
+                {/* <div className='card p-5 border border-warning border-2'> */}
+                <div className='mt-'>
                   <h3><b>Product Name</b> - {product.name}</h3>
                   <h3><b>Description</b> - {product.description}</h3>
                   {/* <h3><b>Category</b> - {product.categories}</h3> */}
@@ -83,15 +96,25 @@ console.log(comment);
                     <Button className='bg-dark m-3 p-2'><b> <Link to='/' className='text-decoration-none text-white px-3'>Back</Link></b></Button>
                   </div>
                   {/* Comments */}
-                  <input type="text" placeholder='Comment' className='input-box' value={comment} onChange={(e)=>setcomment(e.target.value)} />
-                  <button className='btn btn-success mt-2' onClick={()=> handlePostComment(product._id)}>Post</button>
+                  <form onSubmit={(e) => {
+                    e.preventDefault()
+                    handlePostComment(e.target[0].value, id)
+                  }}>
+                    <Input type="text" placeholder='Comment' className='Input-box' />
+                    <button className='btn btn-success mt-2 w-100'>Post</button>
+                  </form>
+                  <b>review &nbsp;({product.comments.length})</b>
+                  <div className='border overflow-y-scroll' style={{height: '150px'}}>
                   {
-                    comments && comments.map((item) => 
-                      <div key={item.id}>
-                      {item}
+                    product.comments.map((item) =>
+                    <div key={item.id}>
+                        {item.user?.name}
+                        {item._id} <br />
+                        {item.comment}
                       </div>
                     )
                   }
+                  </div>
                 </div>
               </div>
             </Row>
@@ -133,3 +156,5 @@ console.log(comment);
 };
 
 export default SingleProduct;
+
+// https://github.com/mukeshphulwani66/Instagram-clone-MERN-Stack/blob/master/client/src/components/screens/Home.js

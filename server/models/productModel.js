@@ -23,6 +23,14 @@ const productSchema = new mongoose.Schema({
             type: String
         }
     },
+    comments:[{
+        comment:String,
+        user:{
+            type:mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref:"User"
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date(),
