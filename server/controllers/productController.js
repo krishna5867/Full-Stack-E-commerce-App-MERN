@@ -253,31 +253,30 @@ exports.getRelatedProducts = async (req, res) => {
 
 // Comment 
 exports.postComment = async (req, res) => {
+    const user = await User.findById(req.user.id);
     const comment = {
         comment: req.body.comment,
-        user: req.user.id
+        user: req.user.id,
+        username: user.name 
     }
     const product = Product.findByIdAndUpdate(req.body.id, {
         $push: { comments: comment }
     },
         { new: true }
         )
-        .populate("comments.user", "name email")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({
                     error: err,
-                    product,
-                    userName
+                product
+
                 })
             } else {
                 res.json(result)
+                product
             }
         })
 }
-
-
-
 
 
 

@@ -23,14 +23,16 @@ const productSchema = new mongoose.Schema({
             type: String
         }
     },
-    comments:[{
-        comment:String,
-        user:{
-            type:mongoose.Schema.Types.ObjectId,
-            required: true,
-            ref:"User"
+    comments: [
+        {
+            comment: String,
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+            username: String
         }
-    }],
+    ],
     createdAt: {
         type: Date,
         default: Date(),

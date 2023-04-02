@@ -13,7 +13,7 @@ const SingleProduct = () => {
   const [product, setProduct] = useState('');
   const [relatedProduct, setRelatedProduct] = useState("");
   const [loading, setLoading] = useState(true)
-  // console.log(product);
+  console.log(product);
 
   const fetchRelatedProducts = async () => {
     const res = await axios.get(`/relatedProducts/${id}`);
@@ -38,26 +38,15 @@ const SingleProduct = () => {
     }));
   };
 
+
   const handlePostComment = async (comment, id) => {
     const res = await axios.put("/comment", { id, comment });
-    if (res.status === 200) {
-      setProduct((prevComments) => {
-        if (Array.isArray(prevComments)) {
-          return prevComments.map((item) => {
-            if (item._id === res.data._id) {
-              return res.data;
-            } else {
-              return item;
-            }
-          });
-        } else {
-          return prevComments;
-        }
-      });
+    if(res.status === 200){
+      setProduct(res.data)
+      toast.success("Comment Posted Successfully")
     }
   };
-
-
+  
 
   useEffect(() => {
     setLoading(true)
@@ -66,7 +55,11 @@ const SingleProduct = () => {
   }, [id])
 
   useEffect(() => {
-  }, [id])
+    if (product) {
+      setLoading(false);
+    }
+  }, [product])
+
 
   const styles = {
     display: 'flex',
@@ -100,9 +93,9 @@ const SingleProduct = () => {
                   {/* Comments */}
                   <form onSubmit={(e) => {
                     e.preventDefault()
-                    handlePostComment(e.target[0].value, id)
+                    handlePostComment(e.target[0].value, id, e.target[0])
                   }}>
-                    <Input type="text" placeholder='Comment' className='Input-box' />
+                    <Input type="text" placeholder='Comment' />
                     <button className='btn btn-success mt-2 w-100'>Post</button>
                   </form>
                   <b>review &nbsp;({product.comments.length})</b>
@@ -110,8 +103,7 @@ const SingleProduct = () => {
                     {
                       product.comments.map((item) =>
                         <div key={item.id}>
-                          {item.user?.name}
-                          {item._id} <br />
+                          <b>{item.username}</b> &nbsp;
                           {item.comment}
                         </div>
                       )
