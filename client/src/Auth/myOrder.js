@@ -7,11 +7,10 @@ import moment from 'moment'
 const MyOrder = () => {
     const { id } = useParams();
     const [order, setOrder] = useState([]);
-    // const id = '6401f89f8e0c0e567864c6df';
-    console.log(order);
+    // console.log(order);
     const fetchOrder = async () => {
         const res = await axios.get(`/myOrder/${id}`);
-        console.log(res.data);
+        // console.log(res.data);
         if (res.status === 200) {
             setOrder(res.data.order)
         }
@@ -19,7 +18,7 @@ const MyOrder = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetchOrder()
-    })
+    },[order])
 
     return (
         <>
@@ -28,7 +27,7 @@ const MyOrder = () => {
                     <Container className='mt-4 mb-5'>
                     </Container>
                     <Button className='w-100 mt-5 bg-'><h3><Link to={`/profile/${id}`} className='text-decoration-none text-white'>Profile</Link></h3></Button>
-                    <Button className='w-100 mt-3'><h3><Link to={`/myOrder/${id}`} className='text-decoration-none text-white'>Order</Link></h3></Button>
+                    <Button className='w-100 mt-3'><h3><Link to={`/myorder/${id}`} className='text-decoration-none text-white'>Order</Link></h3></Button>
                 </Container>
                 <Container className='col-lg-9' style={{ height: '88vh' }}>
                     <h1>Orders</h1>

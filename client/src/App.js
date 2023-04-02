@@ -58,7 +58,7 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                     <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
                     <Route path="/search/:search" element={<SearchProducts />} />
-                    <Route path="/products/" element={<ExploreProducts />} />
+                    <Route path="/products" element={<ExploreProducts />} />
                     <Route path="/createcategories" element={<Categories />} />
                     <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
                     <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
