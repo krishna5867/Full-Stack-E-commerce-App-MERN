@@ -13,6 +13,7 @@ const AllProducts = () => {
     const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState("");
     const [categories, setCategories] = useState([]);
+    // eslint-disable-next-line
     const [selectedCategory, setSelectedCategory] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);

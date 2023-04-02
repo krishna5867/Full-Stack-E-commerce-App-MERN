@@ -47,7 +47,7 @@ const CategoryProduct = () => {
             image: product.image?.url
         }));
     };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setLoading(true)
         fetchCategoryList()

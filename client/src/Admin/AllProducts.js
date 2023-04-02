@@ -4,7 +4,6 @@ import { Row, Card, Container, Button } from 'reactstrap'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
-import Spinner from '../Component/Loading';
 
 const AllProducts = () => {
     const [products, setProducts] = useState("");
@@ -55,7 +54,7 @@ const AllProducts = () => {
             setCurrentPage(currentPage - 1)
         }
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setLoading(true)
         getProducts();

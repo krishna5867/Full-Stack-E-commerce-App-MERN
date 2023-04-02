@@ -9,6 +9,7 @@ const OrderDetails = () => {
     const [loading, setLoading] = useState(true)
     const [order, setOrder] = useState([]);
     const { id } = useParams();
+    // eslint-disable-next-line
     const [orderStatus, setOrderStatus] = useState(["Not Process", "Processing", "Shipped", "Delivered", "Cancel"]);
     const [changeOrderStatus, setChangeOrderStatus] = useState(null);
 
