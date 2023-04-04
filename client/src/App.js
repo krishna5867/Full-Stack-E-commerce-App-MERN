@@ -40,9 +40,15 @@ function App() {
     console.log(userId);
 
     const validUser = async () => {
-        const res = await axios.get("/isloggedin");
-        setUserId(res.data.user._id)
-    }
+        try {
+            const res = await axios.get("/isloggedin");
+            setUserId(res.data.user._id);
+        } catch (error) {
+            console.log(error);
+            setUserId(null);
+        }
+    };
+    
     useEffect(() => {
         validUser()
     })

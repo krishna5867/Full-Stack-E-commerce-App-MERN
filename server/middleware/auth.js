@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res, next) => {
-    const token = req.cookies.token || req.body.token;
+    let token = req.cookies.token || req.body.token;
     if (!token && req.header("Authorization")) {
         token = req.header("Authorization").replace("Bearer ", "");
     }
@@ -17,6 +17,7 @@ exports.auth = async (req, res, next) => {
         };
         next();
     } catch (error) {
+        next(error)
         res.status(403).send(error.message)
     }
 }

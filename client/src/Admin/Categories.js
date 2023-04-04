@@ -18,7 +18,6 @@ const Categories = () => {
     const handleCreateCategory = async () => {
         const res = await axios.post("/createCategory", { name });
         if (res.status === 200) {
-            // setCategories([...categories, res.data.category]);
             toast.success("New Category addedd Successfully")
             setCategories(res.data.category);
             setName("")

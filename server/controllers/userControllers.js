@@ -107,27 +107,35 @@ exports.getUser = async (req, res) => {
   };
   
 
-  exports.isloggedin = async (req, res) => {
-    try {
-        if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: "You are not logged in"
-            });
-        }
-        const user = await User.findOne({ _id: req.user.id });
-        res.status(200).json({
-            success: true,
-            user
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(401).json({
-            success: false,
-            message: "Login Failed"
-        });
+// isLoggedin
+exports.isloggedin = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: "You are not logged in",
+      });
     }
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      success: false,
+      message: "Login Failed",
+    });
+  }
 };
+
 
   //signout
   exports.signout = async (req, res, next) => {

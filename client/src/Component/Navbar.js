@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 // import axios from 'axios';
 
-const Navbar = ({userId}) => {
+const Navbar = ({ userId }) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
     // const { user } = useSelector((state) => state.auth);
@@ -50,23 +50,28 @@ const Navbar = ({userId}) => {
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
-                        {isLoggedIn ? (
-                            <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to={`/profile/${userId}`}>
-                                    <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
-                                        {user.name && <b>{user.name.substring(0, 2).toUpperCase()}</b>}
-                                    </div>
-                                </Link>
-                            </li>
-                        ) : (
-                            <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/login">
-                                    <button className="btn btn-light text-dark rounded mx-2">
-                                        <b>Login</b>
-                                    </button>
-                                </Link>
-                            </li>
+                        {userId && (
+                            <>
+                                {isLoggedIn ? (
+                                    <li className="nav-item">
+                                        <Link className="nav-link active" aria-current="page" to={`/profile/${userId}`}>
+                                            <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
+                                                {user.name && <b>{user.name.substring(0, 2).toUpperCase()}</b>}
+                                            </div>
+                                        </Link>
+                                    </li>
+                                ) : (
+                                    <li className="nav-item">
+                                        <Link className="nav-link active" aria-current="page" to="/login">
+                                            <button className="btn btn-light text-dark rounded mx-2">
+                                                <b>Login</b>
+                                            </button>
+                                        </Link>
+                                    </li>
+                                )}
+                            </>
                         )}
+
 
                         {/* check if user */}
                         {isAdmin && (
