@@ -16,8 +16,7 @@ const Profile = () => {
 
     const handleSignout = async () => {
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            const res = await axios.get('/api/signout', { email: user.email, password: user.password });
+            const res = await axios.get('/signout');
             if (res.status === 200) {
                 localStorage.removeItem("user");
                 navigate('/login');
