@@ -10,7 +10,7 @@ import Image from '../Images/image1.png'
 import Category1 from '../Images/category-1.jpg'
 import Category2 from '../Images/category-2.jpg'
 import Category3 from '../Images/category-3.jpg'
-import Category4 from '../Images/gallery-3.jpg'
+// import Category4 from '../Images/gallery-3.jpg'
 import Exclusive from '../Images/exclusive.png'
 import logo1 from '../Images/logo-godrej.png'
 import logo2 from '../Images/logo-oppo.png'
@@ -77,9 +77,9 @@ const Product = () => {
                             <Link to="/category/Women" className='col-md-4 col-6'>
                                 <div><img src={Category3} alt="" className='card-img-top mt-3 w-75 rounded' /></div>
                             </Link>
-                            <Link to="/category/Fashion" className='col-md-4 col-6'>
+                            {/* <Link to="/category/Fashion" className='col-md-4 col-6'>
                                 <div className='d-md-none sm-block'><img src={Category4} alt="" className='card-img-top mt-3 rounded p-3' /></div>
-                            </Link>
+                            </Link> */}
                         </Row>
 
                         <h2 className='mt-5 text-center'><b>Featured Products</b></h2>

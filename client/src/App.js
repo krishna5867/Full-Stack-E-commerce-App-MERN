@@ -1,5 +1,6 @@
 import './App.css';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 // Component
 import Navbar from './Component/Navbar';
@@ -35,10 +36,21 @@ import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
 
 function App() {
+    const [userId, setUserId] = useState();
+    console.log(userId);
+
+    const validUser = async () => {
+        const res = await axios.get("/isloggedin");
+        setUserId(res.data.user._id)
+    }
+    useEffect(() => {
+        validUser()
+    })
+
     return (
         <div className="App">
             <>
-                <Navbar />
+                <Navbar userId={userId} />
                 <Routes>
                     <Route path="/" element={<Product />}></Route>
                     <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />

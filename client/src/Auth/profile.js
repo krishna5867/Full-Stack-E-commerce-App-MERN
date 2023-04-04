@@ -17,16 +17,11 @@ const Profile = () => {
 
     const handleSignout = async () => {
         try {
-            localStorage.removeItem("user");
-        } catch (error) {
-            console.log("error in localStorage: ", error.message);
-        }
-        try {
             await axios.get('/signout');
-            // dispatch(logout());
+            localStorage.removeItem("user");
             navigate('/login');
         } catch (error) {
-            console.log(error.message);
+            console.log("error in localStorage: ", error.message);
         }
     };
 
