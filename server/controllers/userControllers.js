@@ -63,49 +63,49 @@ exports.getUser = async (req, res) => {
   }
 };
 
-  //login
-  exports.login = async (req, res, next) => {
-    try {
-      const { email, password } = req.body
-      if (!(email && password)) {
-        return res.status(400).send("Email And Password required")
-      }
-  
-      const user = await User.findOne({ email });
-  
-      if (!user) {
-        return res.status(400).send("User not registerd");
-      }
-  
-      if (user && (await bcrypt.compare(password, user.password))) {
-  
-        const token = jwt.sign({ user_id: user._id, email, user_role: user.role },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: '2h'
-          }
-        );
-        user.token = token;
-        await user.save();
-        user.password = undefined;
-  
-        const options = {
-          expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-          httpOnly: true,
-        };
-        res.cookie("token", token, options).status(200).json({
-          success: true,
-          user,
-          token,
-        });
-      }
-      res.status(400).send("Incorrect credincial ");
-    } catch (error) {
-      console.log(error.message);
+//login
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
+    if (!(email && password)) {
+      return res.status(400).send("Email And Password required")
     }
-    next();
-  };
-  
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).send("User not registerd");
+    }
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+
+      const token = jwt.sign({ user_id: user._id, email, user_role: user.role },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: '2h'
+        }
+      );
+      user.token = token;
+      await user.save();
+      user.password = undefined;
+
+      const options = {
+        expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
+      res.cookie("token", token, options).status(200).json({
+        success: true,
+        user,
+        token,
+      });
+      return next();
+    }
+    res.status(400).send("Incorrect credincial ");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 
 // isLoggedin
 exports.isloggedin = async (req, res) => {
@@ -136,179 +136,179 @@ exports.isloggedin = async (req, res) => {
 };
 
 
-  //signout
-  exports.signout = async (req, res, next) => {
-    try {
-        res.clearCookie("token");
-        res.status(200).json({
-            success: true,
-            message: "Signout success.",
-        });
-    } catch (error) {
-        console.log(error.message);
-        next(error);
-    }
+//signout
+exports.signout = async (req, res, next) => {
+  try {
+    res.clearCookie("token");
+    res.status(200).json({
+      success: true,
+      message: "Signout success.",
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
 };
 
-  
+
 //Admin
-  exports.adminGetUsers = async (req, res) => {
-    try {
-      const users = await User.find();
-      res.status(200).json({
-        success: true,
-        users
-      });
-    } catch (error) {
-      res.status(401).json({
+exports.adminGetUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      success: true,
+      users
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+exports.admineditUser = async (req, res) => {
+  try {
+    const users = await User.findByIdAndUpdate(req.params.id);
+    res.status(200).json({
+      success: true,
+      users
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.admindeleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findByIdAndDelete(id);
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      user
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+//password
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new Error("Email not found")
+    }
+    const resetToken = user.getForgotPasswordToken();
+    await user.save();
+    // console.log(`resetToken ${resetToken}`);
+
+    const myUrl = `http://localhost:${process.env.FRONTEND_PORT}/passwordReset/${resetToken}`;
+    const message = `Paste This link in your browser to reset password\n\n ${myUrl}`;
+
+    await mailHelper({
+      email: user.email,
+      subject: "Reset Password - Password reset email",
+      message,
+    });
+    res.status(200).json({
+      succes: true,
+      message: "Email sent successfully to your registered id",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Failed to sent email"
+    })
+  }
+};
+
+exports.passwordReset = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const forgotPasswordToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    // console.log(`forgotPasswordToken: ${forgotPasswordToken}`);
+
+    const user = await User.findOne({
+      forgotPasswordToken: forgotPasswordToken,
+      forgotPasswordExpiry: { $gt: Date.now() },
+    });
+    // console.log(`user: ${user}`);
+
+    if (!user) {
+      throw new Error("Token is invalid or has been expired");
+    }
+
+    const { password, confirmPassword } = req.body;
+
+    if (!password || password.trim() === "" || !confirmPassword || confirmPassword.trim() === "") {
+      throw new Error("Password and Confirm password fields are required");
+    }
+
+    if (password !== confirmPassword) {
+      throw new Error("Password and Confirm password does not match");
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password Changed Successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({
+      success: false,
+      message: "Failed to reset password",
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { email, password, newpassword } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).send({
         success: false,
-        message: error.message
+        message: 'User not found'
       });
     }
-  };
-
-  exports.admineditUser = async (req, res) => {
-    try {
-      const users = await User.findByIdAndUpdate(req.params.id);
-      res.status(200).json({
-        success: true,
-        users
-      });
-    } catch (error) {
-      res.status(401).json({
-        success: false,
-        message: error.message,
-      });
+    const matchPassword = (user && (await bcrypt.compare(password, user.password)))
+    if (!matchPassword) {
+      throw new Error('Password not matched')
     }
-  };
-
-  exports.admindeleteUser = async (req, res) => {
-    try {
-      const id = req.params.id;
-      const user = await User.findByIdAndDelete(id);
-      res.status(200).json({
-        success: true,
-        message: "User deleted successfully",
-        user
-      });
-    } catch (error) {
-      res.status(401).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
-
-
-  //password
-  exports.forgotPassword = async (req, res) => {
-    try {
-      const { email } = req.body;
-
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        throw new Error("Email not found")
-      }
-      const resetToken = user.getForgotPasswordToken();
-      await user.save();
-      // console.log(`resetToken ${resetToken}`);
-
-      const myUrl = `http://localhost:${process.env.FRONTEND_PORT}/passwordReset/${resetToken}`;
-      const message = `Paste This link in your browser to reset password\n\n ${myUrl}`;
-
-      await mailHelper({
-        email: user.email,
-        subject: "Reset Password - Password reset email",
-        message,
-      });
-      res.status(200).json({
-        succes: true,
-        message: "Email sent successfully to your registered id",
-      });
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Failed to sent email"
-      })
-    }
-  };
-
-  exports.passwordReset = async (req, res) => {
-    try {
-      const { token } = req.params;
-
-      const forgotPasswordToken = crypto
-        .createHash("sha256")
-        .update(token)
-        .digest("hex");
-      // console.log(`forgotPasswordToken: ${forgotPasswordToken}`);
-
-      const user = await User.findOne({
-        forgotPasswordToken: forgotPasswordToken,
-        forgotPasswordExpiry: { $gt: Date.now() },
-      });
-      // console.log(`user: ${user}`);
-
-      if (!user) {
-        throw new Error("Token is invalid or has been expired");
-      }
-
-      const { password, confirmPassword } = req.body;
-
-      if (!password || password.trim() === "" || !confirmPassword || confirmPassword.trim() === "") {
-        throw new Error("Password and Confirm password fields are required");
-      }
-
-      if (password !== confirmPassword) {
-        throw new Error("Password and Confirm password does not match");
-      }
-
-      user.password = await bcrypt.hash(password, 10);
-      user.forgotPasswordToken = undefined;
-      user.forgotPasswordExpiry = undefined;
-
-      await user.save();
-
-      res.status(200).json({
-        success: true,
-        message: "Password Changed Successfully",
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(400).json({
-        success: false,
-        message: "Failed to reset password",
-      });
-    }
-  };
-
-  exports.changePassword = async (req, res) => {
-    try {
-      const { email, password, newpassword } = req.body;
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(404).send({
-          success: false,
-          message: 'User not found'
-        });
-      }
-      const matchPassword = (user && (await bcrypt.compare(password, user.password)))
-      if (!matchPassword) {
-        throw new Error('Password not matched')
-      }
-      const hashedPassword = await bcrypt.hash(newpassword, 10);
-      user.password = hashedPassword;
-      await user.save();
-      res.status(200).send({
-        success: true,
-        message: 'Password changed successfully',
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({
-        success: false,
-        message: 'An error occurred while changing the password'
-      });
-    }
-  };
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: 'Password changed successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: 'An error occurred while changing the password'
+    });
+  }
+};
