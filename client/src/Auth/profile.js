@@ -7,23 +7,26 @@ import moment from 'moment';
 // import { logout } from '../Redux/authSlice';
 
 const Profile = () => {
-    const{id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
     // const dispatch = useDispatch();
     // const { isLoggedIn, user } = useSelector((state) => state.auth);
 
 
-
     const handleSignout = async () => {
         try {
-            await axios.get('/signout');
-            localStorage.removeItem("user");
-            navigate('/login');
+            const user = JSON.parse(localStorage.getItem("user"));
+            const res = await axios.get('/api/signout', { email: user.email, password: user.password });
+            if (res.status === 200) {
+                localStorage.removeItem("user");
+                navigate('/login');
+            }
         } catch (error) {
-            console.log("error in localStorage: ", error.message);
+            console.log("Error signing out: ", error.message);
         }
     };
+
 
 
     return (

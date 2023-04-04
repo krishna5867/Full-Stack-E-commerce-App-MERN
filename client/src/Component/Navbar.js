@@ -38,7 +38,6 @@ const Navbar = () => {
     }
     //Localdtorage
     const user = JSON.parse(localStorage.getItem('user'));
-    // const userId = user && user._id;
     const isAdmin = user && user.role === 'admin';
     const isLoggedIn = !!user;
 
