@@ -15,7 +15,7 @@ const MyOrder = () => {
             setOrder(res.data.order)
         }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     useEffect(() => {
         fetchOrder()
     },[order])
