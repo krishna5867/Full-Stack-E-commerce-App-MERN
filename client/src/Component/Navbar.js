@@ -50,8 +50,6 @@ const Navbar = ({ userId }) => {
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
-                        {userId && (
-                            <>
                                 {isLoggedIn ? (
                                     <li className="nav-item">
                                         <Link className="nav-link active" aria-current="page" to={`/profile/${userId}`}>
@@ -69,8 +67,6 @@ const Navbar = ({ userId }) => {
                                         </Link>
                                     </li>
                                 )}
-                            </>
-                        )}
 
 
                         {/* check if user */}
