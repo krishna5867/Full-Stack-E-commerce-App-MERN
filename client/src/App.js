@@ -36,27 +36,12 @@ import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
 
 function App() {
-    const [userId, setUserId] = useState();
-    console.log(userId);
 
-    const validUser = async () => {
-        try {
-            const res = await axios.get("/isloggedin");
-            setUserId(res.data.user._id);
-        } catch (error) {
-            console.log(error);
-            setUserId(null);
-        }
-    };
-    
-    useEffect(() => {
-        validUser()
-    })
 
     return (
         <div className="App">
             <>
-                <Navbar userId={userId} />
+                <Navbar />
                 <Routes>
                     <Route path="/" element={<Product />}></Route>
                     <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />

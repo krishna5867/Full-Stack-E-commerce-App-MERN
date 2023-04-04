@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-// import axios from 'axios';
+import axios from 'axios';
 
-const Navbar = ({ userId }) => {
+const Navbar = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
     // const { user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
+
+    const [userId, setUserId] = useState();
+    console.log(userId);
+
+    const validUser = async () => {
+        try {
+            const res = await axios.get("/isloggedin");
+            setUserId(res.data.user._id);
+        } catch (error) {
+            console.log(error);
+            setUserId(null);
+        }
+    };
+    
+    useEffect(() => {
+        validUser()
+    })
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {
