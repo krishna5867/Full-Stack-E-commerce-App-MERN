@@ -22,7 +22,7 @@ router.get("/", home);
 router.post("/createUser", createUser);
 router.get("/getUser/:id",auth, getUser);
 router.post("/login", login);
-router.get("/signout",auth, signout);
+router.post("/signout",auth, signout);
 router.get("/isloggedin",auth, isloggedin);
 
 router.post("/forgotPassword", forgotPassword);

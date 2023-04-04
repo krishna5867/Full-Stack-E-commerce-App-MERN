@@ -35,6 +35,9 @@ const OrderDetails = () => {
             console.log(error);
         }
     }
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const isAdmin = user && user.role === 'admin';
     
     useEffect(() => {
         setLoading(true)
@@ -53,7 +56,7 @@ const OrderDetails = () => {
                                     <th scope="col">Buyer Name</th>
                                     <th scope="col">Buyer Email</th>
                                     <th scope="col">Shipping Address</th>
-                                    <th scope="col">Status</th>
+                                    {isAdmin && <th scope="col">Status</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,6 +69,7 @@ const OrderDetails = () => {
                                         <p>{order?.shippingAddress?.city}, {order?.shippingAddress?.state} - {order?.shippingAddress?.postalCode}</p>
                                     </td>
                                     <td>
+                                        {isAdmin && (
                                         <td>
                                             <select className="form-select"
                                                 value={changeOrderStatus}
@@ -80,6 +84,8 @@ const OrderDetails = () => {
                                                 )}
                                             </select>
                                         </td>
+                                        )}
+
                                     </td>
                                 </tr>
                             </tbody>
