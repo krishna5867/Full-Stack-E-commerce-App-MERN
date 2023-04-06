@@ -10,7 +10,6 @@ exports.auth = async (req, res, next) => {
     }
     try {
         const decode = jwt.verify(token, process.env.SECRET_KEY);
-        // console.log(decode, "decode");
         req.user = {
             id: decode.user_id,
             role: decode.user_role,

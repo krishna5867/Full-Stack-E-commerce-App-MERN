@@ -110,12 +110,7 @@ exports.login = async (req, res, next) => {
 // isLoggedin
 exports.isloggedin = async (req, res) => {
   try {
-    if (!req.user || !req.user.id) {
-      res.status(401).json({
-        success: false,
-        message: "You are not logged in",
-      });
-    }
+
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(401).json({
@@ -126,6 +121,7 @@ exports.isloggedin = async (req, res) => {
     res.status(200).json({
       success: true,
       user,
+      token: user.token,
     });
   } catch (error) {
     return res.status(401).json({
@@ -134,6 +130,7 @@ exports.isloggedin = async (req, res) => {
     });
   }
 };
+
 
 
 //signout
