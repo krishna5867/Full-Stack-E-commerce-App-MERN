@@ -22,7 +22,7 @@ import Spinner from '../Component/Loading';
 
 const Product = () => {
     const dispatch = useDispatch();
-    const [products, setProducts] = useState("");
+    const [products, setProducts] = useState('');
     const [loading, setLoading] = useState(true)
 
     const fetchProducts = async () => {
@@ -49,7 +49,7 @@ const Product = () => {
 
     return (
         <>
-            {loading ? <Spinner style={{ height: '60vh' }} /> : (
+            {loading ? <Spinner  /> : (
                 <>
                     <Row className='mt-4'>
                         <div className='row'>

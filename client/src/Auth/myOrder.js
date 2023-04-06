@@ -15,7 +15,6 @@ const MyOrder = () => {
             setOrder(res.data.order)
         }
     }
-    // eslint-disable-next-line
     useEffect(() => {
         fetchOrder()
     },[order])

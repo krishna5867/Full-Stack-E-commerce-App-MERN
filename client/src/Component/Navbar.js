@@ -18,7 +18,6 @@ const Navbar = () => {
     const validUser = async () => {
         try {
             const res = await axios.get('/isloggedin');
-            console.log(res.data);
             setUserId(res.data.user._id);
         } catch (error) {
             console.log(error);

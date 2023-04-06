@@ -17,7 +17,6 @@ exports.auth = async (req, res, next) => {
         };
         next();
     } catch (error) {
-        next(error)
         res.status(403).send(error.message)
     }
 }

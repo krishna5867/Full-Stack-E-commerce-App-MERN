@@ -82,7 +82,7 @@ exports.login = async (req, res, next) => {
       const token = jwt.sign({ user_id: user._id, email, user_role: user.role },
         process.env.SECRET_KEY,
         {
-          expiresIn: '2h'
+          expiresIn: '5h'
         }
       );
       user.token = token;
@@ -90,7 +90,7 @@ exports.login = async (req, res, next) => {
       user.password = undefined;
 
       const options = {
-        expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
       res.cookie("token", token, options).status(200).json({
@@ -98,12 +98,12 @@ exports.login = async (req, res, next) => {
         user,
         token,
       });
-      return next();
     }
     res.status(400).send("Incorrect credincial ");
   } catch (error) {
     console.log(error.message);
   }
+  next(); 
 };
 
 
@@ -111,7 +111,7 @@ exports.login = async (req, res, next) => {
 exports.isloggedin = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         message: "You are not logged in",
       });
