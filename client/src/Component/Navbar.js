@@ -18,9 +18,10 @@ const Navbar = () => {
     const validUser = async () => {
         try {
             const res = await axios.get('/isloggedin');
-            setUserId(res.data.user._id);
+            if(res.status === 200){
+                setUserId(res.data.user._id);
+            }
         } catch (error) {
-            console.log(error);
             setUserId(null);
         }
     };
