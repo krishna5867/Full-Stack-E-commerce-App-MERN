@@ -10,7 +10,7 @@ const AllProducts = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true)
-
+// eslint-disable-next-line
     const getProducts = async () => {
         const res = await axios.get(`/getProducts?page=${currentPage}`);
         if (res.status === 200) {
@@ -34,7 +34,7 @@ const AllProducts = () => {
 
         }
     }
-
+// eslint-disable-next-line
     const fetchTotalProductsCount = async () => {
         const res = await axios.get("/productCount");
         if (res.status === 200) {
@@ -54,12 +54,13 @@ const AllProducts = () => {
             setCurrentPage(currentPage - 1)
         }
     }
-// eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setLoading(true)
         getProducts();
         fetchTotalProductsCount()
-    }, [currentPage])
+    }, [getProducts, fetchTotalProductsCount])
+
+    
     return (
         <>
             <Row className='p-4'>
