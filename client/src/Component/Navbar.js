@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-// import axios from 'axios';
+import axios from 'axios';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -12,29 +12,29 @@ const Navbar = () => {
     // const { user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
 
-    // const [userId, setUserId] = useState();
+    const [userId, setUserId] = useState();
     
     //LocalStorage
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.role === 'admin';
     const isLoggedIn = !!user;
-    const userId = user && user._id;
+    // const userId = user && user._id;
     console.log("id",userId);
 
-    // const validUser = async () => {
-    //     try {
-    //         const res = await axios.get('/isloggedin');
-    //         if (res.status === 200) {
-    //             setUserId(res.data.user._id);
-    //         }
-    //     } catch (error) {
-    //         setUserId(null);
-    //     }
-    // };
+    const validUser = async () => {
+        try {
+            const res = await axios.get('/isloggedin');
+            if (res.status === 200) {
+                setUserId(res.data.user._id);
+            }
+        } catch (error) {
+            setUserId(null);
+        }
+    };
 
 
     useEffect(() => {
-        // validUser()
+        validUser()
     },[isLoggedIn])
 
     const handleSearch = async (e) => {
