@@ -14,13 +14,6 @@
 * Frontend: React.js with Bootstrap
 * Payment Gateway: Razorpay
 
-## Features
-User registration and authentication
-User forgot and change password
-Admin and user panel
-Razorpay payment gateway integration for payment
-Adding and managing products
-Performing CRUD operations on products
 
 [Live Link](https://full-stack-e-commerce-app-mern.vercel.app/)
 
