@@ -13,7 +13,7 @@ const SingleProduct = () => {
   const [product, setProduct] = useState('');
   const [relatedProduct, setRelatedProduct] = useState("");
   const [loading, setLoading] = useState(true)
-  console.log(product);
+  // console.log(product);
 
   const fetchRelatedProducts = async () => {
     const res = await axios.get(`/relatedProducts/${id}`);

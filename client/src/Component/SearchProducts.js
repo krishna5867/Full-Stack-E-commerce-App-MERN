@@ -36,12 +36,6 @@ const SearchProducts = () => {
         fetchSearchProducts();
     }, [search])
 
-    useEffect(() => {
-        if (products) {
-            // setLoading(false);
-        }
-    }, [fetchSearchProducts])
-
     return (
         <>
             {

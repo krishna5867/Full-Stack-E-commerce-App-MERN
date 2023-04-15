@@ -16,7 +16,7 @@ const OrderDetails = () => {
 
     const fetchOrder = async () => {
         const res = await axios.get(`/getOneOrder/${id}`);
-        console.log(res.data);
+        // console.log(res.data);
         if (res.status === 200) {
             setOrder(res.data.order)
             setLoading(false)

@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardBody, CardTitle, CardText } from "reactstrap";
 import { Link } from 'react-router-dom';
-// http://localhost:3000/order/order_LTgUK0KZ81F3U5/pay_LTgUaeIU0fmg6Y/46f211ca7ca15b9a2a010c169a640d270200ed540d05497f8d78b471607a8b76
 function Order() {
     const { orderId, paymentId } = useParams();
     return (
@@ -33,3 +32,5 @@ function Order() {
 
 
 export default Order;
+
+// http://localhost:3000/order/order_LTgUK0KZ81F3U5/pay_LTgUaeIU0fmg6Y/46f211ca7ca15b9a2a010c169a640d270200ed540d05497f8d78b471607a8b76

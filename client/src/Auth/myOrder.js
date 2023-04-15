@@ -7,10 +7,8 @@ import moment from 'moment'
 const MyOrder = () => {
     const { id } = useParams();
     const [order, setOrder] = useState([]);
-    // console.log(order);
     const fetchOrder = async () => {
         const res = await axios.get(`/myOrder/${id}`);
-        // console.log(res.data);
         if (res.status === 200) {
             setOrder(res.data.order)
         }

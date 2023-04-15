@@ -13,13 +13,12 @@ const Navbar = () => {
     const cartItems = useSelector((state) => state.cart.items);
 
     const [userId, setUserId] = useState();
+    console.log("userId",userId);
     
     //LocalStorage
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.role === 'admin';
     const isLoggedIn = !!user;
-    // const userId = user && user._id;
-    console.log("id",userId);
 
     const validUser = async () => {
         try {

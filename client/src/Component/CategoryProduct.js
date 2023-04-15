@@ -15,8 +15,8 @@ const CategoryProduct = () => {
     const [loading, setLoading] = useState(true)
 
     const [categories, setCategories] = useState([]);
+    // eslint-disable-next-line
     const [selectedProductCategory, setSelectedProductCategory] = useState("");
-    console.log(selectedProductCategory);
 
 
     const fetchCategoryList = async () => {
@@ -47,18 +47,14 @@ const CategoryProduct = () => {
             image: product.image?.url
         }));
     };
-    // eslint-disable-next-line
+    
     useEffect(() => {
         setLoading(true)
         fetchCategoryList()
         fetchCategory()
     }, [selectedCategory])
 
-    useEffect(() => {
-        if (products) {
-            //   setLoading(false);
-        }
-    }, [fetchCategory])
+
 
     return (
         <>

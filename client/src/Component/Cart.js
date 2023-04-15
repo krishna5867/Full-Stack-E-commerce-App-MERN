@@ -115,7 +115,7 @@ const Cart = () => {
                 isDelivered: false
             });
             if (res.status === 200) {
-                console.log(res.data, '145');
+                // console.log(res.data, '145');
             }
         } catch (error) {
             console.log(error.message);
