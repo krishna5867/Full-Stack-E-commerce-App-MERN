@@ -22,6 +22,9 @@ Razorpay payment gateway integration for payment
 Adding and managing products
 Performing CRUD operations on products
 
-[Project Demo Video](https://www.youtube.com/watch?v=Gl43w4MvOUM&t=52s)
+[Live Link](https://full-stack-e-commerce-app-mern.vercel.app/)
 
+[Project Demo](https://www.youtube.com/watch?v=Gl43w4MvOUM&t=52s)
+
+### Home Page
 ![Ui](https://github.com/krishna5867/Full-Stack-E-commerce-App-MERN/blob/main/Assets/home.png)
