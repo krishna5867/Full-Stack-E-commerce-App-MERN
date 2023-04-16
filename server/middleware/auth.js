@@ -2,17 +2,17 @@ const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res, next) => {
     let token = req.cookies.token || req.body.token;
-    if (!token && req.header("Authorization")) {
-        token = req.header("Authorization").replace("Bearer ", "");
+    if (!token && req.headers.authorization) {
+        token = req.headers.authorization.replace('Bearer ', '');
     }
     if (!token) {
-        return res.status(403).send('Token is missing')
+        return res.status(403).send('Token is missing');
     }
     try {
-        const decode = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.user = {
-            _id: decode.user_id,
-            role: decode.user_role,
+            _id: decoded.user_id,
+            role: decoded.user_role,
         };
         next();
     } catch (error) {

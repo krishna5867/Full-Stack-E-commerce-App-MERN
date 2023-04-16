@@ -108,7 +108,7 @@ exports.login = async (req, res, next) => {
 
 
 // isLoggedin
-exports.isloggedin = async (req, res, next) => {
+exports.isloggedin = async (req, res) => {
   try {
 
     const user = await User.findById(req.user._id);
