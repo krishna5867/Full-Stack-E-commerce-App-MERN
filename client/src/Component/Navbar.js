@@ -13,7 +13,7 @@ const Navbar = () => {
     const cartItems = useSelector((state) => state.cart.items);
 
     const [userId, setUserId] = useState();
-    console.log("userId",userId);
+    console.log("navbar userId",userId);
     
     //LocalStorage
     const user = JSON.parse(localStorage.getItem('user'));
@@ -24,7 +24,7 @@ const Navbar = () => {
         try {
             const res = await axios.get('/isloggedin');
             if (res.status === 200) {
-                setUserId(res.data.user._id,"27");
+                setUserId(res.data.user._id);
             }
         } catch (error) {
             setUserId(null,'30');

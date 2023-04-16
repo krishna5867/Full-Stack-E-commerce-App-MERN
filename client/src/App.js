@@ -1,7 +1,7 @@
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import axios from 'axios';
+
 // Component
 import Navbar from './Component/Navbar';
 import Product from './Component/Products';
@@ -36,25 +36,6 @@ import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
 
 function App() {
-    const [userId, setUserId] = useState();
-    console.log(userId);
-
-    const validUser = async () => {
-        try {
-            const res = await axios.get('/isloggedin');
-            if (res.status === 200) {
-                setUserId(res.data.user._id);
-            }
-        } catch (error) {
-            setUserId(null);
-        }
-    };
-
-
-    useEffect(() => {
-        validUser()
-    },[])
-
 
     return (
         <div className="App">
