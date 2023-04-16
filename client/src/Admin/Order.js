@@ -9,7 +9,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     const res = await axios.get("/admin/orders");
-    console.log(res.data);
+    // console.log(res.data);
     if (res.status === 200) {
       setOrderDetails(res.data.order)
     }

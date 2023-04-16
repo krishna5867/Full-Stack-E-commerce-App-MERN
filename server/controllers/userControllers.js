@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mailHelper = require("../utils/mailHelper");
 const crypto = require("crypto");
+const { log } = require("console");
 
 exports.home = (req, res) => {
   res.send("Hello ! And Welcome to full stack E-commerce project.I am Krishna(A Full Stack Web Developer)");
@@ -107,10 +108,10 @@ exports.login = async (req, res, next) => {
 
 
 // isLoggedin
-exports.isloggedin = async (req, res) => {
+exports.isloggedin = async (req, res, next) => {
   try {
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -118,10 +119,10 @@ exports.isloggedin = async (req, res) => {
       });
     }
     res.status(200).json({
-      success: true,
-      user,
-      token: user.token,
-    });
+        success: true,
+        user,
+        token: user.token,
+      });
   } catch (error) {
     return res.status(401).json({
       success: false,
@@ -129,7 +130,6 @@ exports.isloggedin = async (req, res) => {
     });
   }
 };
-
 
 
 //signout

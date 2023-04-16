@@ -24,10 +24,10 @@ const Navbar = () => {
         try {
             const res = await axios.get('/isloggedin');
             if (res.status === 200) {
-                setUserId(res.data.user._id);
+                setUserId(res.data.user._id,"27");
             }
         } catch (error) {
-            setUserId(null);
+            setUserId(null,'30');
         }
     };
 
