@@ -27,8 +27,6 @@ const Profile = () => {
         }
     };
 
-
-
     return (
         <>
             <Row className='p-4'>

@@ -70,13 +70,10 @@ exports.login = async (req, res, next) => {
     if (!(email && password)) {
       return res.status(400).send("Email And Password required")
     }
-
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(400).send("User not registerd");
     }
-
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign({ user_id: user._id, email, user_role: user.role },
         process.env.SECRET_KEY,
@@ -105,21 +102,17 @@ exports.login = async (req, res, next) => {
     res.status(400).send("Incorrect credincial ");
   } catch (error) {
     console.log(error.message);
+    return next(error);
   }
-  return next(error);
 };
 
 
 // isLoggedin
 exports.isloggedin = async (req, res) => {
   try {
-
     const user = await User.findOne({_id:req.user._id});
     if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "User not found",
-      });
+      throw new Error('User not Loggedin')
     }
     res.status(200).json({
         success: true,
@@ -127,7 +120,7 @@ exports.isloggedin = async (req, res) => {
         token: user.token,
       });
   } catch (error) {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
       message: "isLogin Failed",
     });

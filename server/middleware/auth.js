@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res, next) => {
-    let token = req.cookies.token || req.body.token;
-    // console.log(token,"token from middleware page");
-    if (!token && req.headers.authorization) {
-        token = req.headers.authorization.replace('Bearer ', '');
+    let token = req.headers.authorization;
+    if (!token && req.body && req.body.token) {
+        token = req.body.token;
+    }
+    if (!token && req.cookies && req.cookies.token) {
+        token = req.cookies.token;
     }
     if (!token) {
         return res.status(403).send('Token is missing');

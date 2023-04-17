@@ -35,3 +35,5 @@ router.put("/admin/editUser/:id",auth, customizeRole('admin'), admineditUser);
 router.delete("/admin/deleteuser/:id",auth, customizeRole('admin'), admindeleteUser);
 
 module.exports = router;
+
+
