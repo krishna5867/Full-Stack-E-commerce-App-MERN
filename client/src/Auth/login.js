@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+// import { set, get } from 'react-cookies';
+import Cookie from 'js-cookie';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -18,7 +20,8 @@ const Login = () => {
         try {
             const res = await axios.post('/login', { email, password });
             dispatch(login(res.data));
-            localStorage.setItem("user",JSON.stringify(res.data.user));
+            Cookie.set('token', res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             navigate("/");
             toast.success("Login Success");
         } catch (error) {

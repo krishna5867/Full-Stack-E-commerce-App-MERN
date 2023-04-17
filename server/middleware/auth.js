@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res, next) => {
     let token = req.cookies.token || req.body.token;
-    console.log(token,"middleware page");
+    // console.log(token,"token from middleware page");
     if (!token && req.headers.authorization) {
         token = req.headers.authorization.replace('Bearer ', '');
     }

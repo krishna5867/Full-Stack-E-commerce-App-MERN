@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mailHelper = require("../utils/mailHelper");
 const crypto = require("crypto");
-const { log } = require("console");
 
 exports.home = (req, res) => {
   res.send("Hello ! And Welcome to full stack E-commerce project.I am Krishna(A Full Stack Web Developer)");
@@ -115,7 +114,7 @@ exports.login = async (req, res, next) => {
 exports.isloggedin = async (req, res) => {
   try {
 
-    const user = await User.findById(req.user._id);
+    const user = await User.findOne({_id:req.user._id});
     if (!user) {
       return res.status(401).json({
         success: false,
