@@ -13,8 +13,8 @@ const Navbar = () => {
     const cartItems = useSelector((state) => state.cart.items);
 
     const [userId, setUserId] = useState();
-    console.log("navbar userId",userId);
-    
+    console.log("navbar userId", userId);
+
     //LocalStorage
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.role === 'admin';
@@ -27,14 +27,13 @@ const Navbar = () => {
                 setUserId(res.data.user._id);
             }
         } catch (error) {
-            setUserId(null,'30');
+            setUserId(null);
         }
     };
 
-
     useEffect(() => {
         validUser()
-    },[isLoggedIn])
+    }, [isLoggedIn])
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {

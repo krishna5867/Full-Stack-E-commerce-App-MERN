@@ -20,7 +20,7 @@ const Login = () => {
         try {
             const res = await axios.post('/login', { email, password });
             dispatch(login(res.data));
-            Cookie.set('token', res.data.token);
+            Cookie.set('token', res.data.token, { httpOnly: true });
             localStorage.setItem("user", JSON.stringify(res.data.user));
             navigate("/");
             toast.success("Login Success");
