@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import Cookie from 'js-cookie';
 
 function PrivateRoute({ Component }) {
     const navigate = useNavigate();
@@ -9,7 +10,6 @@ function PrivateRoute({ Component }) {
         if (!loggedIn) {
             navigate('/login')
         }
-        // console.log(loggedIn);
     })
     return (
         <>

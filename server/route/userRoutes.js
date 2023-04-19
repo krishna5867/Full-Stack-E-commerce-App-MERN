@@ -31,6 +31,13 @@ router.put("/changePassword", auth, changePassword);
 
 //admin
 router.get("/admin/getUsers", auth, customizeRole('admin'), adminGetUsers);
+
+const getAllUsers = async () => {
+    const res = await axios.get('/admin/getUsers');
+    if (res.status === 200) {
+        setUsers(res.data.users);
+    }
+}
 router.put("/admin/editUser/:id",auth, customizeRole('admin'), admineditUser);
 router.delete("/admin/deleteuser/:id",auth, customizeRole('admin'), admindeleteUser);
 

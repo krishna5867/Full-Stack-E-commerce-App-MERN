@@ -111,7 +111,7 @@ exports.login = async (req, res, next) => {
 exports.isloggedin = async (req, res) => {
   try {
     const user = await User.findOne({_id:req.user._id});
-    console.log("LoggedIn User", user);
+    console.log("LoggedIn route backend", user);
     if (!user) {
       throw new Error('User not Loggedin')
     }

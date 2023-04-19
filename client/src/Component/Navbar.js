@@ -9,13 +9,13 @@ import axios from 'axios';
 const Navbar = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
-    // const { user } = useSelector((state) => state.auth);
     const cartItems = useSelector((state) => state.cart.items);
 
     const [userId, setUserId] = useState();
     console.log("navbar userId", userId);
 
     //LocalStorage
+    // const user = localStorage.getItem('user');
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.role === 'admin';
     const isLoggedIn = !!user;
