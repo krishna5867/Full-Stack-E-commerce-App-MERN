@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../Redux/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-// import Cookie from 'js-cookie';
+import Cookie from 'js-cookie';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -26,9 +26,11 @@ const Login = () => {
                 }
             });
             const res = response.data;
+            // console.log(res);
             toast.success("Login Success");
             navigate("/");
             localStorage.setItem("user", JSON.stringify(res.user));
+            Cookie.set("token",res.user?.token )
             if (res.status === 200) {
                 dispatch(login(res.user));
             }
