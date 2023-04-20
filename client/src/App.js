@@ -36,7 +36,6 @@ import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
 
 function App() {
-
     return (
         <div className="App">
             <>

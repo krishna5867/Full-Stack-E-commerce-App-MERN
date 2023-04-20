@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -14,22 +13,32 @@ const Navbar = () => {
     const [userId, setUserId] = useState();
     console.log("navbar userId", userId);
 
-    //LocalStorage
-    // const user = localStorage.getItem('user');
     const user = JSON.parse(localStorage.getItem('user'));
-    const isAdmin = user && user.role === 'admin';
+    const isAdmin = user && user.userValid.role === 'admin';
     const isLoggedIn = !!user;
 
     const validUser = async () => {
         try {
-            const res = await axios.get('/isloggedin');
-            if (res.status === 200) {
-                setUserId(res.data.user._id);
+            const token = localStorage.getItem('usersdatatoken');
+            const response = await fetch("/validuser", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            });
+            const res = await response.json();
+            console.log(res, '<- 31 navbar');
+            if (res.status === 201) {
+                setUserId(res.userId);
             }
         } catch (error) {
+            console.log(error, '39 navbar');
             setUserId(null);
         }
     };
+
+
 
     useEffect(() => {
         validUser()
@@ -40,7 +49,6 @@ const Navbar = () => {
             navigate(`/search/${searchQuery}`)
         }
     }
-
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 md:height-3">
@@ -74,7 +82,7 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to={`/profile/${userId}`}>
                                     <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
-                                        {user.name && <b>{user.name.substring(0, 2).toUpperCase()}</b>}
+                                        {user && <b>{user.userValid.name.substring(0, 2).toUpperCase()}</b>}
                                     </div>
                                 </Link>
                             </li>

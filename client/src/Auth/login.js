@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../Redux/authSlice';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import Cookie from 'js-cookie';
 
 const Login = () => {
-    const dispatch = useDispatch();
     const [email, setEmail] = useState("admin@admin.com");
     const [password, setPassword] = useState("password");
     const navigate = useNavigate();
@@ -17,28 +12,34 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("/login", {
-                email,
-                password
-            }, {
+            const response = await fetch("/login", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
             });
-            const res = response.data;
-            // console.log(res);
-            toast.success("Login Success");
-            navigate("/");
-            localStorage.setItem("user", JSON.stringify(res.user));
-            Cookie.set("token",res.user?.token )
-            if (res.status === 200) {
-                dispatch(login(res.user));
+
+            const res = await response.json();
+            if (response.status === 201) {
+                toast.success("Login Success");
+                localStorage.setItem("usersdatatoken", res.result.token);
+                localStorage.setItem("user", JSON.stringify(res.result));
+                navigate("/");
+            } else if (response.status === 401) {
+                toast.error("Invalid credentials");
+            } else {
+                toast.error("Something went wrong. Please try again later.");
             }
         } catch (error) {
             console.error(error);
-            toast.error("Invalid credentials");
+            toast.error("Something went wrong. Please try again later.");
         }
     };
+
 
 
     return (

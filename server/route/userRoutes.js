@@ -7,7 +7,7 @@ const {
     login,
     getUser,
     signout,
-    isloggedin,
+    validuser,
     forgotPassword,
     passwordReset,
     changePassword,
@@ -23,7 +23,7 @@ router.post("/createUser", createUser);
 router.get("/getUser/:id",auth, getUser);``
 router.post("/login", login);
 router.post("/signout",auth, signout);
-router.get("/isloggedin",auth, isloggedin);
+router.get("/validuser",auth, validuser);
 
 router.post("/forgotPassword", forgotPassword);
 router.post("/passwordReset/:token", passwordReset);

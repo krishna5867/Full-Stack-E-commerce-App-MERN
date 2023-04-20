@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const keysecret = process.env.SECRET_KEY
+
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,9 +19,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  token: {
-    type: String,
-  },
+  tokens: [
+    {
+        token: {
+            type: String,
+            required: true,
+        }
+    }
+],
   role:{
     type: String,
     default: "user"
@@ -51,5 +59,19 @@ userSchema.methods.getForgotPasswordToken = function () {
   return resetToken;
 };
 
+// generate token 
+userSchema.methods.generateAuthtoken = async function () {
+  try {
+      let token23 = jwt.sign({ _id: this._id }, keysecret, {
+          expiresIn: "1d"
+      });
+
+      this.tokens = this.tokens.concat({ token: token23 });
+      await this.save();
+      return token23;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 module.exports = mongoose.model("User", userSchema);
