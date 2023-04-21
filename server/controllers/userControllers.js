@@ -18,9 +18,9 @@ exports.createUser = async (req, res) => {
 
   try {
 
-    const preuser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: email });
 
-    if (preuser) {
+    if (existingUser) {
       res.status(422).json({ error: "This Email is Already Exist" })
     } else {
       const finalUser = new User({
@@ -45,22 +45,19 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(422).json({ error: "fill all the details" })
+    throw new Error("All fiels required")
   }
-
   try {
     const userValid = await User.findOne({ email: email });
-
     if (userValid) {
-
       const isMatch = await bcrypt.compare(password, userValid.password);
 
       if (!isMatch) {
         res.status(422).json({ error: "invalid details" })
       } else {
-
         // generate token 
         const token = await userValid.generateAuthtoken();
+        // console.log("generateAuthtoken ->", token);
 
         // cookiegenerate
         res.cookie("usercookie", token, {
@@ -89,11 +86,11 @@ exports.validuser = async (req, res) => {
       if (user) {
           res.status(201).json({ status: 201, message: "Valid User", validUser: user });
       } else {
-          throw new Error("User not found");
+          res.status(401).json({ status: 401, message: "User not found" });
       }
   } catch (error) {
       console.error(error);
-      res.status(401).json({ status: 401, message: "error in validating user" });
+      res.status(401).json({ status: 401, message: "Error in validating user" });
   }
 };
 
@@ -115,6 +112,7 @@ exports.signout = async (req, res) => {
     res.status(401).json({ status: 401, error })
   }
 }
+
 //getsingleusers
 exports.getUser = async (req, res) => {
   try {

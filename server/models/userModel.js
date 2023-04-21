@@ -63,15 +63,15 @@ userSchema.methods.getForgotPasswordToken = function () {
 userSchema.methods.generateAuthtoken = async function () {
   try {
       let token23 = jwt.sign({ _id: this._id }, keysecret, {
-          expiresIn: "1d"
+          expiresIn: "5d"
       });
-
       this.tokens = this.tokens.concat({ token: token23 });
       await this.save();
       return token23;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 }
+
 
 module.exports = mongoose.model("User", userSchema);

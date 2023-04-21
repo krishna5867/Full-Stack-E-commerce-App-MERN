@@ -12,10 +12,13 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
+            // const token = localStorage.getItem('usersdatatoken');
+            
             const response = await fetch("/login", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    // "Authorization": token
                 },
                 body: JSON.stringify({
                     email,

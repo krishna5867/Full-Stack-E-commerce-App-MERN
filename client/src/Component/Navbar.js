@@ -1,48 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({userId}) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
-
-    const [userId, setUserId] = useState();
-    console.log("navbar userId", userId);
-
+    
     const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.userValid.role === 'admin';
     const isLoggedIn = !!user;
-
-    const validUser = async () => {
-        try {
-            const token = localStorage.getItem('usersdatatoken');
-            const response = await fetch("/validuser", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                }
-            });
-            const res = await response.json();
-            console.log(res, '<- 31 navbar');
-            if (res.status === 201) {
-                setUserId(res.userId);
-            }
-        } catch (error) {
-            console.log(error, '39 navbar');
-            setUserId(null);
-        }
-    };
-
-
-
-    useEffect(() => {
-        validUser()
-    }, [isLoggedIn])
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {

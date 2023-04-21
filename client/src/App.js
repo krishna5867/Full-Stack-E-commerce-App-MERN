@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Component
@@ -36,10 +36,54 @@ import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
 
 function App() {
+    const [userId, setUserId] = useState();
+    console.log("userId", userId);
+
+
+    const validUser = async () => {
+        try {
+            const token = localStorage.getItem('usersdatatoken');
+            console.log(token, 46);
+            if (!token) {
+                setUserId(null);
+                return;
+            }
+
+            const response = await fetch("/validuser", {
+                method: "GET",
+                headers: {
+                    "Authorization": token
+                }
+            });
+            console.log(response);
+            if (response.ok) {
+                const res = await response.json();
+                console.log(res, 57);
+                if (res.status === 201) {
+                    setUserId(res.validUser._id);
+                }
+            } else if (response.status === 401) {
+                setUserId(null);
+            } else {
+                throw new Error(`Server returned status ${response.status}`);
+            }
+        } catch (error) {
+            console.log(error, '39 navbar');
+            setUserId(null);
+        }
+    };
+
+
+
+
+
+    useEffect(() => {
+        validUser()
+    }, [])
     return (
         <div className="App">
             <>
-                <Navbar />
+                <Navbar userId={userId}/>
                 <Routes>
                     <Route path="/" element={<Product />}></Route>
                     <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />
