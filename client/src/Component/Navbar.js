@@ -10,10 +10,6 @@ const Navbar = ({ userId }) => {
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
 
-    let localStorage = window.localStorage.getItem('user');
-    if(!localStorage){
-        throw new Error("LocalStorage is empty")
-    }
         const user = JSON.parse(localStorage.getItem('user'));
         if(!user) return;
         const isAdmin = user && user.userValid.role === 'admin';
