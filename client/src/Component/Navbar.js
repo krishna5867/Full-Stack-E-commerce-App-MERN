@@ -5,12 +5,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 
-const Navbar = ({userId}) => {
+const Navbar = ({ userId }) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
-    
-    const user = JSON.parse(localStorage.getItem('user'));
+
+    let user;
+    try {
+        user = JSON.parse(localStorage.getItem('user'));
+    } catch (e) {
+        console.error('Error parsing user from localStorage', e);
+        user = {};
+    }
+
+    // console.log(user,22);
+
+    // const user = JSON.parse(localStorage.getItem('user'));
     const isAdmin = user && user.userValid.role === 'admin';
     const isLoggedIn = !!user;
 

@@ -55,11 +55,9 @@ exports.login = async (req, res) => {
       if (!isMatch) {
         res.status(422).json({ error: "invalid details" })
       } else {
-        // generate token 
+        
         const token = await userValid.generateAuthtoken();
-        // console.log("generateAuthtoken ->", token);
 
-        // cookiegenerate
         res.cookie("usercookie", token, {
           expires: new Date(Date.now() + 9000000),
           httpOnly: true
