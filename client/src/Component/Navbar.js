@@ -10,19 +10,14 @@ const Navbar = ({ userId }) => {
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
 
-    let user;
-    try {
-        user = JSON.parse(localStorage.getItem('user'));
-    } catch (e) {
-        console.error('Error parsing user from localStorage', e);
-        user = {};
+    let localStorage = window.localStorage.getItem('user');
+    if(!localStorage){
+        throw new Error("LocalStorage is empty")
     }
-
-    // console.log(user,22);
-
-    // const user = JSON.parse(localStorage.getItem('user'));
-    const isAdmin = user && user.userValid.role === 'admin';
-    const isLoggedIn = !!user;
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(!user) return;
+        const isAdmin = user && user.userValid.role === 'admin';
+        const isLoggedIn = !!user;
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {
