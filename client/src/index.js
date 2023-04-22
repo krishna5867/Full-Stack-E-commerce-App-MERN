@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Store from './Redux/store';
 import 'react-toastify/dist/ReactToastify.css';
+import Context from './Context/authContext';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -14,9 +15,11 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={Store}>
+        <Context>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
+        </Context>
     </Provider>
 
 );

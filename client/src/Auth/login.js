@@ -12,13 +12,11 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // const token = localStorage.getItem('usersdatatoken');
             
             const response = await fetch("/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": token
                 },
                 body: JSON.stringify({
                     email,
@@ -30,7 +28,6 @@ const Login = () => {
             if (response.status === 201) {
                 toast.success("Login Success");
                 localStorage.setItem("usersdatatoken", res.result.token);
-                localStorage.setItem("user", JSON.stringify(res.result));
                 navigate("/");
             } else if (response.status === 401) {
                 toast.error("Invalid credentials");

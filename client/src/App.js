@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Component
@@ -34,18 +34,17 @@ import Orders from './Admin/Order';
 import Categories from './Admin/Categories';
 import OrderDetails from './Admin/OrderDetails';
 import BuyerDetails from './Admin/Buyer';
+import { LoginContext } from "./Context/authContext";
 
 function App() {
-    const [userId, setUserId] = useState();
-    console.log("userId", userId);
-
+    const { logindata, setLoginData } = useContext(LoginContext);
+    console.log(logindata, 11);
 
     const validUser = async () => {
         try {
             const token = localStorage.getItem('usersdatatoken');
             console.log(token, 46);
             if (!token) {
-                setUserId(null);
                 return;
             }
 
@@ -60,16 +59,16 @@ function App() {
                 const res = await response.json();
                 console.log(res, 57);
                 if (res.status === 201) {
-                    setUserId(res.validUser._id);
+                    setLoginData(res.result.userValid)
                 }
             } else if (response.status === 401) {
-                setUserId(null);
+                setLoginData(null);
             } else {
                 throw new Error(`Server returned status ${response.status}`);
             }
         } catch (error) {
-            console.log(error, '39 navbar');
-            setUserId(null);
+            console.log(error, '70');
+            setLoginData(null);
         }
     };
 
@@ -83,7 +82,7 @@ function App() {
     return (
         <div className="App">
             <>
-                <Navbar userId={userId}/>
+                <Navbar />
                 <Routes>
                     <Route path="/" element={<Product />}></Route>
                     <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />
