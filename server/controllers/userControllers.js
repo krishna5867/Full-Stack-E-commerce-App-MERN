@@ -1,45 +1,40 @@
 const User = require("../models/userModel");
+// import generateAuthtoken from "../utils/generateToken.js";
 const bcrypt = require("bcryptjs");
 const mailHelper = require("../utils/mailHelper");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+
 
 exports.home = (req, res) => {
   res.send("Hello ! And Welcome to full stack E-commerce project.I am Krishna(A Full Stack Web Developer)");
 };
 //registration
-
 exports.createUser = async (req, res) => {
-
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    res.status(422).json({ error: "fill all the details" })
+    return res.status(422).json({ error: "Please fill in all required fields" });
   }
 
   try {
-
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      res.status(422).json({ error: "This Email is Already Exist" })
-    } else {
-      const finalUser = new User({
-        name, email, password
-      });
-
-      const storeData = await finalUser.save();
-      // console.log(storeData);
-      res.status(201).json({ status: 201, storeData })
+      return res.status(422).json({ error: "Email is already registered" });
     }
 
-  } catch (error) {
-    res.status(422).json(error);
-  }
+    const user = new User({ name, email, password });
 
+    await user.save();
+
+    res.status(201).json({ status: 201, user, token });
+  } catch (error) {
+    res.status(422).json({ error: error.message });
+  }
 };
 
 //Login
-
 exports.login = async (req, res) => {
 
   const { email, password } = req.body;
@@ -49,6 +44,7 @@ exports.login = async (req, res) => {
   }
   try {
     const userValid = await User.findOne({ email: email });
+
     if (userValid) {
       const isMatch = await bcrypt.compare(password, userValid.password);
 
@@ -57,9 +53,10 @@ exports.login = async (req, res) => {
       } else {
         
         const token = await userValid.generateAuthtoken();
+        // console.log(token);
 
         res.cookie("usercookie", token, {
-          expires: new Date(Date.now() + 9000000),
+          expires: new Date(Date.now() + 86400000),
           httpOnly: true
         });
 
@@ -79,8 +76,7 @@ exports.login = async (req, res) => {
 
 exports.validuser = async (req, res) => {
   try {
-      const userId = req.userId;
-      const user = await User.findOne({ _id: userId });
+      const user = await User.findOne({ _id: req.userId });
       if (user) {
           res.status(201).json({ status: 201, message: "Valid User", validUser: user });
       } else {
@@ -93,7 +89,6 @@ exports.validuser = async (req, res) => {
 };
 
 // logout
-
 exports.signout = async (req, res) => {
   try {
     req.rootUser.tokens = req.rootUser.tokens.filter((curelem) => {
@@ -144,7 +139,7 @@ exports.adminGetUsers = async (req, res) => {
   }
 };
 
-exports.admineditUser = async (req, res) => {
+exports.adminEditUser = async (req, res) => {
   try {
     const users = await User.findByIdAndUpdate(req.params.id);
     res.status(200).json({
@@ -159,7 +154,7 @@ exports.admineditUser = async (req, res) => {
   }
 };
 
-exports.admindeleteUser = async (req, res) => {
+exports.adminDeleteUser = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await User.findByIdAndDelete(id);
@@ -189,7 +184,6 @@ exports.forgotPassword = async (req, res) => {
     }
     const resetToken = user.getForgotPasswordToken();
     await user.save();
-    // console.log(`resetToken ${resetToken}`);
 
     const myUrl = `http://localhost:${process.env.FRONTEND_PORT}/passwordReset/${resetToken}`;
     const message = `Paste This link in your browser to reset password\n\n ${myUrl}`;

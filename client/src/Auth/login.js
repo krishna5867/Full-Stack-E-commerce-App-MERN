@@ -25,11 +25,11 @@ const Login = () => {
             });
 
             const res = await response.json();
-            if (response.status === 201) {
+            if (res.status === 201) {
                 toast.success("Login Success");
-                localStorage.setItem("usersdatatoken", res.result.token);
+                localStorage.setItem("token", res.result.token);
                 navigate("/");
-            } else if (response.status === 401) {
+            } else if (res.status === 401) {
                 toast.error("Invalid credentials");
             } else {
                 toast.error("Something went wrong. Please try again later.");

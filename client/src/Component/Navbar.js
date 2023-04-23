@@ -7,16 +7,17 @@ import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../Context/authContext";
 
 
-
 const Navbar = () => {
-    const { logindata, setLoginData } = useContext(LoginContext);
-    console.log(logindata, 13);
-
     const navigate = useNavigate();
+    const { logindata, setLoginData } = useContext(LoginContext);
+    console.log(logindata);
+
+    const token = localStorage.getItem('token');
+    const isAdmin = logindata && logindata?.role === 'admin';
+
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
 
-    const isAdmin = logindata && logindata?.role === 'admin';
 
     const handleSearch = async (e) => {
         if ((e.key === "Enter") && searchQuery?.length > 0) {
@@ -25,40 +26,28 @@ const Navbar = () => {
     }
 
     const validUser = async () => {
-        try {
-            const token = localStorage.getItem('usersdatatoken');
-            console.log(token, 30);
-            if (!token) {
-                return;
+        const token = localStorage.getItem('token');
+        console.log('token->', token);
+        const response = await fetch("/validuser", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
             }
+        });
+        const data = await response.json();
+        console.log(data);
 
-            const response = await fetch("/validuser", {
-                method: "GET",
-                headers: {
-                    "Authorization": token
-                }
-            });
-            console.log(response);
-            if (response.ok) {
-                const res = await response.json();
-                console.log(res, 44);
-                if (res.status === 201) {
-                    setLoginData(res.result.userValid)
-                }
-            } else if (response.status === 401) {
-                setLoginData(null);
-            } else {
-                throw new Error(`Server returned status ${response.status}`);
-            }
-        } catch (error) {
-            console.log(error, '54 navbar');
-            setLoginData(null);
+        if (data.status === 401 || !data) {
+            console.log("user not valid");
+        } else {
+            setLoginData(data)
         }
-    };
+    }
 
-    useEffect(()=>{
-        validUser()
-    },)
+        useEffect(() => {
+                validUser()
+        }, [])
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 md:height-3">
@@ -88,7 +77,7 @@ const Navbar = () => {
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
-                        {logindata && logindata ? (
+                        {token && token ? (
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to={`/profile/${logindata._id}`}>
                                     <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>

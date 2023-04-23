@@ -1,5 +1,5 @@
 import './App.css';
-import React, {  useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Component
@@ -38,83 +38,69 @@ import { LoginContext } from "./Context/authContext";
 
 function App() {
     const { logindata, setLoginData } = useContext(LoginContext);
-    console.log(logindata, 11);
+    console.log(logindata);
 
     const validUser = async () => {
-        try {
-            const token = localStorage.getItem('usersdatatoken');
-            console.log(token, 46);
-            if (!token) {
-                return;
+        const token = localStorage.getItem('token');
+        const response = await fetch("/validuser", {
+            method: "GET",
+            headers: {
+                "Authorization": token
             }
+        });
+        const data = await response.json();
+        console.log(data);
 
-            const response = await fetch("/validuser", {
-                method: "GET",
-                headers: {
-                    "Authorization": token
-                }
-            });
-            console.log(response);
-            if (response.ok) {
-                const res = await response.json();
-                console.log(res, 57);
-                if (res.status === 201) {
-                    setLoginData(res.result.userValid)
-                }
-            } else if (response.status === 401) {
-                setLoginData(null);
-            } else {
-                throw new Error(`Server returned status ${response.status}`);
-            }
-        } catch (error) {
-            console.log(error, '70');
-            setLoginData(null);
+        if (data.status === 401 || !data) {
+            console.log("user not valid");
+        } else {
+            setLoginData(data)
         }
-    };
+    }
 
+        useEffect(() => {
+            setTimeout(() => {
+                validUser()
+            }, 2000)
+        }, [])
 
+        return (
+            <div className="App">
+                <>
+                    <Navbar />
+                    <Routes>
+                        <Route path="/" element={<Product />}></Route>
+                        <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />
+                        <Route path="/admindashboard" element={<PrivateRoute Component={AdminDashboard} />} />
+                        <Route path="/admindashboard/allproducts" element={<PrivateRoute Component={AllProducts} />} />
+                        <Route path="/admindashboard/allusers" element={<PrivateRoute Component={AllUsers} />} />
+                        <Route path="/admindashboard/addproducts" element={<PrivateRoute Component={AddProducts} />} />
+                        <Route path="/admindashboard/orders" element={<PrivateRoute Component={Orders} />} />
+                        <Route path="/admindashboard/editproduct/:id" element={<PrivateRoute Component={EditProducts} />} />
+                        <Route path="/product/:id" element={<SingleProduct />} />
+                        <Route path="/cart" element={<PrivateRoute Component={Cart} />} />
+                        <Route path="/login" element={<Login />}></Route>
+                        <Route path="/signup" element={<Signup />}></Route>
+                        <Route path="/forgetPassword" element={<ForgetPassword />} />
+                        <Route path="/passwordReset/:token" element={<PasswordReset />} />
+                        <Route path="/changepassword" element={<ChangePassword />} />
+                        <Route path="*" element={<PageNotFound />} />
+                        <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
+                        <Route path="/search/:search" element={<SearchProducts />} />
+                        <Route path="/products" element={<ExploreProducts />} />
+                        <Route path="/createcategories" element={<Categories />} />
+                        <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
+                        <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
+                        <Route path="/orderDetails/:id" element={<OrderDetails />} />
+                        <Route path="/buyerDetails/:id" element={<BuyerDetails />} />
+                        <Route path="/myOrder/:id" element={<MyOrder />} />
+                    </Routes>
+                </>
+            </div>
+        );
+    }
 
-
-
-    useEffect(() => {
-        validUser()
-    }, [])
-    return (
-        <div className="App">
-            <>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Product />}></Route>
-                    <Route path="/profile/:id" element={<PrivateRoute Component={Profile} />} />
-                    <Route path="/admindashboard" element={<PrivateRoute Component={AdminDashboard} />} />
-                    <Route path="/admindashboard/allproducts" element={<PrivateRoute Component={AllProducts} />} />
-                    <Route path="/admindashboard/allusers" element={<PrivateRoute Component={AllUsers} />} />
-                    <Route path="/admindashboard/addproducts" element={<PrivateRoute Component={AddProducts} />} />
-                    <Route path="/admindashboard/orders" element={<PrivateRoute Component={Orders} />} />
-                    <Route path="/admindashboard/editproduct/:id" element={<PrivateRoute Component={EditProducts} />} />
-                    <Route path="/product/:id" element={<SingleProduct />} />
-                    <Route path="/cart" element={<PrivateRoute Component={Cart} />} />
-                    <Route path="/login" element={<Login />}></Route>
-                    <Route path="/signup" element={<Signup />}></Route>
-                    <Route path="/forgetPassword" element={<ForgetPassword />} />
-                    <Route path="/passwordReset/:token" element={<PasswordReset />} />
-                    <Route path="/changepassword" element={<ChangePassword />} />
-                    <Route path="*" element={<PageNotFound />} />
-                    <Route path="/order/:orderId/:paymentId/:signature" element={<Order />} />
-                    <Route path="/search/:search" element={<SearchProducts />} />
-                    <Route path="/products" element={<ExploreProducts />} />
-                    <Route path="/createcategories" element={<Categories />} />
-                    <Route path="/category/:selectedCategory" element={<CategoryProduct />} />
-                    <Route path="/getProductByCategory/:selectedCategory" element={<CategoryProduct />} />
-                    <Route path="/orderDetails/:id" element={<OrderDetails />} />
-                    <Route path="/buyerDetails/:id" element={<BuyerDetails />} />
-                    <Route path="/myOrder/:id" element={<MyOrder />} />
-                </Routes>
-            </>
-        </div>
-    );
-}
-export default App;
+    export default App;
 
 
 

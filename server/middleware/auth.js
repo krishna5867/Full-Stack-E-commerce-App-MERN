@@ -1,20 +1,24 @@
+
 const jwt = require('jsonwebtoken');
 const User = require("../models/userModel");
-const keysecret = process.env.SECRET_KEY;
 
 exports.auth = async (req, res, next) => {
-
     try {
-        const authHeader = req.headers.authorization;
-        const token = authHeader && authHeader.split(' ')[1];
-        if(!token) {
-            return res.status(401).json({ status: 401, message: "Authorization failed: No token provided" })
+        const token = req.headers.authorization.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ status: 401, message: "Authorization failed:Token missing" })
         };
-        
-        const verifytoken = jwt.verify(token, keysecret);
+
+        const verifyOptions = {
+            expiresIn: '1d'
+        };
+
+        const verifytoken = jwt.verify(token, process.env.SECRET_KEY, verifyOptions); 
+        // console.log('verifytoken',verifytoken);
+
         const rootUser = await User.findOne({ _id: verifytoken._id });
         if (!rootUser) {
-            return res.status(401).json({ status: 401, message: "Authorization failed: User not found" });
+            res.status(401).json({ status: 401, message: "Authorization failed: User not found" });
         }
         req.token = token;
         req.rootUser = rootUser;
@@ -34,14 +38,4 @@ exports.customizeRole = (...roles) => {
         next();
     };
 };
-
-
-
- // const authHeader = req.headers.authorization;
-        
-        // const token = req.get('Authorization').split('Bearer ')[1];
-        // console.log(token, '<- auth Token');
-        // if (!token) {
-        //     throw new Error('Authorization failed: Token missing');
-        // }
 

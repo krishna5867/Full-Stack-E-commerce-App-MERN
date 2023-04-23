@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const keysecret = process.env.SECRET_KEY
 
 
 const userSchema = new mongoose.Schema({
@@ -21,37 +20,38 @@ const userSchema = new mongoose.Schema({
   },
   tokens: [
     {
-        token: {
-            type: String,
-            required: true,
-        }
+      token: {
+        type: String,
+        // required: true,
+      }
     }
-],
-  role:{
+  ],
+  role: {
     type: String,
     default: "user"
   },
-  forgotPasswordToken:{
+  forgotPasswordToken: {
     type: String
-  } ,
-  forgotPasswordExpiry:{
-    type: String 
+  },
+  forgotPasswordExpiry: {
+    type: String
   },
   order: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Order",
-},
+  },
 },
   {
     timestamps: true,
   }
 );
 
+//forget password
 userSchema.methods.getForgotPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
   this.forgotPasswordToken = crypto
     .createHash("sha256")
-    .update(resetToken )
+    .update(resetToken)
     .digest("hex");
 
   this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000;
@@ -62,14 +62,15 @@ userSchema.methods.getForgotPasswordToken = function () {
 // generate token 
 userSchema.methods.generateAuthtoken = async function () {
   try {
-      let token23 = jwt.sign({ _id: this._id }, keysecret, {
-          expiresIn: "5d"
-      });
-      this.tokens = this.tokens.concat({ token: token23 });
-      await this.save();
-      return token23;
+    let token23 = jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY, {
+      expiresIn: "1d"
+    });
+    this.tokens = this.tokens.concat({ token: token23 });
+    await this.save();
+    return token23;
   } catch (error) {
-    throw new Error(error.message);
+    console.log(error);
+    throw new Error(error);
   }
 }
 
