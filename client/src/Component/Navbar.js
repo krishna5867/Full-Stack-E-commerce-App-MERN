@@ -5,15 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../Context/authContext";
-
+import axios from 'axios';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const { logindata, setLoginData } = useContext(LoginContext);
-    console.log(logindata);
 
-    const token = localStorage.getItem('token');
-    const isAdmin = logindata && logindata?.role === 'admin';
+    const isAdmin = logindata.validUser && logindata.validUser.role === 'admin';
 
     const [searchQuery, setSearchQuery] = useState([]);
     const cartItems = useSelector((state) => state.cart.items);
@@ -27,27 +25,25 @@ const Navbar = () => {
 
     const validUser = async () => {
         const token = localStorage.getItem('token');
-        console.log('token->', token);
-        const response = await fetch("/validuser", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            }
+        // console.log('token->', token);
+    
+        const response = await axios.get("/validuser", {
+            headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        console.log(data);
-
-        if (data.status === 401 || !data) {
+    
+        // console.log(response.data);
+    
+        if (response.data.status === 401 || !response.data) {
             console.log("user not valid");
         } else {
-            setLoginData(data)
+            setLoginData(response.data)
         }
     }
 
+    let token = localStorage.getItem('token')
         useEffect(() => {
                 validUser()
-        }, [])
+        }, [token])
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 md:height-3">
@@ -77,11 +73,11 @@ const Navbar = () => {
 
                     <div className="d-flex md:justify-content-center mt-2 justify-content-around">
                         {/* loggedin user name*/}
-                        {token && token ? (
+                        {logindata && logindata ? (
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to={`/profile/${logindata._id}`}>
+                                <Link className="nav-link active" aria-current="page" to={`/profile/${logindata.validUser._id}`}>
                                     <div className="avatar bg-white text-black rounded-circle align-items-center d-flex justify-content-center" style={{ width: '40px', height: ' 40px' }}>
-                                        {logindata && <b>{logindata.name.substring(0, 2).toUpperCase()}</b>}
+                                        {logindata && <b>{logindata.validUser.name.substring(0, 2).toUpperCase()}</b>}
                                     </div>
                                 </Link>
                             </li>

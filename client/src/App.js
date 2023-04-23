@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useEffect, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
-
+import axios from 'axios';
 // Component
 import Navbar from './Component/Navbar';
 import Product from './Component/Products';
@@ -38,25 +38,25 @@ import { LoginContext } from "./Context/authContext";
 
 function App() {
     const { logindata, setLoginData } = useContext(LoginContext);
-    console.log(logindata);
+    // console.log(logindata);
 
     const validUser = async () => {
         const token = localStorage.getItem('token');
-        const response = await fetch("/validuser", {
-            method: "GET",
-            headers: {
-                "Authorization": token
-            }
+        // console.log('token->', token);
+    
+        const response = await axios.get("/validuser", {
+            headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        console.log(data);
-
-        if (data.status === 401 || !data) {
+    
+        // console.log(response.data);
+    
+        if (response.data.status === 401 || !response.data) {
             console.log("user not valid");
         } else {
-            setLoginData(data)
+            setLoginData(response.data)
         }
     }
+    
 
         useEffect(() => {
             setTimeout(() => {

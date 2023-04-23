@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-// import Cookie from 'js-cookie';
 
 function PrivateRoute({ Component }) {
     const navigate = useNavigate();
-    
+    let logindata = localStorage.getItem("token")
     useEffect(() => {
-        let loggedIn = localStorage.getItem('user')
-        if (!loggedIn) {
+        if (!logindata) {
             navigate('/login')
         }
     })

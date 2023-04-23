@@ -1,31 +1,39 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Row, Container, Card, CardBody, Button } from 'reactstrap';
 import moment from 'moment';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { logout } from '../Redux/authSlice';
+import { LoginContext } from "../Context/authContext";
 
 const Profile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user'));
-    // const dispatch = useDispatch();
-    // const { isLoggedIn, user } = useSelector((state) => state.auth);
 
-
+    const { logindata, setLoginData } = useContext(LoginContext);
     const handleSignout = async () => {
-        try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            const res = await axios.post('/signout', { email: user.email, password: user.password });
-            if (res.status === 200) {
-                localStorage.removeItem("user");
-                navigate('/login');
-            }
-        } catch (error) {
-            console.log("Error signing out: ", error.message);
+        let token = localStorage.getItem("token");
+
+        const response = await axios.get("/signout", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json"
+            },
+            credentials: "include"
+        });
+
+        console.log(response);
+        // const data = await res.json();
+
+        if (response.data.status === 201) {
+            localStorage.removeItem("token");
+            setLoginData(false)
+            console.log("user logout");
+            navigate("/login");
+        } else {
+            console.log("error in signout");
         }
-    };
+    }
 
     return (
         <>
@@ -42,7 +50,7 @@ const Profile = () => {
                         <Card style={{ height: '32rem' }}>
                             <div className='mt-2' style={{ height: '300px' }}>
                                 {/* Content */}
-                                {user ? (
+                                {logindata && logindata ? (
                                     <>
                                         <table class="table">
                                             <thead>
@@ -55,10 +63,10 @@ const Profile = () => {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>{user.name}</td>
-                                                    <td>{user.email} </td>
-                                                    <td> {user.role}</td>
-                                                    <td>{moment(user.createdAt).format('DD-MM-YYYY')}</td>
+                                                    <td>{logindata.validUser.name}</td>
+                                                    <td>{logindata.validUser.email} </td>
+                                                    <td> {logindata.validUser.role}</td>
+                                                    <td>{moment(logindata.validUser.createdAt).format('DD-MM-YYYY')}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

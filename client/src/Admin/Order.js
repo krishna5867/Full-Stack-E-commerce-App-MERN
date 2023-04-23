@@ -8,12 +8,25 @@ const Orders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
 
   const fetchOrders = async () => {
-    const res = await axios.get("/admin/orders");
-    // console.log(res.data);
-    if (res.status === 200) {
-      setOrderDetails(res.data.order)
-    }
+    let token = localStorage.getItem("token");
+
+  const response = await axios.get("/admin/orders", {
+    headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        // Accept: "application/json"
+    },
+    // credentials: "include"
+  });
+  console.log(response);
+
+  if (response.data.status === 201) {
+    console.log("fetching order");
+} else {
+    console.log("error in fetching order");
+}
   }
+
 
   useEffect(() => {
     fetchOrders()
