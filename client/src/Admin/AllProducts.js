@@ -22,9 +22,14 @@ const AllProducts = () => {
     const handleDelete = async (id) => {
         try {
             const candelete = window.confirm("Are You Sure ?");
+            let token = localStorage.getItem("token");
             if (candelete) {
-                const res = await axios.delete(`/admin/deleteproduct/${id}`);
-                if (res.status === 200) {
+                const res = await axios.delete(`/admin/deleteproduct/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+                if (res.data.status === 200) {
                     toast.success("Deleted Successfully")
                     getProducts();
                 }
@@ -54,13 +59,13 @@ const AllProducts = () => {
             setCurrentPage(currentPage - 1)
         }
     }
-// eslint-disable-next-line
+    // eslint-disable-next-line
     useEffect(() => {
         setLoading(true)
         getProducts();
         fetchTotalProductsCount()
     }, [currentPage])
-    
+
     return (
         <>
             <Row className='p-4'>
@@ -115,16 +120,16 @@ const AllProducts = () => {
                         </Card>
                     </Container>
                     <div className="mt-5">
-                    {products && totalPages && (
-                        <>
-                            <button className="btn btn-warning" onClick={handlePrev}>
-                                {loading ? "Loading ..." : "Prev"}
-                            </button> &nbsp; {currentPage} &nbsp;
-                            <button className="ms-2 btn btn-warning" onClick={handleNext}>
-                                {loading ? "Loading ..." : "Next"}
-                            </button>
-                        </>
-                    )}
+                        {products && totalPages && (
+                            <>
+                                <button className="btn btn-warning" onClick={handlePrev}>
+                                    {loading ? "Loading ..." : "Prev"}
+                                </button> &nbsp; {currentPage} &nbsp;
+                                <button className="ms-2 btn btn-warning" onClick={handleNext}>
+                                    {loading ? "Loading ..." : "Next"}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </Container>
             </Row>

@@ -77,13 +77,18 @@ const Cart = () => {
     const handleCheckout = (amount) => {
         const _data = { amount: amount }
         placeOrder()
-        axios.post('/order', _data)
+        // let token = localStorage.getItem("token");
+        axios.post('/order', _data, {
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // }
+        })
             .then(res => {
                 handleOpenRazorpay(res.data.data)
 
             })
             .catch(err => {
-                console.log(err)
+                console.log(err, 91)
             })
     }
 
@@ -99,6 +104,7 @@ const Cart = () => {
                 price: item.price,
                 product: item._id
             }));
+            let token = localStorage.getItem("token");
             const res = await axios.post("/placeOrder", {
                 orderItems: orderItems,
                 shippingAddress: {
@@ -113,14 +119,19 @@ const Cart = () => {
                 total: itemPrice,
                 grandtotal: itemPrice + 50,
                 isDelivered: false
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
             });
-            if (res.status === 200) {
-                // console.log(res.data, '145');
+            if (res.data.status === 200) {
+                console.log(res.data, '122');
             }
         } catch (error) {
             console.log(error.message);
         }
     }
+
 
 
 
@@ -152,6 +163,7 @@ const Cart = () => {
                                     <button className='btn btn-dark mt-3'> <Link to='/' className='text-decoration-none text-light'>Back Home</Link> </button>
                                 </CardBody>
                             </Card>
+
                         ) : (
                             cartItems.map((product) => (
                                 <Card key={product.id} className='m-3'>

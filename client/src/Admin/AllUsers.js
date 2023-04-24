@@ -10,29 +10,46 @@ const AllUsers = () => {
     // console.log(users);
 
     const getAllUsers = async () => {
-        const res = await axios.get('/admin/getUsers');
-        if (res.status === 200) {
-            setUsers(res.data.users);
+        try {
+            let token = localStorage.getItem("token");
+            const response = await axios.get("/admin/getUsers", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            // console.log(response.data.users);
+            if (response.data.status === 200) {
+                setUsers(response.data.users);
+            } else {
+                setUsers(response.data.users);
+
+            }
+        } catch (error) {
+            console.log(error);
+            setUsers([]);
         }
-    }
+    };
 
     const handleDeleteUser = async (id) => {
         try {
             const canDelete = window.confirm("Are your Sure ?");
-        if (canDelete) {
-            const item = await axios.delete(`/admin/deleteuser/${id}`);
-            if(item.status === 200){
-                toast.success("User Deleted Successfully")
-                getAllUsers();
-            }else{
-                toast.error("Failed")
+            if (canDelete) {
+            let token = localStorage.getItem("token");
+                const item = await axios.delete(`/admin/deleteuser/${id}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+                if (item.data.status === 200) {
+                    toast.success("User Deleted Successfully")
+                    getAllUsers();
+                }
             }
-        }
         } catch (error) {
             alert(error.message)
         }
     }
-    
+
     useEffect(() => {
         getAllUsers()
     }, [users])
@@ -48,7 +65,7 @@ const AllUsers = () => {
                     <Button className='w-100 mt-3'><h3><Link to="/admindashboard/allproducts" className='text-decoration-none text-white'>All Products</Link></h3></Button>
                     <Button className='w-100 mt-3'><h3><Link to="/admindashboard/addproducts" className='text-decoration-none text-white'>Add Products</Link></h3></Button>
                     <Button className='w-100 mt-3'><h3><Link to="/createcategories" className='text-decoration-none text-white'>Create Category</Link></h3></Button>
-                    
+
 
                 </Container>
                 <Container className='col-lg-9' style={{ height: '88vh' }}>
@@ -56,33 +73,33 @@ const AllUsers = () => {
                     <Container className='mt-3'>
                         <Card style={{ height: '32rem' }}>
                             <div className='mt-2' style={{ height: '300px' }}>
-                            <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    {/* <th scope="col">S.No</th> */}
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Role</th>
-                                                    <th scope="col">Created At</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                {users && users.map((item) =>
-                                            <tbody>
-                                                <tr key={item.id}>
-                                                    {/* <th scope="row" key={item.id}>{item.id}</th> */}
-                                                    <td>{item.name}</td>
-                                                    <td>{item.email}</td>
-                                                    <td>{item.role}</td>
-                                                    <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
-                                                    <td><div>
-                                                        {/* <Button className='bg-primary'>Edit</Button> */}
-                                                        <Button className='bg-danger mx-1' onClick={()=>handleDeleteUser(item._id)}>Delete</Button>
-                                                        </div></td>
-                                                </tr>
-                                            </tbody>
-                                )}
-                            </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            {/* <th scope="col">S.No</th> */}
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Created At</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    {users && users.map((item) =>
+                                        <tbody>
+                                            <tr key={item.id}>
+                                                {/* <th scope="row" key={item.id}>{item.id}</th> */}
+                                                <td>{item.name}</td>
+                                                <td>{item.email}</td>
+                                                <td>{item.role}</td>
+                                                <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
+                                                <td><div>
+                                                    {/* <Button className='bg-primary'>Edit</Button> */}
+                                                    <Button className='bg-danger mx-1' onClick={() => handleDeleteUser(item._id)}>Delete</Button>
+                                                </div></td>
+                                            </tr>
+                                        </tbody>
+                                    )}
+                                </table>
                             </div>
                         </Card>
                     </Container>

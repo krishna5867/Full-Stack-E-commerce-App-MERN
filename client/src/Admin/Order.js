@@ -5,32 +5,33 @@ import axios from 'axios';
 import moment from 'moment'
 
 const Orders = () => {
-  const [orderDetails, setOrderDetails] = useState([]);
+  const [orderDetails, setOrderDetails] = useState([])
 
   const fetchOrders = async () => {
-    let token = localStorage.getItem("token");
+    try {
+      let token = localStorage.getItem("token");
+      const response = await axios.get("/admin/orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      // console.log(response.data.order);
+      if (response.data.status === 200) {
+        setOrderDetails(response.data.order);
+      } else {
+        setOrderDetails(response.data.order);
 
-  const response = await axios.get("/admin/orders", {
-    headers: {
-        // "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        // Accept: "application/json"
-    },
-    // credentials: "include"
-  });
-  console.log(response);
-
-  if (response.data.status === 201) {
-    console.log("fetching order");
-} else {
-    console.log("error in fetching order");
-}
-  }
-
-
+      }
+    } catch (error) {
+      console.log(error);
+      setOrderDetails([]);
+    }
+  };
+  
   useEffect(() => {
-    fetchOrders()
-  }, [])
+    fetchOrders();
+  }, []);
+  
 
   return (
     <>
@@ -62,10 +63,10 @@ const Orders = () => {
                   </thead>
                   {orderDetails && orderDetails.map((item, index) =>
                     <tbody>
-                      <tr key={item._id}>
+                      <tr key={index}>
                         <td>{index + 1}</td>
                         <td><Link to={`/orderdetails/${item._id}`} className="text-decoration-none">{item._id}</Link></td>
-                        <td><Link to={`/buyerDetails/${item?.user._id}`} className="text-decoration-none text-black">{item.user.name}</Link></td>
+                        <td><Link to={`/buyerDetails/${item.user?._id}`} className="text-decoration-none text-black">{item.user?.name}</Link></td>
                         <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
                         <td>{item?.orderStatus}</td>
                       </tr>

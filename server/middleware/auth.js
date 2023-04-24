@@ -32,7 +32,7 @@ exports.auth = async (req, res, next) => {
 
 exports.customizeRole = (...roles) => {
     return (req, res, next) => {
-        if (!req.user || !roles.includes(req.user.role)) {
+        if (!req.rootUser || !roles.includes(req.rootUser.role)) {
             return res.status(401).send({ error: "Only admin is authorized to access this particular route" });
         }
         next();

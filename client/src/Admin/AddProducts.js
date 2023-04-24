@@ -26,8 +26,14 @@ const AddProducts = () => {
         data.append("category", category)
         setShowSpin(true)
         try {
-            const res = await axios.post('/admin/addproduct', data);
-            if (res.status === 200) {
+            let token = localStorage.getItem("token");
+
+            const res = await axios.post('/admin/addproduct', data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            if (res.data.status === 200) {
                 setShowSpin(true)
                 toast.success("Item Added Successfully")
                 setName("")
@@ -77,37 +83,37 @@ const AddProducts = () => {
                     <Container className='mt-3'>
                         {/* Content */}
                         {/* <Card style={{ height: '32rem' }}> */}
-                            <div className='mt-2' style={{ height: '350px' }}>
-                                {/* <Container className='mt-2' style={{ width: '30rem' }}> */}
-                                    {/* Spinner */}
-                                    {showspin ? <Spinner /> : null}
-                                    <Card className="border p-4 shadow-lg bg-white rounded">
-                                            {/* <h2>Add Products</h2> */}
-                                            <Form onSubmit={handleSubmit} encType="multipart/form-data" className="mt-3">
-                                                <Input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-                                                <Input type="text" placeholder="Description" className="mt-4" value={description} onChange={(e) => setDescription(e.target.value)} />
-                                                {/* categories */}
-                                                <select
-                                                    placeholder="Select a category"
-                                                    size="large"
-                                                    className="form-select mt-4"
-                                                    onChange={(e) => {setCategory(e.target.value)}}
-                                                    >
-                                                    {categories?.map((c) => (
-                                                        <option key={c._id} value={c._id}>
-                                                            {c.name}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                                {/* <Input type="text" placeholder="categories..." className="mt-4" value={categories} onChange={(e) => setCategories(e.target.value)} /> */}
-                                                <Input type="number" placeholder="Price" className="mt-4" value={price} onChange={(e) => setPrice(e.target.value)} />
-                                                <Input type="number" placeholder="Stock" className="mt-4" value={stock} onChange={(e) => setStock(e.target.value)} />
-                                                <Input type="file" name="photo" className="mt-4" onChange={(e) => setImage(e.target.files[0])} />
-                                                <Button className='bg-primary mt-4 mb-3 w-100'>Add</Button>
-                                            </Form>
-                                    </Card>
-                                {/* </Container> */}
-                            </div>
+                        <div className='mt-2' style={{ height: '350px' }}>
+                            {/* <Container className='mt-2' style={{ width: '30rem' }}> */}
+                            {/* Spinner */}
+                            {showspin ? <Spinner /> : null}
+                            <Card className="border p-4 shadow-lg bg-white rounded">
+                                {/* <h2>Add Products</h2> */}
+                                <Form onSubmit={handleSubmit} encType="multipart/form-data" className="mt-3">
+                                    <Input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                                    <Input type="text" placeholder="Description" className="mt-4" value={description} onChange={(e) => setDescription(e.target.value)} />
+                                    {/* categories */}
+                                    <select
+                                        placeholder="Select a category"
+                                        size="large"
+                                        className="form-select mt-4"
+                                        onChange={(e) => { setCategory(e.target.value) }}
+                                    >
+                                        {categories?.map((c) => (
+                                            <option key={c._id} value={c._id}>
+                                                {c.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {/* <Input type="text" placeholder="categories..." className="mt-4" value={categories} onChange={(e) => setCategories(e.target.value)} /> */}
+                                    <Input type="number" placeholder="Price" className="mt-4" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                    <Input type="number" placeholder="Stock" className="mt-4" value={stock} onChange={(e) => setStock(e.target.value)} />
+                                    <Input type="file" name="photo" className="mt-4" onChange={(e) => setImage(e.target.files[0])} />
+                                    <Button className='bg-primary mt-4 mb-3 w-100'>Add</Button>
+                                </Form>
+                            </Card>
+                            {/* </Container> */}
+                        </div>
                         {/* </Card> */}
                     </Container>
                 </Container>
