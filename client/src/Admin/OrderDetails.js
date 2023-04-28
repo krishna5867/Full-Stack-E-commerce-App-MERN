@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Spinner from '../Component/Loading';
+import {LoginContext} from '../Context/authContext'
 
 
 const OrderDetails = () => {
+    const {logindata, setLoginData} = useContext(LoginContext);
+    // console.log(logindata);
     const [loading, setLoading] = useState(false)
     const [order, setOrder] = useState([]);
     // console.log(order);
@@ -40,8 +43,15 @@ const OrderDetails = () => {
 
 const handleChangeStatus = async (orderId, val) => {
     try {
-        const res = await axios.put(`/admin/updateorder/${orderId}`, { orderStatus: val });
-        if (res.status === 200) {
+        let token = localStorage.getItem("token");
+        
+        const res = await axios.put(`/admin/updateorder/${orderId}`, { orderStatus: val },{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        // console.log(res.data);
+        if (res.data.status === 200) {
             setChangeOrderStatus(res.data.orderStatus);
             fetchOrder();
         }
@@ -50,8 +60,8 @@ const handleChangeStatus = async (orderId, val) => {
     }
 }
 
-const user = JSON.parse(localStorage.getItem('user'));
-const isAdmin = user && user.role === 'admin';
+// const user = JSON.parse(localStorage.getItem('user'));
+const isAdmin = logindata.validUser && logindata.validUser.role === 'admin';
 
 useEffect(() => {
     setLoading(true)
@@ -74,10 +84,10 @@ return (
                             </tr>
                         </thead>
                         <tbody>
-                            <tr key={order._id}>
-                                <p>{order?.user?._id}</p>
-                                <td><p>{order.user?.name}</p></td>
-                                <td>{order?.user?.email}</td>
+                            <tr key={logindata._id}>
+                                <p>{logindata.validUser?._id}</p>
+                                <td><p>{logindata.validUser?.name}</p></td>
+                                <td>{logindata.validUser?.email}</td>
                                 <td>
                                     <p>{order?.shippingAddress?.address}</p>
                                     <p>{order?.shippingAddress?.city}, {order?.shippingAddress?.state} - {order?.shippingAddress?.postalCode}</p>

@@ -16,29 +16,55 @@ const Categories = () => {
         }
     }
     const handleCreateCategory = async () => {
-        const res = await axios.post("/createCategory", { name });
-        if (res.status === 200) {
-            toast.success("New Category addedd Successfully")
-            setCategories(res.data.category);
-            setName("")
+        try {
+            let token = localStorage.getItem("token");
+            const response = await axios.post("/createCategory", { name }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            if (response.data.status === 200) {
+                setCategories(response.data.category);
+                setName('')
+            } else {
+                setCategories();
+
+            }
+        } catch (error) {
+            console.log(error);
+            setCategories([]);
         }
     }
-    const handleEditCategory = async (id) => {
-        const res = await axios.put(`/editCategory/${id}`, { name });
-        if (res.status === 200) {
-            setName(res.data.category.name);
-        }
-    }
+    // const handleEditCategory = async (id) => {
+    //     try {
+    //         let token = localStorage.getItem("token");
+    //         const response = await axios.put(`/editCategory/${id}`,{ name }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             }
+    //         });
+    //         console.log(response.data);
+    //         if (response.data.status === 200) {
+    //         setName(response.data.category.name);
+    //             toast.success("Edited Successfully")
+    //         }
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // }
 
     const handleDeleteCategory = async (id) => {
         try {
-            const candelete = window.confirm("Are You Sure ?");
-            if (candelete) {
-                const res = await axios.delete(`/deleteCategory/${id}`);
-                if (res.status === 200) {
-                    toast.success("Deleted Successfully")
-                    fetchCategory();
+            let token = localStorage.getItem("token");
+            const response = await axios.delete(`/deleteCategory/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 }
+            });
+            if (response.data.status === 200) {
+                // fetchCategory();
+                toast.success("Deleted Successfully")
+
             }
         } catch (error) {
             console.log(error.message);
@@ -87,7 +113,7 @@ const Categories = () => {
                                                     <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
                                                     <td>
                                                         <div>
-                                                            <Button className='bg-primary' onClick={() => handleEditCategory(item._id)}>Edit</Button>
+                                                            {/* <Button className='bg-primary' onClick={() => handleEditCategory(item._id)}>Edit</Button> */}
                                                             <Button className='bg-danger mx-1' onClick={() => handleDeleteCategory(item._id)}>Delete</Button>
                                                         </div>
                                                     </td>

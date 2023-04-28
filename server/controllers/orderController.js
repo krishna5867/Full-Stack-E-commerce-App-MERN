@@ -8,7 +8,7 @@ exports.placeOrder = async (req, res) => {
             total,
             grandtotal,
             shippingcharge,
-            orderstatus
+            orderstatus,
         } = req.body;
 
         if (!(orderItems || shippingAddress || total || shippingcharge || orderstatus)) {
@@ -21,9 +21,9 @@ exports.placeOrder = async (req, res) => {
                 shippingcharge,
                 orderstatus,
                 grandtotal,
-                user: req.user.id
+                user: req.userId
             })
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 message: "Order created",
                 order,
@@ -53,6 +53,7 @@ exports.getLoggedInOrder = async (req, res) => {
     try {
         const userId = req.params.id;
         const order = await Order.find({ user: userId }).populate("orderItems");
+        console.log(order,57);
         res.status(200).json({
             order,
         });
@@ -79,8 +80,8 @@ exports.adminGetAllOrders = async (req, res) => {
 exports.adminUpdateOrder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
-        const {orderStatus} = req.body;
-        const order = await Order.findByIdAndUpdate({_id:orderId}, {orderStatus}, {new: true});
+        const { orderStatus } = req.body;
+        const order = await Order.findByIdAndUpdate({ _id: orderId }, { orderStatus }, { new: true });
         res.status(200).json({
             success: true,
             message: "Order updated successfully",

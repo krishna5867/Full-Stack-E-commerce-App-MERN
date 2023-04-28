@@ -40,24 +40,34 @@ const SingleProduct = () => {
 
 
   const handlePostComment = async (comment, id) => {
-    const res = await axios.put("/comment", { id, comment });
-    if(res.status === 200){
-      setProduct(res.data)
-      toast.success("Comment Posted Successfully")
-    }
+  try {
+    let token = localStorage.getItem("token");
+    const response = await axios.put("/comment", { id, comment }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    console.log(response.data);
+    if (response.status === 200) {
+        setProduct(response.data)
+        toast.success("Comment Posted Successfully")
+      }
+  } catch (error) {
+    console.log(error);
+  }
   };
-  
+
   useEffect(() => {
     setLoading(true)
     getOneProduct()
     fetchRelatedProducts()
-  },[id])
+  }, [id])
 
   useEffect(() => {
     if (product) {
       setLoading(false);
     }
-  }, [getOneProduct,fetchRelatedProducts])
+  }, [getOneProduct, fetchRelatedProducts])
 
 
   const styles = {

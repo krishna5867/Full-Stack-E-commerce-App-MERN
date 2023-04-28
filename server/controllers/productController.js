@@ -253,10 +253,10 @@ exports.getRelatedProducts = async (req, res) => {
 
 // Comment 
 exports.postComment = async (req, res) => {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.userId);
     const comment = {
         comment: req.body.comment,
-        user: req.user.id,
+        user: req.rootUser,
         username: user.name 
     }
     const product = Product.findByIdAndUpdate(req.body.id, {

@@ -60,7 +60,7 @@ const Cart = () => {
             prefill: {
                 name: "Krishna Kumar",
                 email: "krishnakmr@968.com",
-                contact: "+917677263045",
+                contact: "+917677263088",
             },
             notes: {
                 address: "Dhanbad Jharkhand",
@@ -77,15 +77,10 @@ const Cart = () => {
     const handleCheckout = (amount) => {
         const _data = { amount: amount }
         placeOrder()
-        // let token = localStorage.getItem("token");
         axios.post('/order', _data, {
-            // headers: {
-            //     Authorization: `Bearer ${token}`,
-            // }
         })
             .then(res => {
                 handleOpenRazorpay(res.data.data)
-
             })
             .catch(err => {
                 console.log(err, 91)
@@ -105,27 +100,28 @@ const Cart = () => {
                 product: item._id
             }));
             let token = localStorage.getItem("token");
-            const res = await axios.post("/placeOrder", {
-                orderItems: orderItems,
-                shippingAddress: {
-                    address: "jharia",
-                    city: "Dhanbad",
-                    postalCode: 121312,
-                    district: "Dhanbad",
-                    state: "Jharkhand",
-                    country: "India"
-                },
-                shippingcharge: 50,
-                total: itemPrice,
-                grandtotal: itemPrice + 50,
-                isDelivered: false
-            }, {
+            const res = await axios.post("/placeOrder",{
+                    orderItems: orderItems,
+                    shippingAddress: {
+                        address: "jharia",
+                        city: "Dhanbad",
+                        postalCode: 121312,
+                        district: "Dhanbad",
+                        state: "Jharkhand",
+                        country: "India"
+                    },
+                    shippingcharge: 50,
+                    total: itemPrice,
+                    grandtotal: itemPrice + 50,
+                    isDelivered: false
+                }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
-            if (res.data.status === 200) {
-                console.log(res.data, '122');
+            console.log(res.data);
+            if (res.data.status === 201) {
+                console.log(res.data, '129');
             }
         } catch (error) {
             console.log(error.message);

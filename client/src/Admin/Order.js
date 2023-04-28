@@ -6,6 +6,7 @@ import moment from 'moment'
 
 const Orders = () => {
   const [orderDetails, setOrderDetails] = useState([])
+  // console.log(orderDetails);
 
   const fetchOrders = async () => {
     try {
@@ -66,7 +67,7 @@ const Orders = () => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td><Link to={`/orderdetails/${item._id}`} className="text-decoration-none">{item._id}</Link></td>
-                        <td><Link to={`/buyerDetails/${item.user?._id}`} className="text-decoration-none text-black">{item.user?.name}</Link></td>
+                        <td><Link to={`/buyerDetails/${item.user?.name}`} className="text-decoration-none text-black">{item.user?.name}</Link></td>
                         <td>{moment(item.createdAt).format("DD-MM-YYYY")}</td>
                         <td>{item?.orderStatus}</td>
                       </tr>

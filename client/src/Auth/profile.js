@@ -21,10 +21,6 @@ const Profile = () => {
             },
             credentials: "include"
         });
-
-        console.log(response);
-        // const data = await res.json();
-
         if (response.data.status === 201) {
             localStorage.removeItem("token");
             setLoginData(false)
