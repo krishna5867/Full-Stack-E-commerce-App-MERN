@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState("admin@admin.com");
@@ -27,12 +28,10 @@ const Login = () => {
             const res = await response.json();
             if (res.status === 201) {
                 toast.success("Login Success");
-                localStorage.setItem("token", res.result.token);
+                localStorage.setItem("token", res.result?.token);
                 navigate("/");
-            } else if (res.status === 401) {
-                toast.error("Invalid credentials");
             } else {
-                toast.error("Something went wrong. Please try again later.");
+                toast.error("Something went wrong.");
             }
         } catch (error) {
             console.error(error);
