@@ -36,13 +36,12 @@ exports.createUser = async (req, res) => {
 
 //Login
 exports.login = async (req, res) => {
-
+  try {
   const { email, password } = req.body;
 
   if (!email || !password) {
     throw new Error("All fiels required")
   }
-  try {
     const userValid = await User.findOne({ email: email });
 
     if (userValid) {

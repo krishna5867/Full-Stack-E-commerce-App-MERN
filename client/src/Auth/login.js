@@ -3,17 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Login = () => {
-    const [email, setEmail] = useState("admin@admin.com");
-    const [password, setPassword] = useState("password");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            
+
             const response = await fetch("/login", {
                 method: "POST",
                 headers: {

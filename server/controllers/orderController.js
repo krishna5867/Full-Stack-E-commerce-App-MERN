@@ -25,7 +25,7 @@ exports.placeOrder = async (req, res) => {
             })
             res.status(201).json({
                 success: true,
-                message: "Order created",
+                message: "Order Placed successfully",
                 order,
             })
         }
@@ -53,7 +53,7 @@ exports.getLoggedInOrder = async (req, res) => {
     try {
         const userId = req.params.id;
         const order = await Order.find({ user: userId }).populate("orderItems");
-        console.log(order,57);
+        // console.log(order,57);
         res.status(200).json({
             order,
         });

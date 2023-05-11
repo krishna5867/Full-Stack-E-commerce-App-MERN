@@ -10,7 +10,7 @@ const Cart = () => {
     const dispatch = useDispatch()
     const cartItems = useSelector((state) => state.cart.items);
     const amount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-    const totalQuantity = cartItems.reduce((total, item) => { return total + item.quantity; }, 0);
+    const totalQuantity = cartItems.reduce((total, item) => { return total + item.quantity}, 0);
 
     const handleRemoveItem = (productId) => {
         dispatch(removeFromCart(productId));
@@ -22,8 +22,8 @@ const Cart = () => {
 
     const handleDecreaseQuantity = (productId) => {
         dispatch(decreaseQuantity(productId));
-
     };
+    
     const handleRemoveAllItems = (items) => {
         dispatch(removeAllItems(items))
     }
@@ -63,7 +63,7 @@ const Cart = () => {
                 contact: "+917677263088",
             },
             notes: {
-                address: "Dhanbad Jharkhand",
+                address: "Dhanbad Jharkhand 828311",
             },
             theme: {
                 color: "#61dafb",
@@ -105,23 +105,23 @@ const Cart = () => {
                     shippingAddress: {
                         address: "jharia",
                         city: "Dhanbad",
-                        postalCode: 121312,
+                        postalCode: 828311,
                         district: "Dhanbad",
                         state: "Jharkhand",
                         country: "India"
                     },
-                    shippingcharge: 50,
+                    shippingcharge: 0,
                     total: itemPrice,
-                    grandtotal: itemPrice + 50,
+                    grandtotal: itemPrice,
                     isDelivered: false
                 }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.status === 201) {
-                console.log(res.data, '129');
+                console.log(res.data, '124');
             }
         } catch (error) {
             console.log(error.message);

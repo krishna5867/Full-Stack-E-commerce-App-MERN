@@ -45,7 +45,9 @@ function App() {
         // console.log('token->', token);
     
         const response = await axios.get("/validuser", {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 
+                Authorization: `Bearer ${token}` 
+            },
         });
     
         // console.log(response.data);
