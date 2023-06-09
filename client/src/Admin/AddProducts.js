@@ -33,7 +33,7 @@ const AddProducts = () => {
                     Authorization: `Bearer ${token}`,
                 }
             });
-            if (res.data.status === 200) {
+            if (res.data.status === 201) {
                 setShowSpin(true)
                 toast.success("Item Added Successfully")
                 setName("")
