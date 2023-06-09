@@ -75,7 +75,7 @@ exports.validuser = async (req, res) => {
   try {
       const user = await User.findOne({ _id: req.userId });
       if (user) {
-          res.status(201).json({ status: 201, message: "Valid User", validUser: user });
+          res.status(201).json({ status: 200, message: "Valid User", validUser: user });
       } else {
           res.status(401).json({ status: 401, message: "User not found" });
       }

@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 exports.auth = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
+        // console.log(token,"token");
         if (!token) {
             return res.status(401).json({ status: 401, message: "Authorization failed:Token missing" })
         };
@@ -17,6 +18,7 @@ exports.auth = async (req, res, next) => {
         // console.log('verifytoken',verifytoken);
 
         const rootUser = await User.findOne({ _id: verifytoken._id });
+        // console.log(rootUser, "rootuser");
         if (!rootUser) {
             res.status(401).json({ status: 401, message: "Authorization failed: User not found" });
         }

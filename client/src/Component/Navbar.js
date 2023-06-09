@@ -27,16 +27,13 @@ const Navbar = () => {
         const token = localStorage.getItem('token');
         // console.log('token->', token);
     
-        const response = await axios.get("/validuser", {
+        const res = await axios.get("/validuser", {
             headers: { Authorization: `Bearer ${token}` },
         });
-    
-        // console.log(response.data);
-    
-        if (response.data.status === 401 || !response.data) {
-            console.log("user not valid");
-        } else {
-            setLoginData(response.data)
+        if(res.data.status === 200){
+            setLoginData(res.data)
+        }else{
+            console.log("User is not valid");
         }
     }
 
