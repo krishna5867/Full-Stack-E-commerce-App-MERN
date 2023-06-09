@@ -77,20 +77,20 @@ exports.adminAddProduct = async (req, res) => {
                 stock,
                 category,
                 image: {
-                    public_id: result.public_id,
-                    url: result.secure_url
+                    public_ired: result.public_id,
+                    url: result.secu_url
                 },
                 user
             });
             await product.save();
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 message: "Product Created Successfully",
                 product
             });
         }
     } catch (error) {
-        console.log(error.message);
+        console.log(error,"Error in adding products");
         res.status(400).send(error);
     }
 };

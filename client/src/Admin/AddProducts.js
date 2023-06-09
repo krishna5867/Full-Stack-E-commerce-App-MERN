@@ -42,12 +42,7 @@ const AddProducts = () => {
                 setStock("")
                 setImage("")
                 category("")
-                if (res.status === 400) {
-                    toast.error("You are not authorized")
-                }
-            } else {
-                alert("You are not authorized")
-            }
+            } 
         } catch (error) {
             console.log(error.message);
         }
