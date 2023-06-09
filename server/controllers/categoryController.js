@@ -86,7 +86,6 @@ exports.deleteCategory = async (req, res) => {
 };
 
 
-// exports.updateCategory = async (req, res) => {
 //     try {
 //         const { name } = req.body;
 //         const { id } = req.params;

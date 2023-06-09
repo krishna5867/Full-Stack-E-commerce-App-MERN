@@ -149,7 +149,7 @@ return (
                         <tbody>
                             <td colspan="2"></td>
                             <td className='fs-4'>Total</td>
-                            <td className='fs-1'>$ {order?.total + 50}</td>
+                            <td className='fs-1'>$ {order?.total}</td>
                         </tbody>
                     </table>
                 </Container>

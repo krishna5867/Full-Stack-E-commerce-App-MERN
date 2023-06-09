@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Container, Card, CardBody, Button, Input, Label } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -11,35 +12,44 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        // try {
+        //     const response = await fetch("/login", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+                        //"Accept": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             email,
+        //             password
+        //         })
+        //     });
+
+
+        //     const res = await response.json();
+        //     if (res.status === 200) {
+        //         toast.success("Login Success");
+        //         localStorage.setItem("token", res.result?.token);
+        //         navigate("/");
+        //     } else {
+        //         toast.error("Something went wrong.");
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        //     toast.error("Something went wrong. Please try again later.");
+        // }
         try {
-
-            const response = await fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            });
-
-            const res = await response.json();
-            if (res.status === 201) {
-                toast.success("Login Success");
-                localStorage.setItem("token", res.result?.token);
-                navigate("/");
-            } else {
-                toast.error("Something went wrong.");
-            }
+        const res = await axios.post('/login',{email,password})
+        if(res.status === 200){
+            toast.success("Login Success");
+                    localStorage.setItem("token", res.data?.result?.token);
+                    navigate("/");
+        }
         } catch (error) {
-            console.error(error);
-            toast.error("Something went wrong. Please try again later.");
+            console.log(error);
+            
         }
     };
-
-
-
     return (
         <>
             <ToastContainer />

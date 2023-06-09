@@ -12,7 +12,7 @@ const BuyerDetails = () => {
 
     const fetchuser = async () => {
         const res = await axios.get(`/getUser/${id}`);
-        console.log(res.data);
+        // console.log(res.data);
         if (res.status === 200) {
             setUser(res.data.user)
             setLoading(false)

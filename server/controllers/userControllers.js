@@ -1,9 +1,7 @@
 const User = require("../models/userModel");
-// import generateAuthtoken from "../utils/generateToken.js";
 const bcrypt = require("bcryptjs");
 const mailHelper = require("../utils/mailHelper");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
 
 
 exports.home = (req, res) => {
@@ -63,7 +61,7 @@ exports.login = async (req, res) => {
           userValid,
           token
         }
-        res.status(201).json({ status: 201, result })
+        res.status(200).json({ status: 200, result })
       }
     }
 

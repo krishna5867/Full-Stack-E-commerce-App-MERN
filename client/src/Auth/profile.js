@@ -16,8 +16,8 @@ const Profile = () => {
         const response = await axios.get("/signout", {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json"
+                "Accept": "application/json",
+                Authorization: `Bearer ${token}`
             },
             credentials: "include"
         });
